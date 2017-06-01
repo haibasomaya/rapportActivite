@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="GrandeTacheCreateDlg" widgetVar="GrandeTacheCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateGrandeTacheTitle}">
+            <h:form id="GrandeTacheCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{grandeTacheController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateGrandeTacheLabel_dateFin}" for="dateFin" />
+                        <p:calendar id="dateFin" pattern="MM/dd/yyyy HH:mm:ss" value="#{grandeTacheController.selected.dateFin}" title="#{bundle.EditGrandeTacheTitle_dateFin}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateGrandeTacheLabel_dure}" for="dure" />
+                        <p:calendar id="dure" pattern="MM/dd/yyyy HH:mm:ss" value="#{grandeTacheController.selected.dure}" title="#{bundle.EditGrandeTacheTitle_dure}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateGrandeTacheLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{grandeTacheController.selected.id}" title="#{bundle.CreateGrandeTacheTitle_id}" />
+                        <p:outputLabel value="#{bundle.CreateGrandeTacheLabel_nom}" for="nom" />
+                        <p:inputText id="nom" value="#{grandeTacheController.selected.nom}" title="#{bundle.CreateGrandeTacheTitle_nom}" />
+                        <p:outputLabel value="#{bundle.CreateGrandeTacheLabel_dateTache}" for="dateTache" />
+                        <p:calendar id="dateTache" pattern="MM/dd/yyyy HH:mm:ss" value="#{grandeTacheController.selected.dateTache}" title="#{bundle.EditGrandeTacheTitle_dateTache}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateGrandeTacheLabel_pourcentage}" for="pourcentage" />
+                        <p:inputText id="pourcentage" value="#{grandeTacheController.selected.pourcentage}" title="#{bundle.CreateGrandeTacheTitle_pourcentage}" />
+                        <p:outputLabel value="#{bundle.CreateGrandeTacheLabel_avancement}" for="avancement" />
+                        <p:inputText id="avancement" value="#{grandeTacheController.selected.avancement}" title="#{bundle.CreateGrandeTacheTitle_avancement}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{grandeTacheController.create}" value="#{bundle.Save}" update="display,:GrandeTacheListForm:datalist,:growl" oncomplete="handleSubmit(args,'GrandeTacheCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="GrandeTacheCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

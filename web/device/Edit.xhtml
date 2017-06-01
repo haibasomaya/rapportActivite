@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditDeviceTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditDeviceLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{deviceController.selected.id}" title="#{bundle.EditDeviceTitle_id}" />
+                    <h:outputLabel value="#{bundle.EditDeviceLabel_employe}" for="employe" />
+                    <h:selectOneMenu id="employe" value="#{deviceController.selected.employe}" title="#{bundle.EditDeviceTitle_employe}" >
+                        <f:selectItems value="#{employeController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditDeviceLabel_adresseMac}" for="adresseMac" />
+                    <h:inputText id="adresseMac" value="#{deviceController.selected.adresseMac}" title="#{bundle.EditDeviceTitle_adresseMac}" />
+                    <h:outputLabel value="#{bundle.EditDeviceLabel_adresseIP}" for="adresseIP" />
+                    <h:inputText id="adresseIP" value="#{deviceController.selected.adresseIP}" title="#{bundle.EditDeviceTitle_adresseIP}" />
+                    <h:outputLabel value="#{bundle.EditDeviceLabel_dateEntree}" for="dateEntree" />
+                    <h:inputText id="dateEntree" value="#{deviceController.selected.dateEntree}" title="#{bundle.EditDeviceTitle_dateEntree}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.EditDeviceLabel_dateSortie}" for="dateSortie" />
+                    <h:inputText id="dateSortie" value="#{deviceController.selected.dateSortie}" title="#{bundle.EditDeviceTitle_dateSortie}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                </h:panelGrid>
+                <h:commandLink action="#{deviceController.update}" value="#{bundle.EditDeviceSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditDeviceViewLink}"/>
+                <br />
+                <h:commandLink action="#{deviceController.prepareList}" value="#{bundle.EditDeviceShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditDeviceIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

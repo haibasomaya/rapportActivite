@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+
+
+        <h:form id="profilAdmin" rendered="#{employeController.selected.admin==true}" style="margin-top: 100px;">
+            <div class="row">
+
+                <p:panel header="Profil #{employeController.selected.nom}" style="margin:50px 100px 50px 100px; position: relative">
+                    <!--<div class="row">-->
+                    <!--<p:panel  style="width: 800px ;margin-left: 100px;">-->
+                    <!--                    <h:panelGroup id="display">-->
+<!--                    <p:panelGrid columns="2" rendered="#{employeController.selected != null}" style="margin:50px 100px 50px 100px;  border: 10px blue; position: relative">-->
+                        <!--            <div class="container">-->
+                        <h:outputLabel value="#{bundle.ViewEmployeLabel_nom}" style="size: landscape"/>
+                        <h:outputText value="#{employeController.selected.nom}" title="#{bundle.ViewEmployeTitle_nom}"/><br></br>
+                        <h:outputLabel value="#{bundle.ViewEmployeLabel_prenom}"/>
+                        <h:outputText value="#{employeController.selected.prenom}" title="#{bundle.ViewEmployeTitle_prenom}"/><br></br>
+                        <h:outputLabel value="#{bundle.ViewEmployeLabel_login}"/>
+                        <h:outputText value="#{employeController.selected.login}" title="#{bundle.ViewEmployeTitle_login}"/><br></br>
+                        <h:outputLabel value="#{bundle.ViewEmployeLabel_cin}"/>
+                        <h:outputText value="#{employeController.selected.cin}" title="#{bundle.ViewEmployeTitle_cin}"/><br></br>
+                        <h:outputLabel value="#{bundle.ViewEmployeLabel_tel}"/>
+                        <h:outputText value="#{employeController.selected.tel}" title="#{bundle.ViewEmployeTitle_tel}"/><br></br>
+                        <h:outputLabel value="#{bundle.ViewEmployeLabel_email}"/>
+                        <h:outputText value="#{employeController.selected.email}" title="#{bundle.ViewEmployeTitle_email}"/><br></br>
+                        <h:outputLabel value="#{bundle.ViewEmployeLabel_numPost}"/>
+                        <h:outputText value="#{employeController.selected.numPost}" title="#{bundle.ViewEmployeTitle_numPost}"/><br></br>
+                        <h:outputLabel value="#{bundle.ViewEmployeLabel_numBureau}"/>
+                        <h:outputText value="#{employeController.selected.numBureau}" title="#{bundle.ViewEmployeTitle_numBureau}"/><br></br>
+                        <!--</p:panelGrid>-->
+        <!--                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":profilAdmin" oncomplete="PF('EmployeEditDialog').show()" disabled="#{empty employeController.selected}"/>-->
+                        <!--                    </h:panelGroup>-->
+                        <!--</div>-->
+
+                </p:panel>
+            </div>
+        </h:form>
+
+        <!--</p:panel>-->
+        <!--<ui:include src="/employe/Edit.xhtml"/>-->
+
+    </h:body>
+
+</html>

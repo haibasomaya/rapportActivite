@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ActiviteCreateDlg" widgetVar="ActiviteCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateActiviteTitle}">
+            <h:form id="ActiviteCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{activiteController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateActiviteLabel_employe}" for="employe" />
+                        <p:selectOneMenu id="employe" value="#{activiteController.selected.employe}" >
+                            <f:selectItems value="#{employeController.itemsAvailableSelectOne}"
+                                           var="employeItem"
+                                           itemValue="#{employeItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateActiviteLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{activiteController.selected.id}" title="#{bundle.CreateActiviteTitle_id}" />
+                        <p:outputLabel value="#{bundle.CreateActiviteLabel_nom}" for="nom" />
+                        <p:inputText id="nom" value="#{activiteController.selected.nom}" title="#{bundle.CreateActiviteTitle_nom}" />
+                        <p:outputLabel value="#{bundle.CreateActiviteLabel_avancement}" for="avancement" />
+                        <p:inputText id="avancement" value="#{activiteController.selected.avancement}" title="#{bundle.CreateActiviteTitle_avancement}" />
+                        <p:outputLabel value="#{bundle.CreateActiviteLabel_degrer}" for="degrer" />
+                        <p:inputText id="degrer" value="#{activiteController.selected.degrer}" title="#{bundle.CreateActiviteTitle_degrer}" />
+                        <p:outputLabel value="#{bundle.CreateActiviteLabel_dateDebut}" for="dateDebut" />
+                        <p:calendar id="dateDebut" pattern="MM/dd/yyyy HH:mm:ss" value="#{activiteController.selected.dateDebut}" title="#{bundle.EditActiviteTitle_dateDebut}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateActiviteLabel_dateFin}" for="dateFin" />
+                        <p:calendar id="dateFin" pattern="MM/dd/yyyy HH:mm:ss" value="#{activiteController.selected.dateFin}" title="#{bundle.EditActiviteTitle_dateFin}"  showOn="button"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{activiteController.create}" value="#{bundle.Save}" update="display,:ActiviteListForm:datalist,:growl" oncomplete="handleSubmit(args,'ActiviteCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ActiviteCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

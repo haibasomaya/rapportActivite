@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="GrandeTacheViewDlg" widgetVar="GrandeTacheViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewGrandeTacheTitle}">
+            <h:form id="GrandeTacheViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{grandeTacheController.selected != null}">
+                        <h:outputText value="#{bundle.ViewGrandeTacheLabel_dateFin}"/>
+                        <h:outputText value="#{grandeTacheController.selected.dateFin}" title="#{bundle.ViewGrandeTacheTitle_dateFin}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewGrandeTacheLabel_dure}"/>
+                        <h:outputText value="#{grandeTacheController.selected.dure}" title="#{bundle.ViewGrandeTacheTitle_dure}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewGrandeTacheLabel_id}"/>
+                        <h:outputText value="#{grandeTacheController.selected.id}" title="#{bundle.ViewGrandeTacheTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewGrandeTacheLabel_nom}"/>
+                        <h:outputText value="#{grandeTacheController.selected.nom}" title="#{bundle.ViewGrandeTacheTitle_nom}"/>
+                        <h:outputText value="#{bundle.ViewGrandeTacheLabel_dateTache}"/>
+                        <h:outputText value="#{grandeTacheController.selected.dateTache}" title="#{bundle.ViewGrandeTacheTitle_dateTache}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewGrandeTacheLabel_pourcentage}"/>
+                        <h:outputText value="#{grandeTacheController.selected.pourcentage}" title="#{bundle.ViewGrandeTacheTitle_pourcentage}"/>
+                        <h:outputText value="#{bundle.ViewGrandeTacheLabel_avancement}"/>
+                        <h:outputText value="#{grandeTacheController.selected.avancement}" title="#{bundle.ViewGrandeTacheTitle_avancement}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="GrandeTacheViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

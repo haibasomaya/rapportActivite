@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <ui:composition template="/templates/bar.xhtml">
+
+        <ui:define name="body">
+            <h:form>
+                <p:commandLink  action="List.xhtml"  value="liste des taches quotidienne" ></p:commandLink>  <br></br>
+                <p:commandLink  action="/grandeTache/List.xhtml"  value="Liste des taches Elementaire" ></p:commandLink>  <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+
+                <h1><h:outputText value="Creation des nouveau tache quotidienne"/></h1>
+                <p:panelGrid columns="2">
+
+                    <p:outputLabel value="#{bundle.CreateTacheElementaireLabel_dateTache}" for="dateTache" />
+                    <p:calendar id="dateTache" pattern="MM/dd/yyyy HH:mm:ss" value="#{tacheElementaireController.selected.dateTache}" showOn="button"></p:calendar>
+
+                    <h:outputLabel value="#{bundle.CreateTacheElementaire_Name}" for="nom" />
+                    <h:selectOneMenu id="nom" value="#{tacheElementaireController.selected.nom}" title="Nom" >
+                        <f:selectItem itemValue="#{null}" itemLabel="--select name tache--"/>
+                        <f:selectItems value="#{tacheElementaireController.names}"/>
+                    </h:selectOneMenu>      
+
+                </p:panelGrid>
+                <p:commandButton  actionListener="#{tacheElementaireController.ajouterList()}" update=":FormTacheElemt:ListTacheElemt" value="Ajouter"></p:commandButton>
+            </h:form>
+            <h:form id="FormTacheElemt">
+                <h1><h:outputText value="List"/></h1>
+                <p:dataTable value="#{tacheElementaireController.listes}" var="item" id="ListTacheElemt">
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Nom"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nom}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="DateTache"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dateTache}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Ignorer"/>
+                        </f:facet>
+                        <p:commandButton action="#{tacheElementaireController.ignorer(item)}" value="Ignorer" update=":FormTacheElemt:ListTacheElemt"/>
+                    </p:column>
+
+                </p:dataTable>
+                <p:commandButton  actionListener="#{tacheElementaireController.createList()}"  value="Valider"  update=":FormTacheElemt:ListTacheElemt" ></p:commandButton>
+                <br></br>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

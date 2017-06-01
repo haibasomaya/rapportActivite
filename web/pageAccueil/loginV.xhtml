@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui">
+    <h:head>
+        <title>Flashy Login Form Responsive Widget Template :: w3layouts</title>
+        <!-- Meta tag Keywords -->
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
+        <meta name="keywords" content="Flashy Login Form Responsive Widget,Login form widgets, Sign up Web forms , Login signup Responsive web form,Flat Pricing table,Flat Drop downs,Registration Forms,News letter Forms,Elements" />
+        <script type="application/x-javascript">
+            addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+            function hideURLbar(){ window.scrollTo(0,1); } </script>
+        <!-- Meta tag Keywords -->
+
+        <!-- css files -->
+        <h:outputStylesheet name="login/css/style.css"/>
+        <h:outputStylesheet name="login/css/font-awesome.css"/>
+        <!-- //css files -->
+
+        <!-- online-fonts -->
+        <h:outputStylesheet name="//fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese"/>
+        <!-- //online-fonts -->
+        <style>
+            .loginVideo{
+                background-image:url('../resources/login/images/DSC_4792.JPG');
+                background-size: contain;
+            }
+        </style>
+
+    </h:head>
+    <h:body>
+        <!-- main -->
+        <div class="loginVideo">
+            <div>
+                <div class="center-container">
+                    <!--header-->
+                    <div class="header-w3l">
+                        <h1> El Wilaya De marrakech-Safi </h1> 
+                    </div>
+                    <!--//header-->
+                    <div class="main-content-agile">
+                        <div class="left-w3l-mk">
+                            <h3>wilaya social media</h3>
+                            <div class="social-icon">
+                                <a href="https://www.twitter.com/" ><i class="fa fa-twitter"></i></a>
+                                <a href="https://www.facebook.com/" ><i class="fa fa-facebook"></i></a> 
+                                <a href="https://www.google.com/" ><i class="fa fa-google-plus"></i></a> 
+                            </div>
+                        </div>
+                        <div class="sub-main-w3">	
+                            <div class="wthree-pro">
+                                <h2><span>Your login and password</span></h2>
+                            </div>
+                            <h:form> 
+
+                                <b:inputText id="login" value="#{employeController.login}" class="user"  title="login"/>
+                                <span class="icon1"><i class="fa fa-user"></i></span><br></br>
+
+                                <b:inputSecret id="password" value="#{employeController.password}" class="form-control" title="password"/>
+                                <span class="icon2"><i class="fa fa-unlock"></i></span><br></br>
+
+                                <div class="sub-w3l">
+                                    <div class="right-w3l">
+                                        <p:commandButton  action="#{employeController.connecter()}" value="Connecter" style="color: #398439; background-color: #c7ddef;"/>
+                                    </div>
+                                </div>
+                            </h:form>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <!--//main-->
+
+                    <!--footer-->
+                    <div class="footer">
+                        <p>2017 Flashy Login Form. All rights reserved </p>
+                    </div>
+                    <!--//footer-->
+                </div>
+            </div>
+            <!-- js -->
+            <h:outputScript name="login/js/jquery-2.1.4.min.js"/>
+            <h:outputScript name="login/js/jquery.vide.min.js"/>
+
+            <!--<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>-->
+            <!-- //js -->
+            <!--<script src="js/jquery.vide.min.js"></script>-->
+        </div>
+    </h:body>
+</html>
