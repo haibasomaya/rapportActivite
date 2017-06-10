@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 
@@ -27,6 +28,8 @@ public class GrandeTache extends Tache implements Serializable {
     private List<TacheElementaire> tacheElementaires;
     @OneToMany(mappedBy = "grandeTache")
     private List<Employe> employes;
+    @ManyToOne
+    private Activite activite;
 
     public Date getDateFin() {
         return dateFin;
@@ -60,10 +63,17 @@ public class GrandeTache extends Tache implements Serializable {
         this.employes = employes;
     }
 
+    public Activite getActivite() {
+        return activite;
+    }
+
+    public void setActivite(Activite activite) {
+        this.activite = activite;
+    }
+
     @Override
     public String toString() {
         return "GrandeTache{" + "dateFin=" + dateFin + ", dure=" + dure + '}';
     }
 
-   
 }

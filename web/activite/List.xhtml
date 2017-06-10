@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition template="/template.xhtml">
+    <ui:composition template="/templates/bar.xhtml">
 
 
         <ui:define name="title">
@@ -14,6 +14,26 @@
         </ui:define>
 
         <ui:define name="body">
+            <h:form>
+                <p:panelGrid columns="8" >             
+                    <p:outputLabel value="#{bundle.CreateActiviteLabel_dateMin}" for="dateMin" />
+                    <p:calendar id="dateMin" pattern="MM/dd/yyyy HH:mm:ss" value="#{activiteController.dateMin}" title="#{bundle.EditActiviteTitle_dateMin}"  showOn="button"/>
+
+                    <p:outputLabel value="#{bundle.CreateActiviteLabel_dateMax}" for="dateMax" />
+                    <p:calendar id="dateMax" pattern="MM/dd/yyyy HH:mm:ss" value="#{activiteController.dateMax}" title="#{bundle.EditActiviteTitle_dateMax}"  showOn="button"/>
+
+                    <p:outputLabel value="#{bundle.CreateTacheLabel_nom}" for="nom" />
+                    <p:inputText id="nom" value="#{activiteController.nom}" title="#{bundle.CreateActiviteTitle_nom}" />
+
+                    <p:outputLabel value="#{bundle.CreateTacheLabel_employe}" for="employe" />
+                    <p:inputText id="employe" value="#{activiteController.employe}" title="#{bundle.CreateActiviteTitle_employe}" />
+
+                    <p:outputLabel value="#{bundle.CreateTacheLabel_avancement}" for="avancement" />
+                    <p:inputText id="avancement" value="#{activiteController.avancement}" title="#{bundle.CreateActiviteTitle_avancement}" />
+                </p:panelGrid>
+                <p:commandButton actionListener="#{activiteController.search()}" value="SEARCH" update=":ActiviteListForm:datalist" />
+                <p:commandButton value="#{bundle.Cancel}" onclick="ActiviteCreateDialog.hide()"/>
+            </h:form>
             <h:form id="ActiviteListForm">
                 <p:panel header="#{bundle.ListActiviteTitle}">
                     <p:dataTable id="datalist" value="#{activiteController.items}" var="item"
@@ -31,7 +51,7 @@
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListActiviteTitle_employe}"/>
                             </f:facet>
-                            <h:outputText value="#{item.employe}"/>
+                            <h:outputText value="#{item.gerant}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">

@@ -6,22 +6,26 @@
 package bean;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
  * @author somaya
  */
 @Entity
-public class BonCommande implements Serializable {
+public class BonCommande extends Activite implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @OneToMany(mappedBy = "bonCommande")
+    private List<CommandeItem> commandeItems;
 
     public Long getId() {
         return id;
@@ -29,6 +33,14 @@ public class BonCommande implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public List<CommandeItem> getCommandeItems() {
+        return commandeItems;
+    }
+
+    public void setCommandeItems(List<CommandeItem> commandeItems) {
+        this.commandeItems = commandeItems;
     }
 
     @Override
@@ -55,5 +67,5 @@ public class BonCommande implements Serializable {
     public String toString() {
         return "bean.BonCommande[ id=" + id + " ]";
     }
-    
+
 }

@@ -11,9 +11,7 @@
         <p:dialog id="ServiceCreateDlg" widgetVar="ServiceCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateServiceTitle}">
             <h:form id="ServiceCreateForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{serviceController.selected != null}">
-                        <p:outputLabel value="#{bundle.CreateServiceLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{serviceController.selected.id}" title="#{bundle.CreateServiceTitle_id}" />
+                    <p:panelGrid columns="2" rendered="#{serviceController.selected!=null}">
                         <p:outputLabel value="#{bundle.CreateServiceLabel_nom}" for="nom" />
                         <p:inputText id="nom" value="#{serviceController.selected.nom}" title="#{bundle.CreateServiceTitle_nom}" />
                         <p:outputLabel value="#{bundle.CreateServiceLabel_division}" for="division" />

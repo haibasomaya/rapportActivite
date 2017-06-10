@@ -1,11 +1,13 @@
 package controler;
 
+import bean.Activite;
 import bean.GrandeTache;
 import util.JsfUtil;
 import util.JsfUtil.PersistAction;
 import service.GrandeTacheFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -18,35 +20,25 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import service.ActiviteFacade;
 
 @Named("grandeTacheController")
 @SessionScoped
 public class GrandeTacheController implements Serializable {
 
-    @EJB
-    private service.GrandeTacheFacade ejbFacade;
     private List<GrandeTache> items = null;
     private GrandeTache selected;
+    private List<Activite> activites = null;
+    @EJB
+    private service.GrandeTacheFacade ejbFacade;
+    @EJB
+    private ActiviteFacade activiteFacade;
 
     public GrandeTacheController() {
     }
 
-    public GrandeTache getSelected() {
-        return selected;
-    }
+    public void createGrdTache() {
 
-    public void setSelected(GrandeTache selected) {
-        this.selected = selected;
-    }
-
-    protected void setEmbeddableKeys() {
-    }
-
-    protected void initializeEmbeddableKey() {
-    }
-
-    private GrandeTacheFacade getFacade() {
-        return ejbFacade;
     }
 
     public GrandeTache prepareCreate() {
@@ -72,13 +64,6 @@ public class GrandeTacheController implements Serializable {
             selected = null; // Remove selection
             items = null;    // Invalidate list of items to trigger re-query.
         }
-    }
-
-    public List<GrandeTache> getItems() {
-        if (items == null) {
-            items = getFacade().findAll();
-        }
-        return items;
     }
 
     private void persist(PersistAction persistAction, String successMessage) {
@@ -160,6 +145,45 @@ public class GrandeTacheController implements Serializable {
             }
         }
 
+    }
+
+    public GrandeTache getSelected() {
+        if (selected == null) {
+            selected = new GrandeTache();
+        }
+        return selected;
+    }
+
+    public void setSelected(GrandeTache selected) {
+        this.selected = selected;
+    }
+
+    protected void setEmbeddableKeys() {
+    }
+
+    protected void initializeEmbeddableKey() {
+    }
+
+    private GrandeTacheFacade getFacade() {
+        return ejbFacade;
+    }
+
+    public List<GrandeTache> getItems() {
+        if (items == null) {
+            items = getFacade().findAll();
+        }
+        return items;
+    }
+
+    public List<Activite> getActivites() {
+        if (activites == null) {
+            activites = activiteFacade.activiteEnCours();
+        }
+        return activites;
+    }
+
+    public void setActivites(List<Activite> activites) {
+        this.activites = activites;
     }
 
 }

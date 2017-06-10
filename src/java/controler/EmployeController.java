@@ -1,6 +1,9 @@
 package controler;
 
+import bean.Division;
 import bean.Employe;
+import bean.Service;
+import java.io.IOException;
 import util.JsfUtil;
 import util.JsfUtil.PersistAction;
 import service.EmployeFacade;
@@ -19,27 +22,114 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.mail.MessagingException;
+import service.DivisionFacade;
+import service.ServiceFacade;
 
 @Named("employeController")
 @SessionScoped
 public class EmployeController implements Serializable {
 
-    @EJB
-    private service.EmployeFacade ejbFacade;
-    private List<Employe> items = null;
-    private List<Employe> employes = null;
+    private Employe emp;
     private Employe selected;
     private String login;
     private String password;
     private String nom;
     private String prenom;
-    private int etat = -1;
+    private int etat;
+    private Service service;
+    private Division division;
+    private List<Employe> items = null;
+    private List<Employe> employes = null;
+    private List<Service> services = null;
+    private List<Division> divisions = null;
+    @EJB
+    private service.EmployeFacade ejbFacade;
+    @EJB
+    private ServiceFacade serviceFacade;
+    @EJB
+    private DivisionFacade divisionFacade;
 
-    public String connecter() {
+    public EmployeController() {
+    }
+
+    public void empByServiceDivision() {
+        if (division != null && service == null) {
+            items = divisionFacade.findEmpByAdmin(division.getDirecteur());
+        } else if (division != null && service != null) {
+            items = ejbFacade.findByService(service);
+        } else {
+            items = ejbFacade.findAll();
+        }
+        System.out.println("les items--------> " +items);
+    }
+
+    public void listEmp() {
+        if (division != null) {
+            services = serviceFacade.findByDivision(division);
+        }
+    }
+
+    public void ListServices() {
+        if (division != null) {
+            services = serviceFacade.findByDivision(division);
+        }
+    }
+
+    public boolean simpleUser() {
+        if (!selected.isAdmin() && selected.getSuperAdmin() == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void empAdminBloquer() {
+        employes = ejbFacade.EmpAdminBloquer(etat, employes);
+        System.out.println("Employes ------>" + employes);
+    }
+
+    public void listBloque() {
+        items = ejbFacade.liseBloquer(etat);
+        System.out.println("liiiste des compte bmoquer sont ----->" + items);
+    }
+
+    public void recherche() {
+        employes = new ArrayList<>();
+        if (ejbFacade.recherche(nom, prenom, login) != null) {
+            employes.addAll(ejbFacade().recherche(nom, prenom, login));
+        }
+        if (ejbFacade.liseBloquer(etat) != null) {
+            employes.addAll(ejbFacade.liseBloquer(etat));
+        }
+        System.out.println("List employes----->" + employes);
+
+    }
+
+    private void findByDivision() {
+        if (selected.isAdmin()) {
+            division = divisionFacade.findDivisionByAdmin(selected);
+            services = serviceFacade.findByDivision(division);
+        } else {
+            services = new ArrayList<>();
+        }
+    }
+
+    public String deconnexion() {
+        int res = ejbFacade.deconexion(selected);
+        if (res < 0) {
+            System.out.println("selected est --------------> NULL");
+            return null;
+        } else {
+            return "../pageAccueil/loginV.xhtml";
+        }
+    }
+
+    public String connecter() throws IOException {
         System.out.println("connecter controler");
         int res = ejbFacade.connexion(login, password);
         if (res == -1) {
-            System.out.println("vous devez nseret login et passwourd");
+            System.out.println("vous devez inseret votre login et passwourd");
         } else if (res == -2) {
             System.out.println("inseret login et password correcte");
         } else if (res == -3) {
@@ -47,20 +137,22 @@ public class EmployeController implements Serializable {
         } else if (res == 0) {
             System.out.println(" ereure Inconuu");
         } else if (res > 0) {
-            System.out.println("haaaaa res ====>" + res);
             selected = util.SessionUtil.getConnectedUser();
-            System.out.println("finn ghadiii____>" + goProfil());
             return goProfil();
         }
         return null;
     }
 
-    private String goProfil() {
+    private String goProfil() throws IOException {
         if (selected.isAdmin()) {
-            System.out.println("");
-            return "/profils/ProfilAdmin.xhtml";
+            util.SessionUtil.redirect("/rapportActivite/faces/admine/ListEmp");
+            return "/admine/ListEmp.xhtml";
+        } else if (selected.getSuperAdmin() == 1) {
+            util.SessionUtil.redirect("/rapportActivite/faces/superAdmine/ListEmp");
+            return "/admine/ListEmp.xhtml";
         } else {
-            return "/tacheElementaire/EmpTache.xhtml";
+            util.SessionUtil.redirect("/rapportActivite/faces/simpleUser/EmpTache");
+            return "/simpleUser/EmpTache.xhtml";
         }
     }
 
@@ -68,23 +160,10 @@ public class EmployeController implements Serializable {
         int res = ejbFacade.bloquerDebloquer(employe);
     }
 
-    public void recherche() {
-        employes = ejbFacade.recherche(nom, prenom, login);
-        init();
+    public void creationEmp() throws MessagingException {
+        ejbFacade.creerEmp(emp);
+        prepareCreate();
     }
-
-    public void listBloquer() {
-        employes = ejbFacade.liseBloquer(etat);
-        init();
-    }
-
-    public void init() {
-        login = null;
-        password = null;
-        prenom = null;
-        nom = null;
-    }
-//        ejbFacade.creerEmp(selected, selected.getPassword());
 
     public void create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("EmployeCreated"));
@@ -93,13 +172,10 @@ public class EmployeController implements Serializable {
         }
     }
 
-    public EmployeController() {
-    }
-
     public Employe prepareCreate() {
-        selected = new Employe();
+        emp = new Employe();
         initializeEmbeddableKey();
-        return selected;
+        return emp;
     }
 
     public void update() {
@@ -183,40 +259,6 @@ public class EmployeController implements Serializable {
 
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Employe getSelected() {
-        if (selected == null) {
-            selected = new Employe();
-        }
-        return selected;
-    }
-
-    public List<Employe> getItems() {
-        if (items == null) {
-            items = ejbFacade().findAll();
-        }
-        return items;
-    }
-
-    public void setSelected(Employe selected) {
-        this.selected = selected;
-    }
-
     protected void setEmbeddableKeys() {
     }
 
@@ -255,15 +297,20 @@ public class EmployeController implements Serializable {
         this.prenom = prenom;
     }
 
-    public List<Employe> getEmployes() {
-        if (employes == null) {
-            employes = ejbFacade.findAll();
-        }
-        return employes;
+    public String getLogin() {
+        return login;
     }
 
-    public void setEmployes(List<Employe> employes) {
-        this.employes = employes;
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public int getEtat() {
@@ -272,6 +319,98 @@ public class EmployeController implements Serializable {
 
     public void setEtat(int etat) {
         this.etat = etat;
+    }
+
+    public Employe getEmp() {
+        if (emp == null) {
+            emp = new Employe();
+        }
+        return emp;
+    }
+
+    public void setEmp(Employe emp) {
+        this.emp = emp;
+    }
+
+    public List<Employe> getEmployes() {
+        if (employes == null) {
+            if (selected.isAdmin()) {
+                employes = divisionFacade.findEmpByAdmin(selected);
+            } else {
+                employes = new ArrayList();
+            }
+        }
+        return employes;
+    }
+
+    public void setEmployes(List<Employe> employes) {
+        this.employes = employes;
+    }
+
+    public Service getService() {
+        if (service == null) {
+            service = new Service();
+        }
+        return service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
+
+    public List<Service> getServices() {
+        if (services == null) {
+            findByDivision();
+        }
+        return services;
+    }
+
+    public void setServices(List<Service> services) {
+        this.services = services;
+    }
+
+    public List<Division> getDivisions() {
+        if (divisions == null) {
+            divisions = divisionFacade.findAll();
+        }
+        return divisions;
+    }
+
+    public void setDivisions(List<Division> divisions) {
+        this.divisions = divisions;
+    }
+
+    public Division getDivision() {
+        if (division == null) {
+            if (selected.isAdmin()) {
+                division = divisionFacade.findDivisionByAdmin(selected);
+            }
+        } else {
+            division = new Division();
+        }
+        return division;
+    }
+
+    public void setDivision(Division division) {
+        this.division = division;
+    }
+
+    public Employe getSelected() {
+        if (selected == null) {
+            selected = new Employe();
+        }
+        return selected;
+    }
+
+    public void setSelected(Employe selected) {
+        this.selected = selected;
+    }
+
+    public List<Employe> getItems() {
+        if (items == null) {
+            items = ejbFacade().findAll();
+        }
+        return items;
     }
 
 }

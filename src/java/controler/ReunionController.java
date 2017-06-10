@@ -1,11 +1,16 @@
 package controler;
 
+import bean.Division;
+import bean.Employe;
 import bean.Reunion;
-import util.JsfUtil;
+import bean.Service;
+import controler.util.JsfUtil;
 import util.JsfUtil.PersistAction;
+
 import service.ReunionFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -18,35 +23,77 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import service.DivisionFacade;
+import service.EmployeFacade;
+import service.ServiceFacade;
 
 @Named("reunionController")
 @SessionScoped
 public class ReunionController implements Serializable {
 
+    private Reunion selected;
+    private Division division;
+    private Service service;
+    private Employe emp;
+    private List<Reunion> items = null;
+    private List<Service> services = null;
+    private List<Employe> employes = null;
+    private List<Employe> emps = null;
+    private List<Division> divisions = null;
     @EJB
     private service.ReunionFacade ejbFacade;
-    private List<Reunion> items = null;
-    private Reunion selected;
+    @EJB
+    private DivisionFacade divisionFacade;
+    @EJB
+    private ServiceFacade serviceFacade;
+
+    @EJB
+    private EmployeFacade employeFacade;
+
+    private Employe employe = util.SessionUtil.getConnectedUser();
 
     public ReunionController() {
     }
 
-    public Reunion getSelected() {
-        return selected;
+    public void listServices() {
+        if (division != null) {
+            System.out.println("la divisionnn est-----> " + division);
+            services = serviceFacade.findByDivision(division);
+        }
+
     }
 
-    public void setSelected(Reunion selected) {
-        this.selected = selected;
+    public void valider() {
+        selected.setGerant(employe);
+        ejbFacade.create(selected);
+        ejbFacade.valider(emps, selected);
+        System.out.println("haaaa new Reunion---->" + selected);
+        emps = null;
     }
 
-    protected void setEmbeddableKeys() {
+    public void ignorer(Employe emp) {
+        emps.remove(emps.indexOf(emp));
     }
 
-    protected void initializeEmbeddableKey() {
+    public void ajoutEmp() {
+        emps.add(emp);
     }
 
-    private ReunionFacade getFacade() {
-        return ejbFacade;
+    public void listEmp() {
+        employes = employeFacade.findByService(service);
+        System.out.println("haa les employaes dyalooo ----->" + employes);
+    }
+
+    private void initAdmine() {
+        if (employe != null && employe.isAdmin()) {
+            division = divisionFacade.findDivisionByAdmin(employe);
+            services = serviceFacade.findByDivision(division);
+            items = ejbFacade.findByGerant(employe);
+        } else {
+            division = new Division();
+            services = new ArrayList();
+            items = ejbFacade.findAll();
+        }
     }
 
     public Reunion prepareCreate() {
@@ -57,7 +104,7 @@ public class ReunionController implements Serializable {
 
     public void create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("ReunionCreated"));
-        if (!JsfUtil.isValidationFailed()) {
+        if (util.JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
@@ -68,17 +115,10 @@ public class ReunionController implements Serializable {
 
     public void destroy() {
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("ReunionDeleted"));
-        if (!JsfUtil.isValidationFailed()) {
+        if (util.JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
             items = null;    // Invalidate list of items to trigger re-query.
         }
-    }
-
-    public List<Reunion> getItems() {
-        if (items == null) {
-            items = getFacade().findAll();
-        }
-        return items;
     }
 
     private void persist(PersistAction persistAction, String successMessage) {
@@ -160,6 +200,122 @@ public class ReunionController implements Serializable {
             }
         }
 
+    }
+
+    public List<Reunion> getItems() {
+        if (items == null) {
+            initAdmine();
+        }
+        return items;
+    }
+
+    public Reunion getSelected() {
+        if (selected == null) {
+            selected = new Reunion();
+        }
+        return selected;
+    }
+
+    public void setSelected(Reunion selected) {
+        this.selected = selected;
+    }
+
+    protected void setEmbeddableKeys() {
+    }
+
+    protected void initializeEmbeddableKey() {
+    }
+
+    private ReunionFacade getFacade() {
+        return ejbFacade;
+    }
+
+    public Division getDivision() {
+        if (division == null) {
+            initAdmine();
+        }
+        return division;
+    }
+
+    public void setDivision(Division division) {
+        this.division = division;
+    }
+
+    public Service getService() {
+        if (service == null) {
+            service = new Service();
+        }
+        return service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
+
+    public Employe getEmp() {
+        if (emp == null) {
+            emp = new Employe();
+        }
+        return emp;
+    }
+
+    public void setEmp(Employe emp) {
+        this.emp = emp;
+    }
+
+    public List<Service> getServices() {
+        if (services == null) {
+            initAdmine();
+        }
+        return services;
+    }
+
+    public void setServices(List<Service> services) {
+        this.services = services;
+    }
+
+    public List<Employe> getEmployes() {
+        if (employes == null) {
+            employes = new ArrayList();
+        }
+        return employes;
+    }
+
+    public void setEmployes(List<Employe> employes) {
+        this.employes = employes;
+    }
+
+    public List<Employe> getEmps() {
+        if (emps == null) {
+            emps = new ArrayList();
+        }
+        return emps;
+    }
+
+    public void setEmps(List<Employe> emps) {
+        this.emps = emps;
+    }
+
+    public List<Division> getDivisions() {
+        if (divisions == null) {
+            divisions = divisionFacade.findAll();
+        }
+        return divisions;
+    }
+
+    public void setDivisions(List<Division> divisions) {
+        this.divisions = divisions;
+    }
+
+    public Employe getEmploye() {
+        if (employe == null) {
+            employe = new Employe();
+        }
+        return employe;
+    }
+
+    public void setEmploye(Employe employe) {
+        this.employe = employe;
     }
 
 }

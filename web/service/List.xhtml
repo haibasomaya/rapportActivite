@@ -14,6 +14,21 @@
         </ui:define>
 
         <ui:define name="body">
+            <h:form>
+
+                <p:panelGrid columns="6" >
+                    <p:outputLabel value="#{bundle.CreateServiceLabel_nom}" for="nom" />
+                    <p:inputText id="nom" value="#{serviceController.nom}" title="#{bundle.CreateServiceTitle_nom}" />
+
+                    <p:outputLabel value="#{bundle.CreateServiceLabel_division}" for="division" />
+                    <p:selectOneMenu id="division" value="#{serviceController.division}" >
+                        <f:selectItems  value="#{serviceController.divisions}" var="divisionItem" itemValue="#{divisionItem}" itemLabel="#{divisionItem.nom}"/>
+                    </p:selectOneMenu>
+                </p:panelGrid>
+
+                <p:commandButton actionListener="#{serviceController.search()}" value="SEARCH" update=":ServiceListForm:datalist" />
+
+            </h:form>
             <h:form id="ServiceListForm">
                 <p:panel header="#{bundle.ListServiceTitle}">
                     <p:dataTable id="datalist" value="#{serviceController.items}" var="item"

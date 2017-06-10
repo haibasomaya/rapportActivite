@@ -6,22 +6,16 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition template="/template.xhtml">
+    <ui:composition>
 
         <p:dialog id="EmployeViewDlg" widgetVar="EmployeViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewEmployeTitle}">
             <h:form id="EmployeViewForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{employeController.selected != null}">
-                        <h:outputText value="#{bundle.ViewEmployeLabel_essay}"/>
-                        <h:outputText value="#{employeController.selected.essay}" title="#{bundle.ViewEmployeTitle_essay}"/>
                         <h:outputText value="#{bundle.ViewEmployeLabel_nom}"/>
                         <h:outputText value="#{employeController.selected.nom}" title="#{bundle.ViewEmployeTitle_nom}"/>
                         <h:outputText value="#{bundle.ViewEmployeLabel_prenom}"/>
                         <h:outputText value="#{employeController.selected.prenom}" title="#{bundle.ViewEmployeTitle_prenom}"/>
-                        <h:outputText value="#{bundle.ViewEmployeLabel_bloquer}"/>
-                        <h:outputText value="#{employeController.selected.bloquer}" title="#{bundle.ViewEmployeTitle_bloquer}"/>
-                        <h:outputText value="#{bundle.ViewEmployeLabel_grandeTache}"/>
-                        <h:outputText value="#{employeController.selected.grandeTache}" title="#{bundle.ViewEmployeTitle_grandeTache}"/>
                         <h:outputText value="#{bundle.ViewEmployeLabel_login}"/>
                         <h:outputText value="#{employeController.selected.login}" title="#{bundle.ViewEmployeTitle_login}"/>
                         <h:outputText value="#{bundle.ViewEmployeLabel_cin}"/>

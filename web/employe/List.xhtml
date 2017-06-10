@@ -21,7 +21,7 @@
                                  paginator="true"
                                  rowKey="#{item.login}"
                                  rows="10"
-                                 rowsPerPageTemplate="10,20,30,40"
+                                 rowsPerPageTemplate="10,20,30,40,50"
                                  >
 
                         <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
@@ -41,35 +41,27 @@
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListEmployeTitle_cin}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.cin}"/>
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
                                 <h:outputText value="#{bundle.ListEmployeTitle_login}"/>
                             </f:facet>
                             <h:outputText value="#{item.login}"/>
                         </p:column>
-
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEmployeTitle_cin}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cin}"/>
+                        </p:column>
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListEmployeTitle_tel}"/>
                             </f:facet>
                             <h:outputText value="#{item.tel}"/>
                         </p:column>
-                        <p:column>
+                                                <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListEmployeTitle_email}"/>
                             </f:facet>
                             <h:outputText value="#{item.email}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListEmployeTitle_bloquer}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.bloquer}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
@@ -96,7 +88,7 @@
                             <h:outputText value="#{item.fonction}"/>
                         </p:column>
                         <f:facet name="footer">
-                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{employeController.prepareCreate}" update=":EmployeCreateForm" oncomplete="PF('EmployeCreateDialog').show()"/>
+                            <p:commandButton id="createButton" icon="ui-icon-plus"  value="#{bundle.Create}" actionListener="#{employeController.prepareCreate()}" update=":EmployeCreateForm" oncomplete="PF('EmployeCreateDialog').show()"/>
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":EmployeViewForm" oncomplete="PF('EmployeViewDialog').show()" disabled="#{empty employeController.selected}"/>
                             <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":EmployeEditForm" oncomplete="PF('EmployeEditDialog').show()" disabled="#{empty employeController.selected}"/>
                             <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{employeController.destroy}" update=":growl,datalist" disabled="#{empty employeController.selected}"/>

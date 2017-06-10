@@ -9,6 +9,7 @@ import bean.Employe;
 import bean.TacheElementaire;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,6 +21,8 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class TacheElementaireFacade extends AbstractFacade<TacheElementaire> {
 
+    @EJB
+    private EmployeFacade employeFacade;
     @PersistenceContext(unitName = "rapportActivitePU")
     private EntityManager em;
 
@@ -30,6 +33,23 @@ public class TacheElementaireFacade extends AbstractFacade<TacheElementaire> {
 
     public TacheElementaireFacade() {
         super(TacheElementaire.class);
+    }
+
+    public List<TacheElementaire> findByDateEmp(String login, Date dateTache, int type) {
+        Employe employe = employeFacade.find(login);
+        if (employe == null) {
+            return null;
+        } else {
+            String rq = "SELECT t FROM TacheElementaire t WHERE t.employe.login ='" + employe.getLogin() + "'";
+            if (dateTache != null) {
+                rq += " AND t.dateTache ='" + util.DateUtil.getSqlDate(dateTache) + "'";
+            }
+            if (type > 0) {
+                rq += "AND t.type =" + type;
+            }
+            List<TacheElementaire> taches = em.createQuery(rq).getResultList();
+            return taches;
+        }
     }
 
     public List<TacheElementaire> chercherDate(Date dateCherche) {
@@ -51,7 +71,7 @@ public class TacheElementaireFacade extends AbstractFacade<TacheElementaire> {
         return false;
     }
 
-    public void createTache(TacheElementaire tacheElementaire, Employe employe) {
+    private void createTache(TacheElementaire tacheElementaire, Employe employe) {
         tacheElementaire.setEmploye(employe);
         employe.getTacheElementaires().add(tacheElementaire);
         tacheElementaire.setAvancement(0L);
@@ -61,14 +81,12 @@ public class TacheElementaireFacade extends AbstractFacade<TacheElementaire> {
         create(tacheElementaire);
     }
 
-    //     public String findUserFonction(Employe employe) {
-//        String requete;
-//        String type = "";
-//        if (employe != null) {
-//            requete = "SELECT e.dtype FROM Employe e WHERE e.id=" + employe.getId();
-//            type = (String) getEntityManager().createNativeQuery(requete).getSingleResult();
-//        }
-//        return type;
-//    }
-//    
+    public List<TacheElementaire> findByEmploye(Employe employe) {
+        if (employe != null) {
+            return em.createQuery("SELECT t FROM TacheElementaire t WHERE t.employe.login ='" + employe.getLogin() + "'").getResultList();
+        } else {
+            return null;
+        }
+    }
+
 }

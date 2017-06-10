@@ -1,11 +1,14 @@
 package controler;
 
+import bean.Division;
+import bean.Employe;
 import bean.Service;
 import util.JsfUtil;
 import util.JsfUtil.PersistAction;
 import service.ServiceFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -18,6 +21,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import service.DivisionFacade;
 
 @Named("serviceController")
 @SessionScoped
@@ -25,28 +29,44 @@ public class ServiceController implements Serializable {
 
     @EJB
     private service.ServiceFacade ejbFacade;
-    private List<Service> items = null;
     private Service selected;
+    private Division division;
+    private String nom = "";
+    private Employe emp;
+    private List<Service> items = null;
+    private List<Division> divisions = null;
+    private List<Employe> employes = null;
+    private List<Employe> emps = null;
+    private Employe employe = util.SessionUtil.getConnectedUser();
+    @EJB
+    private DivisionFacade divisionFacade;
 
     public ServiceController() {
     }
 
-    public Service getSelected() {
-        return selected;
+    public void ajouter() {
+        emps.add(emp);
     }
 
-    public void setSelected(Service selected) {
-        this.selected = selected;
+    public void ignorer(Employe e) {
+        emps.remove(emps.indexOf(e));
     }
 
-    protected void setEmbeddableKeys() {
+    public void createService() {
+        if (employe != null && employe.isAdmin()) {
+            selected.setDivision(divisionFacade.findDivisionByAdmin(employe));
+            selected.setEmployes(emps);
+            ejbFacade.create(selected);
+            emps = null;
+        }
     }
 
-    protected void initializeEmbeddableKey() {
-    }
-
-    private ServiceFacade getFacade() {
-        return ejbFacade;
+    public void search() {
+        System.out.println("**********search contrllerrr*********");
+        System.out.println("Devision choisit est---->" + division);
+        System.out.println("la nm tapper est---->" + nom);
+        items = ejbFacade.search(nom, division);
+        System.out.println("haaa les items resultat----->" + items);
     }
 
     public Service prepareCreate() {
@@ -72,13 +92,6 @@ public class ServiceController implements Serializable {
             selected = null; // Remove selection
             items = null;    // Invalidate list of items to trigger re-query.
         }
-    }
-
-    public List<Service> getItems() {
-        if (items == null) {
-            items = getFacade().findAll();
-        }
-        return items;
     }
 
     private void persist(PersistAction persistAction, String successMessage) {
@@ -162,4 +175,109 @@ public class ServiceController implements Serializable {
 
     }
 
+    protected void setEmbeddableKeys() {
+    }
+
+    protected void initializeEmbeddableKey() {
+    }
+
+    private ServiceFacade getFacade() {
+        return ejbFacade;
+    }
+
+    public List<Division> getDivisions() {
+        if (divisions == null) {
+            divisions = new ArrayList<>();
+        }
+        return divisions;
+    }
+
+    public void setDivisions(List<Division> divisions) {
+        this.divisions = divisions;
+    }
+
+    public Division getDivision() {
+        if (division == null) {
+            division = new Division();
+        }
+        return division;
+    }
+
+    public void setDivision(Division division) {
+        this.division = division;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+//pr creation
+
+    public Employe getEmp() {
+        if(emp == null){
+            emp = new Employe();
+        }
+        return emp;
+    }
+
+    public void setEmp(Employe emp) {
+        this.emp = emp;
+    }
+
+    public List<Employe> getEmps() {
+        if (emps == null) {
+            emps = new ArrayList();
+        }
+        return emps;
+    }
+
+    public void setEmps(List<Employe> emps) {
+        this.emps = emps;
+    }
+
+    // pr initialisation
+    public List<Employe> getEmployes() {
+        if (employes == null) {
+            if (employe != null && employe.isAdmin()) {
+                employes = divisionFacade.findEmpByAdmin(employe);
+                System.out.println("haa les employe-------> " + employes);
+            } else {
+                employes = new ArrayList();
+            }
+        }
+        return employes;
+    }
+
+    public void setEmployes(List<Employe> employes) {
+        this.employes = employes;
+    }
+
+    public Employe getEmploye() {
+        return employe;
+    }
+
+    public void setEmploye(Employe employe) {
+        this.employe = employe;
+    }
+
+    public Service getSelected() {
+        if (selected == null) {
+            selected = new Service();
+        }
+        return selected;
+    }
+
+    public void setSelected(Service selected) {
+        this.selected = selected;
+    }
+
+    public List<Service> getItems() {
+        if (items == null) {
+            items = getFacade().findAll();
+        }
+        return items;
+    }
 }

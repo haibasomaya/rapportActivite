@@ -108,7 +108,7 @@ public class Division implements Serializable {
 
     @Override
     public String toString() {
-        return "Division{" + "nom=" + nom + ", nbrService=" + nbrService + '}';
+        return nom ;
     }
 
 }

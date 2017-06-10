@@ -6,6 +6,7 @@ import util.JsfUtil.PersistAction;
 import service.TacheFacade;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -27,26 +28,23 @@ public class TacheController implements Serializable {
     private service.TacheFacade ejbFacade;
     private List<Tache> items = null;
     private Tache selected;
+    private Date dateMin;
+    private Date dateMax;
+    private String nom;
 
     public TacheController() {
     }
 
-    public Tache getSelected() {
-        return selected;
+    public void search() {
+        items = ejbFacade.search(nom, dateMin, dateMax);
+        inititems();
     }
 
-    public void setSelected(Tache selected) {
-        this.selected = selected;
-    }
+    public void inititems() {
+        nom = "";
+        dateMax = null;
+        dateMin = null;
 
-    protected void setEmbeddableKeys() {
-    }
-
-    protected void initializeEmbeddableKey() {
-    }
-
-    private TacheFacade getFacade() {
-        return ejbFacade;
     }
 
     public Tache prepareCreate() {
@@ -72,13 +70,6 @@ public class TacheController implements Serializable {
             selected = null; // Remove selection
             items = null;    // Invalidate list of items to trigger re-query.
         }
-    }
-
-    public List<Tache> getItems() {
-        if (items == null) {
-            items = getFacade().findAll();
-        }
-        return items;
     }
 
     private void persist(PersistAction persistAction, String successMessage) {
@@ -107,18 +98,6 @@ public class TacheController implements Serializable {
                 JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             }
         }
-    }
-
-    public Tache getTache(java.lang.Long id) {
-        return getFacade().find(id);
-    }
-
-    public List<Tache> getItemsAvailableSelectMany() {
-        return getFacade().findAll();
-    }
-
-    public List<Tache> getItemsAvailableSelectOne() {
-        return getFacade().findAll();
     }
 
     @FacesConverter(forClass = Tache.class)
@@ -162,4 +141,64 @@ public class TacheController implements Serializable {
 
     }
 
+    protected void setEmbeddableKeys() {
+    }
+
+    protected void initializeEmbeddableKey() {
+    }
+
+    private TacheFacade getFacade() {
+        return ejbFacade;
+    }
+
+    public Tache getTache(java.lang.Long id) {
+        return getFacade().find(id);
+    }
+
+    public List<Tache> getItemsAvailableSelectMany() {
+        return getFacade().findAll();
+    }
+
+    public List<Tache> getItemsAvailableSelectOne() {
+        return getFacade().findAll();
+    }
+
+    public Tache getSelected() {
+        return selected;
+    }
+
+    public void setSelected(Tache selected) {
+        this.selected = selected;
+    }
+
+    public Date getDateMin() {
+        return dateMin;
+    }
+
+    public void setDateMin(Date dateMin) {
+        this.dateMin = dateMin;
+    }
+
+    public Date getDateMax() {
+        return dateMax;
+    }
+
+    public void setDateMax(Date dateMax) {
+        this.dateMax = dateMax;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public List<Tache> getItems() {
+        if (items == null) {
+            items = getFacade().findAll();
+        }
+        return items;
+    }
 }

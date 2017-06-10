@@ -8,35 +8,29 @@
       xmlns:b="http://bootsfaces.net/ui">
 
     <h:head>
-
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta name="description" content=""/>
         <meta name="author" content=""/>
-
         <title>Bare - Start Bootstrap Template</title>
-
         <!-- Bootstrap Core CSS -->
         <h:outputStylesheet name="bar/css/bootstrap.min.css"/>
         <h:outputStylesheet name="sideBar/css/bootstrap.min.css"/>
-
         <!-- Custom CSS -->
         <h:outputStylesheet name="sideBar/css/simple-sidebar.css"/>
+        <h:outputStylesheet name="bar/css/business-frontpage.css"/>
         <style>
             body {
                 padding-top: 70px;
                 /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
             }
         </style>
-
-        
     </h:head>
-
     <h:body>
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" >
-            <div class="container" style="bottom: 100px;">
+            <div class="container" style="bottom: 50px;">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -45,81 +39,59 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <!--<a class="navbar-brand" href="#">Start Bootstrap</a>-->
                 </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <div style="float: right ; margin-top: 25px;">
                         <b:button  href="../pageAccueil/loginV.xhtml" class="glyphicon glyphicon-off" value=" Deconnexion" />
                     </div>
-                    <ul class="nav navbar-nav">
-                        <h:form id="admin" rendered="#{employeController.selected.admin==true}">
-                            <li><a href="#">About</a></li>
-                            <li><a href="#">Services</a></li>
-                            <li><a href="#">Contact</a></li> 
-                            <li><a href="#"></a></li> 
-                        </h:form>
-                        <h:form id="employe" rendered="#{employeController.selected=!null}">
-                            <li><a href="../tacheElementaire/List.xhtml"> Mes Taches </a></li>
-                            <li><a href="../grandeTache/List.xhtml"> Mes Grandes Taches </a></li>
-                            <li><a href="#"></a>waloo mzl</li> 
-                        </h:form>
-                        <h:form id="superAdmin" rendered="#{employeController.selected.superAdmin==1}">
-                            <li><a href="#">About</a></li>
-                            <li><a href="#">Services</a></li>
-                            <li><a href="#">Contact</a></li> 
-                        </h:form>
-                    </ul>
+                    <div style="float: left; margin-top: 25px;">
+                        <a class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                    </div>
+                    <!-- <ul class="nav navbar-nav">
+                                 <li><a href="#">About</a></li>
+                                 <li><a href="#">Services</a></li>
+                                 <li><a href="#">Contact</a></li> 
+                  </ul>-->
                 </div>
                 <!-- /.navbar-collapse -->
             </div>
             <!-- /.container -->
+            <!-- /.container -->
         </nav>
         <!--Sidebar-->
         <!--sidebar-wrapper -->
-        <div id="wrapper" style="margin-top:100px;">
+        <div id="wrapper">
             <div id="sidebar-wrapper">
                 <ul class="sidebar-nav">
-                    <li class="sidebar-brand"><a href="#">Start Bootstrap</a> </li>   
-                    <li><a href="#">Dashboard</a></li>                   
-                    <li><a href="#">Shortcuts</a></li>  
-                    <li><a href="#">Overview</a></li>
-                    <li><a href="#">Events</a></li> 
-                    <li><a href="#">About</a></li>                   
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <h:form id="employe" style=" alignment-adjust: auto" rendered="#{employeController.selected!=null}">
+                        <li><a href="../tacheElementaire/List.xhtml"> Mes Taches </a></li>
+                        <li><a href="../tacheElementaire/EmpTache.xhtml"> new Taches </a></li>
+                        <li><a href="../grandeTache/List.xhtml"> Mes Grandes Taches </a></li>
+                    </h:form>
+                    <h:form id="employe" style=" alignment-adjust: auto" rendered="#{employeController.admin!=null}">
+                        <li><a href="../tacheElementaire/List.xhtml"> Mes Employes </a></li>
+                        <li><a href="../projet/List.xhtml"> New projet </a></li>
+                        <li><a href="../Ruenion/List.xhtml"> Mes ruenions  </a></li>
+                    </h:form>
                 </ul>
             </div> 
-            <!--/#sidebar-wrapper -->
             <!-- Page Content -->
             <div id="page-content-wrapper">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-lg-12">
-                            <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
-                        </div>
-                        <ui:insert name="body">
-                        </ui:insert>
                     </div>
                 </div>
             </div>
-            <!-- /#page-content-wrapper -->
         </div>
-        <!--side bar-->
         <!-- Page Content -->
-        <!--        <div class="container">
-                    <div class="row">
-                                        <div class="col-lg-12 text-center">
-                                            <h1>A Bootstrap Starter Template</h1>
-                                            <p class="lead">Complete with pre-defined file paths that you won't have to change!!</p>
-                                            <ul class="list-unstyled">
-                                                <li>Bootstrap v3.3.7</li>
-                                                <li>jQuery v1.11.1</li>
-                                            </ul>
-                                        </div>
-                    </div>-->
-        <!-- /.row -->
-        <!--</div>-->
+        <div class="container">
+            <div class="row"> </div> 
+            <div class="content-wrapper">
+                <ui:insert name="body">
+                </ui:insert>
+            </div>
+        </div>  
         <!-- /.container -->
 
         <!-- jQuery Version 1.11.1 -->

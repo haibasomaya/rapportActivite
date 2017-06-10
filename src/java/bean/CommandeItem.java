@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -22,6 +23,8 @@ public class CommandeItem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ManyToOne
+    private BonCommande bonCommande;
 
     public Long getId() {
         return id;
@@ -29,6 +32,14 @@ public class CommandeItem implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public BonCommande getBonCommande() {
+        return bonCommande;
+    }
+
+    public void setBonCommande(BonCommande bonCommande) {
+        this.bonCommande = bonCommande;
     }
 
     @Override
@@ -55,5 +66,5 @@ public class CommandeItem implements Serializable {
     public String toString() {
         return "bean.CommandeItem[ id=" + id + " ]";
     }
-    
+
 }

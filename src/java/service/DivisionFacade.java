@@ -6,6 +6,10 @@
 package service;
 
 import bean.Division;
+import bean.Employe;
+import bean.Service;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,5 +32,29 @@ public class DivisionFacade extends AbstractFacade<Division> {
     public DivisionFacade() {
         super(Division.class);
     }
-    
+
+    public Division findDivisionByAdmin(Employe employe) {
+        return (Division) em.createQuery("SELECT d FROM Division d WHERE d.directeur.login='" + employe.getLogin() + "'").getSingleResult();
+    }
+
+    public List<Employe> findEmpByAdmin(Employe employe) {
+        if (employe != null) {
+            List<Employe> employes = new ArrayList();
+            Division division = findDivisionByAdmin(employe);
+            if (division != null) {
+                List<Service> services = em.createQuery("SELECT srv FROM Service srv WHERE srv.division.id=" + division.getId()).getResultList();
+                if (services.isEmpty()) {
+                    return null;
+                } else {
+                    for (Service service : services) {
+                        List<Employe> emps = em.createQuery("SELECT emp FROM Employe emp WHERE emp.service.id=" + service.getId()).getResultList();
+                        employes.addAll(emps);
+                    }
+                }
+            }
+            return employes;
+        } else {
+            return null;
+        }
+    }
 }

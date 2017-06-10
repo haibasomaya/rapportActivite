@@ -103,8 +103,9 @@ public class Service implements Serializable {
 
     @Override
     public String toString() {
-        return "Service{" + "nom=" + nom +"employes=" + employes + '}';
+        return "Service{" + "nom=" + nom + '}';
     }
 
+    
    
 }

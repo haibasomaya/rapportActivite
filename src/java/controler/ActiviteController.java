@@ -1,11 +1,13 @@
 package controler;
 
 import bean.Activite;
+import bean.Employe;
 import util.JsfUtil;
 import util.JsfUtil.PersistAction;
 import service.ActiviteFacade;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -27,26 +29,24 @@ public class ActiviteController implements Serializable {
     private service.ActiviteFacade ejbFacade;
     private List<Activite> items = null;
     private Activite selected;
+    private String nom;
+    private Date dateMin;
+    private Date dateMax;
+    private Employe employe;
+    private Long avancement;
 
     public ActiviteController() {
     }
 
-    public Activite getSelected() {
-        return selected;
+    public void search() {
+        items = ejbFacade.search(nom, employe, avancement, dateMin, dateMax);
+        initpara();
     }
-
-    public void setSelected(Activite selected) {
-        this.selected = selected;
-    }
-
-    protected void setEmbeddableKeys() {
-    }
-
-    protected void initializeEmbeddableKey() {
-    }
-
-    private ActiviteFacade getFacade() {
-        return ejbFacade;
+    private void initpara(){
+        dateMax =  null;
+        dateMin = null;
+        employe= null;
+        avancement = 0L;
     }
 
     public Activite prepareCreate() {
@@ -72,13 +72,6 @@ public class ActiviteController implements Serializable {
             selected = null; // Remove selection
             items = null;    // Invalidate list of items to trigger re-query.
         }
-    }
-
-    public List<Activite> getItems() {
-        if (items == null) {
-            items = getFacade().findAll();
-        }
-        return items;
     }
 
     private void persist(PersistAction persistAction, String successMessage) {
@@ -160,6 +153,77 @@ public class ActiviteController implements Serializable {
             }
         }
 
+    }
+
+    public Activite getSelected() {
+        if (selected == null) {
+            selected = new Activite();
+        }
+        return selected;
+    }
+
+    public void setSelected(Activite selected) {
+        this.selected = selected;
+    }
+
+    protected void setEmbeddableKeys() {
+    }
+
+    protected void initializeEmbeddableKey() {
+    }
+
+    public List<Activite> getItems() {
+        if (items == null) {
+            items = getFacade().findAll();
+        }
+        return items;
+    }
+
+    private ActiviteFacade getFacade() {
+        return ejbFacade;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public Date getDateMin() {
+        return dateMin;
+    }
+
+    public void setDateMin(Date dateMin) {
+        this.dateMin = dateMin;
+    }
+
+    public Date getDateMax() {
+        return dateMax;
+    }
+
+    public void setDateMax(Date dateMax) {
+        this.dateMax = dateMax;
+    }
+
+    public Employe getEmploye() {
+        if (employe == null) {
+            employe = new Employe();
+        }
+        return employe;
+    }
+
+    public void setEmploye(Employe employe) {
+        this.employe = employe;
+    }
+
+    public Long getAvancement() {
+        return avancement;
+    }
+
+    public void setAvancement(Long avancement) {
+        this.avancement = avancement;
     }
 
 }

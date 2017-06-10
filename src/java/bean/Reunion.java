@@ -6,10 +6,15 @@
 package bean;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -18,10 +23,15 @@ import javax.persistence.Id;
 @Entity
 public class Reunion implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @OneToMany
+    List<Employe> participants;
+    private String discreption;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date dateDebut;
+    private Employe gerant;
 
     public Long getId() {
         return id;
@@ -31,21 +41,58 @@ public class Reunion implements Serializable {
         this.id = id;
     }
 
+    public String getDiscreption() {
+        return discreption;
+    }
+
+    public void setDiscreption(String discreption) {
+        this.discreption = discreption;
+    }
+
+    public Date getDateDebut() {
+        return dateDebut;
+    }
+
+    public void setDateDebut(Date dateDebut) {
+        this.dateDebut = dateDebut;
+    }
+
+    public List<Employe> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(List<Employe> participants) {
+        this.participants = participants;
+    }
+
+    public Employe getGerant() {
+        return gerant;
+    }
+
+    public void setGerant(Employe gerant) {
+        this.gerant = gerant;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 5;
+        hash = 73 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Reunion)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        Reunion other = (Reunion) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Reunion other = (Reunion) obj;
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         return true;
@@ -53,7 +100,7 @@ public class Reunion implements Serializable {
 
     @Override
     public String toString() {
-        return "bean.Reunion[ id=" + id + " ]";
+        return "Reunion{" + "nom=" + discreption + ", dateDebut=" + dateDebut + '}';
     }
-    
+
 }

@@ -1,0 +1,164 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui">
+
+    <h:head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+        <title>El Wilaya Marrakech-Safi</title>
+        <!-- Bootstrap Core CSS -->
+        <h:outputStylesheet name="newBar/css/bootstrap.min.css"/>
+        <h:outputStylesheet name="sideBar/css/bootstrap.min.css"/>
+
+        <!-- Custom CSS -->
+        <h:outputStylesheet name="sideBar/css/simple-sidebar.css"/>
+        <h:outputStylesheet name="newBar/css/business-frontpage.css"/>
+
+        <!-- Bootstrap Core CSS -->
+
+        <!-- Custom CSS -->
+
+        <style>
+            body {
+                padding-top: 30px;
+                /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <p:growl id="growl" life="3000" />
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <div>
+                        <a href="#menu-toggle" class="btn btn-default fa fa-bars" id="menu-toggle" style="float: left; margin-top: 10px;"></a>
+                    </div>
+                    <!--<a class="navbar-brand" href="#">Start Bootstrap</a>-->
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <h:form id="adminB" style="align-items: baseline" rendered="#{employeController.selected.admin==true}">
+                        <ul class="nav navbar-nav">
+                            <li><a href="../admine/createEmp.xhtml" class="fa-user-plus">Nouveau Employe </a></li>
+                            <li><a href="../admine/CreateReunion.xhtml">Nouveau Ruenion </a></li>
+                            <li><a href="#">Nouveau Activite  </a></li>
+                            <!--<li><a href="../admine/createService.xhtml">Nouveau Service </a></li>-->
+                        </ul>
+                    </h:form>
+                    <h:form id="superB" style="align-items: baseline" rendered="#{employeController.selected.superAdmin==1}">
+                        <ul class="nav navbar-nav">
+                            <li><a href="../superAdmine/nvEmp.xhtml">Nouveau Employe </a></li>
+                            <li><a href="../superAdmine/nvRuenion.xhtml">Nouveau Ruenion </a></li>
+                            <li><a href="#">Nouveau Activite </a></li>
+                        </ul>
+                    </h:form>
+                    <h:form id="employeB" style=" alignment-adjust: auto" rendered="#{(employeController.simpleUser()==true)}">
+                        <li><a href="../tacheElementaire/EmpTache.xhtml"> new Taches </a></li>
+                    </h:form>
+                    <!--                        <li>
+                                                <a href="#">About</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Services</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Contact</a>
+                                            </li-->
+                    <div style="float:right;">
+                        <a  href="#{employeController.deconnexion()}" class="glyphicon glyphicon-off btn btn-default" style="margin-top: 10px;"/>
+                    </div>
+
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+        <!-- Page Content -->
+        <div class="container">
+            <div id="wrapper">  
+                <!-- Sidebar -->
+                <div id="sidebar-wrapper">
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-brand">
+                        </li>
+                        <h:form id="employe" style=" alignment-adjust: auto" rendered="#{employeController.simpleUser()==true}">
+                            <li><a href="../tacheElementaire/List.xhtml"> Mes Taches </a></li>
+                            <li><a href="../grandeTache/List.xhtml"> Mes Grandes Taches </a></li>
+                        </h:form>
+                        <h:form id="admin" style=" alignment-adjust: auto" rendered="#{employeController.selected.admin==true}">
+                            <li><a href="../admine/ListEmp.xhtml"> Mes Employes </a></li>
+                            <li><a href="../admine/ListTacheQot.xhtml"> Taches Employes </a></li>
+                            <li><a href="../reunion/List.xhtml"> Mes Reunions </a></li>
+                            <li><a href="../tacheElementaire/List.xhtml"> Mes Taches </a></li>
+                        </h:form>
+                        <h:form id="super" style=" alignment-adjust: auto" rendered="#{employeController.selected.superAdmin==1}">
+                            <li><a href="../employe/ListEmp.xhtml"> Listes Employes </a></li>
+                            <li><a href="../grandeTache/List.xhtml"> Listes des Grandes Taches </a></li>
+                            <li><a href="../activite/List.xhtml"> Listes des Activités </a></li>
+                        </h:form>
+
+                    </ul>
+                </div>
+                <!-- /#sidebar-wrapper -->
+                <div id="page-content-wrapper">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <h4><b:label text="Bienvenu Mr.#{employeController.selected.nom}"  style="float: right;" ></b:label></h4>
+                            <hr></hr><br></br>
+                            <ui:insert name="body">
+                            </ui:insert>
+                            <!--    <div class="col-lg-12">
+                            <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+                <!-- Footer -->
+                <footer>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <p>Copyright &copy; Your Website 2014</p>
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </footer>
+            </div>
+        </div>
+        <!-- /.container -->
+        <!-- jQuery -->
+        <h:outputScript name="newBar/js/jquery.js"/>
+        <h:outputScript name="sideBar/js/jquery.js"/>
+
+
+        <!-- Bootstrap Core JavaScript -->
+        <h:outputScript name="newBar/js/bootstrap.min.js"/>
+        <h:outputScript name="sideBar/js/bootstrap.min.js"/>
+
+
+
+        <!-- Menu Toggle Script -->
+        <script>
+            $("#menu-toggle").click(function (e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+            });
+        </script>
+
+    </h:body>
+</html>

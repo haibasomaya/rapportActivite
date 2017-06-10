@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/grTemplate.xhtml">
+        <ui:define name="title">
+            <!--<h:outputText value="CREATE NOUVEAU EMPLOYE"></h:outputText>-->
+        </ui:define>
+        <ui:define name="body">
+            <center><h3><b:label value="CREATE NOUVEAU REUNION"></b:label></h3></center>
+
+            <div class="container">
+                <h:form>
+                    <b:panel style="background-color: #1b6d85;">
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-3">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{bundle.CreateReunionLabel_dateDebut}" />
+                                    <b:datepicker value="#{reunionController.selected.dateDebut}" id="dateDebut" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>
+                                </div>
+                            </div>
+                            <div class="col-md-offset-1 col-md-3">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{bundle.CreateReunionLabel_discreption}" for="discreption" />
+                                    <p:inputText id="discreption" value="#{reunionController.selected.discreption}" title="#{bundle.CreateReunionTitle_discreption}" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-3">
+                                <div class="form-group">
+                                    <p:outputLabel value="Service" />
+                                    <b:selectOneMenu id="service" value="#{reunionController.service}" >
+                                        <f:selectItem value="#{null}" itemLabel="-select Service-"/>
+                                        <f:selectItems value="#{reunionController.services}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
+                                        <f:ajax listener="#{reunionController.listEmp}" event="change" execute="@form" render="emp" ></f:ajax>
+                                    </b:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="col-md-offset-1 col-md-3">
+                                <div class="form-group">
+                                    <p:outputLabel value="Employes"/>
+                                    <b:selectOneMenu id="emp" value="#{reunionController.emp}" >
+                                        <f:selectItem value="#{null}" itemLabel="-select employe-"/>
+                                        <f:selectItems value="#{reunionController.employes}" var="item" itemValue="#{item.login}" itemLabel="#{item.nom}"/>
+                                    </b:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-1 col-md-3">
+                                <b:commandButton actionListener="#{reunionController.ajoutEmp()}" update=":itemsList:datalist" value="ajouter" ></b:commandButton>
+                            </div>
+                        </div>
+                    </b:panel>
+                </h:form>
+            </div>
+            <p:outputLabel value="Employes"/>
+            <h:form id="itemsList">
+                <p:dataTable value="#{reunionController.emps}" var="item" id="datalist" class="data">
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Employe"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nom}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Prenom"/>
+                        </f:facet>
+                        <h:outputText value="#{item.prenom}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Service"/>
+                        </f:facet>
+                        <h:outputText value="#{item.service}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Ignorer"/>
+                        </f:facet>
+                        <b:commandButton actionListener="#{reunionController.ignorer(item)}" icon="" update="itemsList:datalist" value="Ignorer" ></b:commandButton>   
+                    </p:column>
+                </p:dataTable>
+                <b:commandButton actionListener="#{reunionController.valider()}" update="datalist" value="Create Reunion" ></b:commandButton>   
+
+            </h:form>
+            <style>
+                .data{
+                    position: relative;
+                    background-color: #FFFFFF;
+                    border-radius: 3%;
+                }
+                /* Standard syntax */
+                @keyframes example {
+                    0%   {left:-1000px;}
+
+                    50%  {left:100px;}
+                    100% { left:0px;}
+                }
+
+
+            </style>
+        </ui:define>
+    </ui:composition>
+</html>
+

@@ -14,6 +14,26 @@
         </ui:define>
 
         <ui:define name="body">
+
+            <h:form>
+                <p:panelGrid columns="6" >    
+                    <p:outputLabel value="#{bundle.CreateTacheLabel_dateMin}" for="dateMin" />
+                    <p:calendar id="dateMin" pattern="MM/dd/yyyy HH:mm:ss" value="#{tacheController.dateMin}" title="#{bundle.EditTacheTitle_dateMin}"  showOn="button"/>
+                    <p:outputLabel value="#{bundle.CreateTacheLabel_dateMax}" for="dateMax" />
+                    <p:calendar id="dateMax" pattern="MM/dd/yyyy HH:mm:ss" value="#{tacheController.dateMax}" title="#{bundle.EditTacheTitle_dateMax}" locale="de" navigator="true"  effect="fold"/>
+                    <p:outputLabel value="#{bundle.CreateTacheLabel_nom}" for="nom" />
+                    <p:inputText id="nom" value="#{tacheController.nom}" title="#{bundle.CreateTacheTitle_nom}" />
+                </p:panelGrid>
+                <p:commandButton actionListener="#{tacheController.search()}" value="SEARCH" update=":TacheListForm:datalist" />
+                <p:commandButton value="#{bundle.Cancel}" onclick="TacheCreateDialog.hide()"/>
+            </h:form>
+            <h:form>
+                <p:notificationBar position="top" effect="fade" styleClass="top" widgetVar="bar">
+                    <h:outputText value="hello!" ></h:outputText>
+                </p:notificationBar>
+                <p:commandButton value="Show" onclick="PF('bar').show()" type="button" icon="ui-icon-arrow-1-s"/>
+                <p:commandButton value="Hide" onclick="PF('bar').hide()" type="button" icon="ui-icon-arrow-1-n"/>
+            </h:form>
             <h:form id="TacheListForm">
                 <p:panel header="#{bundle.ListTacheTitle}">
                     <p:dataTable id="datalist" value="#{tacheController.items}" var="item"

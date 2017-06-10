@@ -6,9 +6,13 @@
 package service;
 
 import bean.Activite;
+import bean.Employe;
+import java.util.Date;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import util.SearchUtil;
 
 /**
  *
@@ -28,5 +32,30 @@ public class ActiviteFacade extends AbstractFacade<Activite> {
     public ActiviteFacade() {
         super(Activite.class);
     }
-    
+
+    public List<Activite> activiteEnCours() {
+        return em.createQuery("SELECT ect FROM Activite act WHERE act.avancement <= 0").getResultList();
+    }
+
+    public List<Activite> search(String nom, Employe employe, Long avancement, Date Debut, Date Fin) {
+        String requette = "SELECT act FROM Activite act WHERE 1=1";
+        if (nom != null) {
+            requette += SearchUtil.addConstraint("act", "nom", "=", nom);
+        }
+        if (employe != null) {
+            requette += SearchUtil.addConstraint("act", "employe", "=", employe);
+        }
+
+        if (avancement != null) {
+            requette += " and avancement = " + avancement;
+        }
+
+        if (Debut != null) {
+            requette += SearchUtil.addConstraintDate("act", "dateDebut", ">=", Debut);
+        }
+        if (Fin != null) {
+            requette += SearchUtil.addConstraintDate("act", "dateFin", "<=", Fin);
+        }
+        return em.createQuery(requette).getResultList();
+    }
 }

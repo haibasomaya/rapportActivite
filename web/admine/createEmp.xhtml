@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui">
+
+    <ui:composition template="/templates/grTemplate.xhtml">
+        <ui:define name="title">
+            <!--<h:outputText value="CREATE NOUVEAU EMPLOYE"></h:outputText>-->
+        </ui:define>
+        <ui:define name="body">
+            <center><h3><b:label value="CREATE NOUVEAU EMPLOYE"></b:label></h3></center>
+            <div class="container">
+                <h:form id="CreateEmpForm" >
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="Nom" for="nom" />
+                                <p:inputText id="nom" value="#{employeController.emp.nom}" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-offset-1 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="Prenom" for="prenom" />
+                                <p:inputText id="prenom" value="#{employeController.emp.prenom}" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-3">
+                            <div>
+                                <p:outputLabel value="Login" for="login" />
+                                <p:inputText id="login" value="#{employeController.emp.login}" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-offset-1 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="CIN" for="cin" />
+                                <p:inputText id="cin" value="#{employeController.emp.cin}" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-3">
+                                <div>
+                                    <p:outputLabel value="Bureau" for="numBureau" />
+                                    <p:inputText id="numBureau" value="#{employeController.emp.numBureau}" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="col-md-offset-1 col-md-3">
+                                <div class="form-group">
+                                    <p:outputLabel value="Post" for="numPost" />
+                                    <p:inputText id="numPost" value="#{employeController.emp.numPost}" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-3">
+                                <div>
+                                    <p:outputLabel value="Telophone" for="tel" />
+                                    <span class="input-group-addon glyphicon glyphicon-earphone"></span>
+                                    <p:inputText id="tel" value="#{employeController.emp.tel}" class="form-control"  />
+                                    <!--<input type="text" class="form-control" placeholder="Téléphone" aria-describedby="basic-addon1"/>-->
+                                </div>
+                            </div>
+                            <div class="col-md-offset-1 col-md-3">
+                                <div class="input-group-addon-group">
+                                    <p:outputLabel value="E-mail" for="email" />
+                                    <span class="input-group-addon glyphicon glyphicon-globe"></span>
+                                    <p:inputText id="email" value="#{employeController.emp.email}" class="form-control"/>
+                                    <!--<input type="text" class="form-control" placeholder="Adresse" aria-describedby="basic-addon1"/>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-3">
+                                <div>
+                                    <p:outputLabel value="Fonction" for="fonction" />
+                                    <p:inputText id="fonction" value="#{employeController.emp.fonction}" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-offset-1 col-md-3">
+                                <div class="form-group">
+                                    <p:outputLabel value="Service" />
+                                    <b:selectOneMenu id="service" value="Service" >
+                                        <f:selectItem value="#{null}" itemLabel="-select Service-"/>
+                                        <f:selectItems value="#{employeController.services}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
+                                    </b:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-offset-5 col-md-1">
+                            <center><b:commandButton actionListener="#{employeController.creationEmp()}" value="Enregistrer" class="btn btn-primary" style="float: inside;" /></center>
+                        </div>
+                    </div>
+                </h:form> 
+            </div>
+        </ui:define>
+
+    </ui:composition>
+</html>
+

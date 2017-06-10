@@ -12,21 +12,10 @@
             <h:form id="EmployeEditForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{employeController.selected != null}">
-                        <p:outputLabel value="#{bundle.EditEmployeLabel_essay}" for="essay" />
-                        <p:inputText id="essay" value="#{employeController.selected.essay}" title="#{bundle.EditEmployeTitle_essay}" />
                         <p:outputLabel value="#{bundle.EditEmployeLabel_nom}" for="nom" />
                         <p:inputText id="nom" value="#{employeController.selected.nom}" title="#{bundle.EditEmployeTitle_nom}" />
                         <p:outputLabel value="#{bundle.EditEmployeLabel_prenom}" for="prenom" />
                         <p:inputText id="prenom" value="#{employeController.selected.prenom}" title="#{bundle.EditEmployeTitle_prenom}" />
-                        <p:outputLabel value="#{bundle.EditEmployeLabel_bloquer}" for="bloquer" />
-                        <p:inputText id="bloquer" value="#{employeController.selected.bloquer}" title="#{bundle.EditEmployeTitle_bloquer}" />
-                        <p:outputLabel value="#{bundle.EditEmployeLabel_grandeTache}" for="grandeTache" />
-                        <p:selectOneMenu id="grandeTache" value="#{employeController.selected.grandeTache}" >
-                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
-                            <f:selectItems value="#{grandeTacheController.itemsAvailableSelectOne}"
-                                           var="grandeTacheItem"
-                                           itemValue="#{grandeTacheItem}"/>
-                        </p:selectOneMenu>
                         <p:outputLabel value="#{bundle.EditEmployeLabel_login}" for="login" />
                         <p:inputText id="login" value="#{employeController.selected.login}" title="#{bundle.EditEmployeTitle_login}" />
                         <p:outputLabel value="#{bundle.EditEmployeLabel_cin}" for="cin" />
@@ -51,7 +40,7 @@
                         <p:outputLabel value="#{bundle.EditEmployeLabel_fonction}" for="fonction" />
                         <p:inputText id="fonction" value="#{employeController.selected.fonction}" title="#{bundle.EditEmployeTitle_fonction}" />
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{employeController.update}" value="#{bundle.Save}" update="display,:EmployeListForm:datalist,:growl" oncomplete="handleSubmit(args, 'EmployeEditDialog');"/>
+                    <p:commandButton actionListener="#{employeController.update}" value="#{bundle.Save}" update="display,:EmployeListForm:datalist" oncomplete="handleSubmit(args, 'EmployeEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="EmployeEditDialog.hide()"/>
                 </h:panelGroup>
             </h:form>

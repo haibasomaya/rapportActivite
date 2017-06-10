@@ -7,11 +7,13 @@ package bean;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
@@ -34,14 +36,16 @@ public class Activite implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dateFin;
     @OneToOne
-    private Employe employe;
+    private Employe gerant;
+    @OneToMany(mappedBy = "activite")
+    private List<GrandeTache> grandeTaches;
 
-    public Employe getEmploye() {
-        return employe;
+    public Employe getGerant() {
+        return gerant;
     }
 
-    public void setEmploye(Employe employe) {
-        this.employe = employe;
+    public void setGerant(Employe gerant) {
+        this.gerant = gerant;
     }
 
     public Long getId() {
@@ -90,6 +94,14 @@ public class Activite implements Serializable {
 
     public void setDateFin(Date dateFin) {
         this.dateFin = dateFin;
+    }
+
+    public List<GrandeTache> getGrandeTaches() {
+        return grandeTaches;
+    }
+
+    public void setGrandeTaches(List<GrandeTache> grandeTaches) {
+        this.grandeTaches = grandeTaches;
     }
 
     @Override
