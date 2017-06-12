@@ -14,6 +14,22 @@
                     <p:panelGrid columns="2" rendered="#{bonCommandeController.selected != null}">
                         <h:outputText value="#{bundle.ViewBonCommandeLabel_id}"/>
                         <h:outputText value="#{bonCommandeController.selected.id}" title="#{bundle.ViewBonCommandeTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewBonCommandeLabel_nom}"/>
+                        <h:outputText value="#{bonCommandeController.selected.nom}" title="#{bundle.ViewBonCommandeTitle_nom}"/>
+                        <h:outputText value="#{bundle.ViewBonCommandeLabel_avancement}"/>
+                        <h:outputText value="#{bonCommandeController.selected.avancement}" title="#{bundle.ViewBonCommandeTitle_avancement}"/>
+                        <h:outputText value="#{bundle.ViewBonCommandeLabel_degrer}"/>
+                        <h:outputText value="#{bonCommandeController.selected.degrer}" title="#{bundle.ViewBonCommandeTitle_degrer}"/>
+                        <h:outputText value="#{bundle.ViewBonCommandeLabel_dateDebut}"/>
+                        <h:outputText value="#{bonCommandeController.selected.dateDebut}" title="#{bundle.ViewBonCommandeTitle_dateDebut}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewBonCommandeLabel_dateFin}"/>
+                        <h:outputText value="#{bonCommandeController.selected.dateFin}" title="#{bundle.ViewBonCommandeTitle_dateFin}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewBonCommandeLabel_gerant}"/>
+                        <h:outputText value="#{bonCommandeController.selected.gerant}" title="#{bundle.ViewBonCommandeTitle_gerant}"/>
                     </p:panelGrid>
                     <p:commandButton value="#{bundle.Close}" onclick="BonCommandeViewDialog.hide()"/>
                 </h:panelGroup>

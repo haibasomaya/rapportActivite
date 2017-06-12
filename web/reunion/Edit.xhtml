@@ -14,10 +14,24 @@
                     <p:panelGrid columns="2" rendered="#{reunionController.selected != null}">
                         <p:outputLabel value="#{bundle.EditReunionLabel_id}" for="id" />
                         <p:inputText id="id" value="#{reunionController.selected.id}" title="#{bundle.EditReunionTitle_id}" />
+                        <p:outputLabel value="#{bundle.EditReunionLabel_activite}" for="activite" />
+                        <p:selectOneMenu id="activite" value="#{reunionController.selected.activite}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{activiteController.itemsAvailableSelectOne}"
+                                           var="activiteItem"
+                                           itemValue="#{activiteItem}"/>
+                        </p:selectOneMenu>
                         <p:outputLabel value="#{bundle.EditReunionLabel_discreption}" for="discreption" />
                         <p:inputText id="discreption" value="#{reunionController.selected.discreption}" title="#{bundle.EditReunionTitle_discreption}" />
                         <p:outputLabel value="#{bundle.EditReunionLabel_dateDebut}" for="dateDebut" />
                         <p:calendar id="dateDebut" pattern="MM/dd/yyyy HH:mm:ss" value="#{reunionController.selected.dateDebut}" title="#{bundle.EditReunionTitle_dateDebut}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.EditReunionLabel_gerant}" for="gerant" />
+                        <p:selectOneMenu id="gerant" value="#{reunionController.selected.gerant}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{employeController.itemsAvailableSelectOne}"
+                                           var="gerantItem"
+                                           itemValue="#{gerantItem}"/>
+                        </p:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{reunionController.update}" value="#{bundle.Save}" update="display,:ReunionListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ReunionEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="ReunionEditDialog.hide()"/>

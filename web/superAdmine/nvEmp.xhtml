@@ -19,13 +19,13 @@
                         <div class="col-md-offset-2 col-md-3">
                             <div class="form-group">
                                 <p:outputLabel value="Nom" for="nom" />
-                                <p:inputText id="nom" value="#{employeController.emp.nom}" class="form-control" />
+                                <p:inputText id="nom" value="#{employeController.selected.nom}" class="form-control" />
                             </div>
                         </div>
                         <div class="col-md-offset-1 col-md-3">
                             <div class="form-group">
                                 <p:outputLabel value="Prenom" for="prenom" />
-                                <p:inputText id="prenom" value="#{employeController.emp.prenom}" class="form-control" />
+                                <p:inputText id="prenom" value="#{employeControselectedr.emp.prenom}" class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -33,26 +33,26 @@
                         <div class="col-md-offset-2 col-md-3">
                             <div>
                                 <p:outputLabel value="Login" for="login" />
-                                <p:inputText id="login" value="#{employeController.emp.login}" class="form-control" />
+                                <p:inputText id="login" value="#{employeCselectedroller.emp.login}" class="form-control" />
                             </div>
                         </div>
                         <div class="col-md-offset-1 col-md-3">
                             <div class="form-group">
                                 <p:outputLabel value="CIN" for="cin" />
-                                <p:inputText id="cin" value="#{employeController.emp.cin}" class="form-control"/>
+                                <p:inputText id="cin" value="#{employeCselectedroller.emp.cin}" class="form-control"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-offset-2 col-md-3">
                                 <div>
                                     <p:outputLabel value="Bureau" for="numBureau" />
-                                    <p:inputText id="numBureau" value="#{employeController.emp.numBureau}" class="form-control"/>
+                                    <p:inputText id="numBureau" value="selectedmployeController.emp.numBureau}" class="form-control"/>
                                 </div>
                             </div>
                             <div class="col-md-offset-1 col-md-3">
                                 <div class="form-group">
                                     <p:outputLabel value="Post" for="numPost" />
-                                    <p:inputText id="numPost" value="#{employeController.emp.numPost}" class="form-control" />
+                                    <p:inputText id="numPost" value="#{employeControselectedr.emp.numPost}" class="form-control" />
                                 </div>
                             </div>
                         </div>
@@ -61,14 +61,14 @@
                                 <div>
                                     <p:outputLabel value="Telophone" for="tel" />
                                     <span class="input-group-addon glyphicon glyphicon-earphone"></span>
-                                    <p:inputText id="tel" value="#{employeController.emp.tel}" class="form-control"  />
+                                    <p:inputText id="tel" value="#{employeController.selected.tel}" class="form-control"  />
                                 </div>
                             </div>
                             <div class="col-md-offset-1 col-md-3">
                                 <div class="input-group-addon-group">
                                     <p:outputLabel value="E-mail" for="email" />
                                     <span class="input-group-addon glyphicon glyphicon-globe"></span>
-                                    <p:inputText id="email" value="#{employeController.emp.email}" class="form-control"/>
+                                    <p:inputText id="email" value="#{employeControselectedr.emp.email}" class="form-control"/>
                                     <!--<input type="text" class="form-control" placeholder="Adresse" aria-describedby="basic-addon1"/>-->
                                 </div>
                             </div>
@@ -77,7 +77,7 @@
                             <div class="col-md-offset-2 col-md-3">
                                 <div>
                                     <p:outputLabel value="Fonction" for="fonction" />
-                                    <p:inputText id="fonction" value="#{employeController.emp.fonction}" class="form-control" />
+                                    <p:inputText id="fonction" vaselected="#{employeController.emp.fonction}" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-offset-1 col-md-3">
@@ -93,7 +93,7 @@
                             <div class="col-md-offset-2 col-md-3">
                                 <div class="form-group">
                                     <p:outputLabel value="Service" />
-                                    <b:selectOneMenu id="service" value="#{employeController.emp.service}" >
+                                    <b:selectOneMenu id="service" value="#{employeCselectedroller.emp.service}" >
                                         <f:selectItem value="#{null}" itemLabel="-select Service-"/>
                                         <f:selectItems value="#{employeController.services}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
                                     </b:selectOneMenu>

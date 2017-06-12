@@ -6,30 +6,32 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:b="http://bootsfaces.net/ui">
-    <h:head>
-        <title>Creation des taches quotidiennes</title>
-    </h:head>
+
     <ui:composition template="/templates/grTemplate.xhtml">
 
         <ui:define name="body">
-            <h:form>
-                <!--<h1><p:outputText value="Creation des taches quotidiennes"/></h1>-->
-                <b:panel style="background-color: #1b6d85;">
+            <h:form id="form">
+                <b:panel  style="background-color: #adadad;">
                     <div class="row">
                         <div class="col-md-offset-2 col-md-3">
                             <h4> <h:outputLabel value="Date de la Tache"/> </h4>
                             <b:datepicker id="dateTache" placeholder="MM/dd/yyyy HH:mm:ss"  value="#{tacheElementaireController.selected.dateTache}" show-button-panel="button" ></b:datepicker>
                         </div>
-                        <div class="col-md-offset-2 col-md-3">
-                            <h4> <h:outputLabel value="Date de la Tache"/> </h4>
-                            <b:inputText value="#{tacheElementaireController.nom}" placeholder="auther" title="Nom"/>
+                        <div id="autreForm" class="col-md-offset-2 col-md-3">
+                            <h4> <h:outputLabel id="textLabel" value="nv nom Tache" rendered="#{tacheElementaireController.selected.nom=='autre'}"/> </h4>
+                            <b:inputText id="textInput" value="#{tacheElementaireController.nom}" rendered="#{tacheElementaireController.selected.nom=='autre'}" placeholder="auther" title="Nom"/>
                         </div>
                         <div class="col-md-offset-1 col-md-3">
-                            <h4> <h:outputLabel value="Nom se la Tache" for="nom" /> </h4>
+                            <h4> <h:outputLabel value="Nom de la Tache" for="nom" /> </h4>
                             <b:selectOneMenu id="nom" value="#{tacheElementaireController.selected.nom}" title="Nom" >
                                 <f:selectItem itemValue="#{null}" itemLabel="--select name tache--"/>
-                                <f:selectItems value="#{tacheElementaireController.names}"/>
-                            </b:selectOneMenu>      
+                                <!--<f:selectItems value="# {tacheElementaireController.names}"/>-->
+                                <f:selectItem itemValue="autre" itemLabel="autre"/>
+                                <!--<p:ajax process="nom" update=":form:textLabel,:form:textInput"/> -->
+                                <f:ajax event="change" render="nom"></f:ajax>
+
+                            </b:selectOneMenu> 
+
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-3">

@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author dell
+ * @author somaya
  */
 @Stateless
 public class BonCommandeFacade extends AbstractFacade<BonCommande> {

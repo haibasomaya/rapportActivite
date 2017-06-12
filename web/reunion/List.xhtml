@@ -4,10 +4,9 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:b="http://bootsfaces.net/ui">
+      xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition template="/templates/grTemplate.xhtml">
+    <ui:composition template="/template.xhtml">
 
 
         <ui:define name="title">
@@ -16,56 +15,63 @@
 
         <ui:define name="body">
             <h:form id="ReunionListForm">
-                <b:dataTable id="datalist" value="#{tacheElementaireController.items}" var="item"
-                             selectionMode="single">
+                <p:panel header="#{bundle.ListReunionTitle}">
+                    <p:dataTable id="datalist" value="#{reunionController.items}" var="item"
+                                 selectionMode="single" selection="#{reunionController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
 
-                    <b:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListReunionTitle_id}"/>
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListReunionTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListReunionTitle_activite}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.activite}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListReunionTitle_discreption}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.discreption}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListReunionTitle_dateDebut}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dateDebut}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListReunionTitle_gerant}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.gerant}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{reunionController.prepareCreate}" update=":ReunionCreateForm" oncomplete="PF('ReunionCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":ReunionViewForm" oncomplete="PF('ReunionViewDialog').show()" disabled="#{empty reunionController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":ReunionEditForm" oncomplete="PF('ReunionEditDialog').show()" disabled="#{empty reunionController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{reunionController.destroy}" update=":growl,datalist" disabled="#{empty reunionController.selected}"/>
                         </f:facet>
-                        <h:outputText value="#{item.id}"/>
-                    </b:column>
-                    <b:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListReunionTitle_discreption}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.discreption}"/>
-                    </b:column>
-                    <b:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.ListReunionTitle_dateDebut}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.dateDebut}">
-                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                        </h:outputText>
-                    </b:column>
-                    <b:column>
-                        <f:facet name="header">
-                            <h:outputText value="Gestion"/>
-                        </f:facet>
-                        <b:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{reunionController.destroy}" update=":growl,datalist" disabled="#{empty reunionController.selected}"/>
-                    </b:column>
-                </b:dataTable>
+                    </p:dataTable>
+                </p:panel>
             </h:form>
 
+            <ui:include src="Create.xhtml"/>
             <ui:include src="Edit.xhtml"/>
             <ui:include src="View.xhtml"/>
-            <style>
-                .data{
-                    position: relative;
-                    background-color: #FFFFFF;
-                    border-radius: 3%;
-                }
-                /* Standard syntax */
-                @keyframes example {
-                    0%   {left:-1000px;}
-
-                    50%  {left:100px;}
-                    100% { left:0px;}
-                }
-
-
-            </style>
         </ui:define>
     </ui:composition>
 

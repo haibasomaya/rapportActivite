@@ -12,8 +12,26 @@
             <h:form id="MarcheViewForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{marcheController.selected != null}">
+                        <h:outputText value="#{bundle.ViewMarcheLabel_fournisseurs}"/>
+                        <h:outputText value="#{marcheController.selected.fournisseurs}" title="#{bundle.ViewMarcheTitle_fournisseurs}"/>
                         <h:outputText value="#{bundle.ViewMarcheLabel_id}"/>
                         <h:outputText value="#{marcheController.selected.id}" title="#{bundle.ViewMarcheTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewMarcheLabel_nom}"/>
+                        <h:outputText value="#{marcheController.selected.nom}" title="#{bundle.ViewMarcheTitle_nom}"/>
+                        <h:outputText value="#{bundle.ViewMarcheLabel_avancement}"/>
+                        <h:outputText value="#{marcheController.selected.avancement}" title="#{bundle.ViewMarcheTitle_avancement}"/>
+                        <h:outputText value="#{bundle.ViewMarcheLabel_degrer}"/>
+                        <h:outputText value="#{marcheController.selected.degrer}" title="#{bundle.ViewMarcheTitle_degrer}"/>
+                        <h:outputText value="#{bundle.ViewMarcheLabel_dateDebut}"/>
+                        <h:outputText value="#{marcheController.selected.dateDebut}" title="#{bundle.ViewMarcheTitle_dateDebut}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewMarcheLabel_dateFin}"/>
+                        <h:outputText value="#{marcheController.selected.dateFin}" title="#{bundle.ViewMarcheTitle_dateFin}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewMarcheLabel_gerant}"/>
+                        <h:outputText value="#{marcheController.selected.gerant}" title="#{bundle.ViewMarcheTitle_gerant}"/>
                     </p:panelGrid>
                     <p:commandButton value="#{bundle.Close}" onclick="MarcheViewDialog.hide()"/>
                 </h:panelGroup>

@@ -85,14 +85,15 @@ public class ReunionController implements Serializable {
     }
 
     private void initAdmine() {
-        if (employe != null && employe.isAdmin()) {
+        if (employe != null && (employe.isAdmin())) {
             division = divisionFacade.findDivisionByAdmin(employe);
             services = serviceFacade.findByDivision(division);
             items = ejbFacade.findByGerant(employe);
         } else {
             division = new Division();
             services = new ArrayList();
-            items = ejbFacade.findAll();
+            items = ejbFacade.findByGerant(employe);
+            System.out.println("haaaaa a5eeer fct dyal rn par employe ----->" + items);
         }
     }
 

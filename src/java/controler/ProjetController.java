@@ -1,7 +1,7 @@
 package controler;
 
 import bean.Projet;
-import util.JsfUtil;
+import controler.util.JsfUtil;
 import util.JsfUtil.PersistAction;
 import service.ProjetFacade;
 
@@ -19,12 +19,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
+
 @Named("projetController")
 @SessionScoped
 public class ProjetController implements Serializable {
 
-    @EJB
-    private service.ProjetFacade ejbFacade;
+
+    @EJB private service.ProjetFacade ejbFacade;
     private List<Projet> items = null;
     private Projet selected;
 
@@ -57,7 +58,7 @@ public class ProjetController implements Serializable {
 
     public void create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("ProjetCreated"));
-        if (!JsfUtil.isValidationFailed()) {
+        if (!util.JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
@@ -68,7 +69,7 @@ public class ProjetController implements Serializable {
 
     public void destroy() {
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("ProjetDeleted"));
-        if (!JsfUtil.isValidationFailed()) {
+        if (!util.JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
             items = null;    // Invalidate list of items to trigger re-query.
         }
@@ -121,7 +122,7 @@ public class ProjetController implements Serializable {
         return getFacade().findAll();
     }
 
-    @FacesConverter(forClass = Projet.class)
+    @FacesConverter(forClass=Projet.class)
     public static class ProjetControllerConverter implements Converter {
 
         @Override
@@ -129,7 +130,7 @@ public class ProjetController implements Serializable {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            ProjetController controller = (ProjetController) facesContext.getApplication().getELResolver().
+            ProjetController controller = (ProjetController)facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "projetController");
             return controller.getProjet(getKey(value));
         }

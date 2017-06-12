@@ -39,14 +39,8 @@ public class Activite implements Serializable {
     private Employe gerant;
     @OneToMany(mappedBy = "activite")
     private List<GrandeTache> grandeTaches;
-
-    public Employe getGerant() {
-        return gerant;
-    }
-
-    public void setGerant(Employe gerant) {
-        this.gerant = gerant;
-    }
+    @OneToMany(mappedBy = "activite")
+    private List<Reunion> reunions;
 
     public Long getId() {
         return id;
@@ -102,6 +96,22 @@ public class Activite implements Serializable {
 
     public void setGrandeTaches(List<GrandeTache> grandeTaches) {
         this.grandeTaches = grandeTaches;
+    }
+
+    public Employe getGerant() {
+        return gerant;
+    }
+
+    public void setGerant(Employe gerant) {
+        this.gerant = gerant;
+    }
+
+    public List<Reunion> getReunions() {
+        return reunions;
+    }
+
+    public void setReunions(List<Reunion> reunions) {
+        this.reunions = reunions;
     }
 
     @Override

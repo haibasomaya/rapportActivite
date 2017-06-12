@@ -13,7 +13,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -31,10 +33,24 @@ public class Reunion implements Serializable {
     private String discreption;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dateDebut;
+    @OneToOne
     private Employe gerant;
+    @ManyToOne
+    private Activite activite;
 
     public Long getId() {
         return id;
+    }
+
+    public Activite getActivite() {
+        if (activite == null) {
+            activite = new Activite();
+        }
+        return activite;
+    }
+
+    public void setActivite(Activite activite) {
+        this.activite = activite;
     }
 
     public void setId(Long id) {

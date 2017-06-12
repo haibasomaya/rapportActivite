@@ -13,27 +13,27 @@
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{employeController.selected != null}">
                         <h:outputText value="#{bundle.ViewEmployeLabel_nom}"/>
-                        <h:outputText value="#{employeController.selected.nom}" title="#{bundle.ViewEmployeTitle_nom}"/>
+                        <h:outputText value="#{employeController.employe.nom}" title="#{bundle.ViewEmployeTitle_nom}"/>
                         <h:outputText value="#{bundle.ViewEmployeLabel_prenom}"/>
-                        <h:outputText value="#{employeController.selected.prenom}" title="#{bundle.ViewEmployeTitle_prenom}"/>
+                        <h:outputText value="#{employeController.semployeprenom}" title="#{bundle.ViewEmployeTitle_prenom}"/>
                         <h:outputText value="#{bundle.ViewEmployeLabel_login}"/>
-                        <h:outputText value="#{employeController.selected.login}" title="#{bundle.ViewEmployeTitle_login}"/>
+                        <h:outputText value="#{employeController.employe.login}" title="#{bundle.ViewEmployeTitle_login}"/>
                         <h:outputText value="#{bundle.ViewEmployeLabel_cin}"/>
-                        <h:outputText value="#{employeController.selected.cin}" title="#{bundle.ViewEmployeTitle_cin}"/>
+                        <h:outputText value="#{employeController.seemployein}" title="#{bundle.ViewEmployeTitle_cin}"/>
                         <h:outputText value="#{bundle.ViewEmployeLabel_tel}"/>
-                        <h:outputText value="#{employeController.selected.tel}" title="#{bundle.ViewEmployeTitle_tel}"/>
+                        <h:outputText value="#{employeController.selemployel}" title="#{bundle.ViewEmployeTitle_tel}"/>
                         <h:outputText value="#{bundle.ViewEmployeLabel_password}"/>
                         <h:outputText value="#{employeController.selected.password}" title="#{bundle.ViewEmployeTitle_password}"/>
                         <h:outputText value="#{bundle.ViewEmployeLabel_email}"/>
-                        <h:outputText value="#{employeController.selected.email}" title="#{bundle.ViewEmployeTitle_email}"/>
+                        <h:outputText value="#{employeController.selecemployel}" title="#{bundle.ViewEmployeTitle_email}"/>
                         <h:outputText value="#{bundle.ViewEmployeLabel_numPost}"/>
-                        <h:outputText value="#{employeController.selected.numPost}" title="#{bundle.ViewEmployeTitle_numPost}"/>
+                        <h:outputText value="#{employeController.seemployeumPost}" title="#{bundle.ViewEmployeTitle_numPost}"/>
                         <h:outputText value="#{bundle.ViewEmployeLabel_numBureau}"/>
-                        <h:outputText value="#{employeController.selected.numBureau}" title="#{bundle.ViewEmployeTitle_numBureau}"/>
+                        <h:outputText value="#{employeController.semployenumBureau}" title="#{bundle.ViewEmployeTitle_numBureau}"/>
                         <h:outputText value="#{bundle.ViewEmployeLabel_service}"/>
-                        <h:outputText value="#{employeController.selected.service}" title="#{bundle.ViewEmployeTitle_service}"/>
+                        <h:outputText value="#{employeController.employe.service}" title="#{bundle.ViewEmployeTitle_service}"/>
                         <h:outputText value="#{bundle.ViewEmployeLabel_fonction}"/>
-                        <h:outputText value="#{employeController.selected.fonction}" title="#{bundle.ViewEmployeTitle_fonction}"/>
+                        <h:outputText value="#{employeController.selected.employe}" title="#{bundle.ViewEmployeTitle_fonction}"/>
                     </p:panelGrid>
                     <p:commandButton value="#{bundle.Close}" onclick="EmployeViewDialog.hide()"/>
                 </h:panelGroup>

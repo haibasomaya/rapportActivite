@@ -6,10 +6,9 @@
 package bean;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -18,5 +17,29 @@ import javax.persistence.Id;
 @Entity
 public class Marche extends Activite implements Serializable {
 
-  
+    private List<String> fournisseurs;
+    @OneToMany
+    private List<Division> divisions;
+
+    public List<String> getFournisseurs() {
+        return fournisseurs;
+    }
+
+    public void setFournisseurs(List<String> fournisseurs) {
+        this.fournisseurs = fournisseurs;
+    }
+
+    public List<Division> getDivisions() {
+        return divisions;
+    }
+
+    public void setDivisions(List<Division> divisions) {
+        this.divisions = divisions;
+    }
+
+    @Override
+    public String toString() {
+        return "Marche{" + "fournisseurs=" + fournisseurs + '}';
+    }
+
 }

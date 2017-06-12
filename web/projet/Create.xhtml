@@ -12,8 +12,28 @@
             <h:form id="ProjetCreateForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{projetController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateProjetLabel_discription}" for="discription" />
+                        <p:inputText id="discription" value="#{projetController.selected.discription}" title="#{bundle.CreateProjetTitle_discription}" />
+                        <p:outputLabel value="#{bundle.CreateProjetLabel_locale}" for="locale" />
+                        <p:inputText id="locale" value="#{projetController.selected.locale}" title="#{bundle.CreateProjetTitle_locale}" />
                         <p:outputLabel value="#{bundle.CreateProjetLabel_id}" for="id" />
                         <p:inputText id="id" value="#{projetController.selected.id}" title="#{bundle.CreateProjetTitle_id}" />
+                        <p:outputLabel value="#{bundle.CreateProjetLabel_nom}" for="nom" />
+                        <p:inputText id="nom" value="#{projetController.selected.nom}" title="#{bundle.CreateProjetTitle_nom}" />
+                        <p:outputLabel value="#{bundle.CreateProjetLabel_avancement}" for="avancement" />
+                        <p:inputText id="avancement" value="#{projetController.selected.avancement}" title="#{bundle.CreateProjetTitle_avancement}" />
+                        <p:outputLabel value="#{bundle.CreateProjetLabel_degrer}" for="degrer" />
+                        <p:inputText id="degrer" value="#{projetController.selected.degrer}" title="#{bundle.CreateProjetTitle_degrer}" />
+                        <p:outputLabel value="#{bundle.CreateProjetLabel_dateDebut}" for="dateDebut" />
+                        <p:calendar id="dateDebut" pattern="MM/dd/yyyy HH:mm:ss" value="#{projetController.selected.dateDebut}" title="#{bundle.EditProjetTitle_dateDebut}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateProjetLabel_dateFin}" for="dateFin" />
+                        <p:calendar id="dateFin" pattern="MM/dd/yyyy HH:mm:ss" value="#{projetController.selected.dateFin}" title="#{bundle.EditProjetTitle_dateFin}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateProjetLabel_gerant}" for="gerant" />
+                        <p:selectOneMenu id="gerant" value="#{projetController.selected.gerant}" >
+                            <f:selectItems value="#{employeController.itemsAvailableSelectOne}"
+                                           var="gerantItem"
+                                           itemValue="#{gerantItem}"/>
+                        </p:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{projetController.create}" value="#{bundle.Save}" update="display,:ProjetListForm:datalist,:growl" oncomplete="handleSubmit(args,'ProjetCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="ProjetCreateDialog.hide()"/>

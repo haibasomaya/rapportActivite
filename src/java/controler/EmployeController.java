@@ -30,8 +30,8 @@ import service.ServiceFacade;
 @SessionScoped
 public class EmployeController implements Serializable {
 
-    private Employe emp;
     private Employe selected;
+    private Employe employe;
     private String login;
     private String password;
     private String nom;
@@ -41,6 +41,7 @@ public class EmployeController implements Serializable {
     private Division division;
     private List<Employe> items = null;
     private List<Employe> employes = null;
+    private List<Employe> admines = null;
     private List<Service> services = null;
     private List<Division> divisions = null;
     @EJB
@@ -61,7 +62,7 @@ public class EmployeController implements Serializable {
         } else {
             items = ejbFacade.findAll();
         }
-        System.out.println("les items--------> " +items);
+        System.out.println("les items--------> " + items);
     }
 
     public void listEmp() {
@@ -77,7 +78,7 @@ public class EmployeController implements Serializable {
     }
 
     public boolean simpleUser() {
-        if (!selected.isAdmin() && selected.getSuperAdmin() == 0) {
+        if (!employe.isAdmin() && employe.getSuperAdmin() == 0) {
             return true;
         } else {
             return false;
@@ -107,8 +108,8 @@ public class EmployeController implements Serializable {
     }
 
     private void findByDivision() {
-        if (selected.isAdmin()) {
-            division = divisionFacade.findDivisionByAdmin(selected);
+        if (employe.isAdmin()) {
+            division = divisionFacade.findDivisionByAdmin(employe);
             services = serviceFacade.findByDivision(division);
         } else {
             services = new ArrayList<>();
@@ -116,9 +117,9 @@ public class EmployeController implements Serializable {
     }
 
     public String deconnexion() {
-        int res = ejbFacade.deconexion(selected);
+        int res = ejbFacade.deconexion(employe);
         if (res < 0) {
-            System.out.println("selected est --------------> NULL");
+            System.out.println("employe est --------------> NULL");
             return null;
         } else {
             return "../pageAccueil/loginV.xhtml";
@@ -137,17 +138,17 @@ public class EmployeController implements Serializable {
         } else if (res == 0) {
             System.out.println(" ereure Inconuu");
         } else if (res > 0) {
-            selected = util.SessionUtil.getConnectedUser();
+            employe = util.SessionUtil.getConnectedUser();
             return goProfil();
         }
         return null;
     }
 
     private String goProfil() throws IOException {
-        if (selected.isAdmin()) {
+        if (employe.isAdmin()) {
             util.SessionUtil.redirect("/rapportActivite/faces/admine/ListEmp");
             return "/admine/ListEmp.xhtml";
-        } else if (selected.getSuperAdmin() == 1) {
+        } else if (employe.getSuperAdmin() == 1) {
             util.SessionUtil.redirect("/rapportActivite/faces/superAdmine/ListEmp");
             return "/admine/ListEmp.xhtml";
         } else {
@@ -161,7 +162,7 @@ public class EmployeController implements Serializable {
     }
 
     public void creationEmp() throws MessagingException {
-        ejbFacade.creerEmp(emp);
+        ejbFacade.creerEmp(selected);
         prepareCreate();
     }
 
@@ -173,9 +174,9 @@ public class EmployeController implements Serializable {
     }
 
     public Employe prepareCreate() {
-        emp = new Employe();
+        selected = new Employe();
         initializeEmbeddableKey();
-        return emp;
+        return selected;
     }
 
     public void update() {
@@ -321,21 +322,23 @@ public class EmployeController implements Serializable {
         this.etat = etat;
     }
 
-    public Employe getEmp() {
-        if (emp == null) {
-            emp = new Employe();
+    public Employe getSelected() {
+        if (selected == null) {
+            selected = new Employe();
         }
-        return emp;
+        return selected;
     }
 
-    public void setEmp(Employe emp) {
-        this.emp = emp;
+    public void setSelected(Employe selected) {
+        this.selected = selected;
     }
 
     public List<Employe> getEmployes() {
         if (employes == null) {
-            if (selected.isAdmin()) {
-                employes = divisionFacade.findEmpByAdmin(selected);
+            if (employe.isAdmin()) {
+                employes = divisionFacade.findEmpByAdmin(employe);
+            } else if (employe.getSuperAdmin() == 1) {
+                employes = ejbFacade.admines();
             } else {
                 employes = new ArrayList();
             }
@@ -382,8 +385,8 @@ public class EmployeController implements Serializable {
 
     public Division getDivision() {
         if (division == null) {
-            if (selected.isAdmin()) {
-                division = divisionFacade.findDivisionByAdmin(selected);
+            if (employe.isAdmin()) {
+                division = divisionFacade.findDivisionByAdmin(employe);
             }
         } else {
             division = new Division();
@@ -391,19 +394,30 @@ public class EmployeController implements Serializable {
         return division;
     }
 
+    public List<Employe> getAdmines() {
+        if (admines == null) {
+            admines = ejbFacade.admines();
+        }
+        return admines;
+    }
+
+    public void setAdmines(List<Employe> admines) {
+        this.admines = admines;
+    }
+
     public void setDivision(Division division) {
         this.division = division;
     }
 
-    public Employe getSelected() {
-        if (selected == null) {
-            selected = new Employe();
+    public Employe getEmploye() {
+        if (employe == null) {
+            employe = new Employe();
         }
-        return selected;
+        return employe;
     }
 
-    public void setSelected(Employe selected) {
-        this.selected = selected;
+    public void setEmploye(Employe employe) {
+        this.employe = employe;
     }
 
     public List<Employe> getItems() {

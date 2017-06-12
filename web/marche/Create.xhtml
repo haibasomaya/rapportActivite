@@ -12,8 +12,26 @@
             <h:form id="MarcheCreateForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{marcheController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateMarcheLabel_fournisseurs}" for="fournisseurs" />
+                        <p:inputText id="fournisseurs" value="#{marcheController.selected.fournisseurs}" title="#{bundle.CreateMarcheTitle_fournisseurs}" />
                         <p:outputLabel value="#{bundle.CreateMarcheLabel_id}" for="id" />
                         <p:inputText id="id" value="#{marcheController.selected.id}" title="#{bundle.CreateMarcheTitle_id}" />
+                        <p:outputLabel value="#{bundle.CreateMarcheLabel_nom}" for="nom" />
+                        <p:inputText id="nom" value="#{marcheController.selected.nom}" title="#{bundle.CreateMarcheTitle_nom}" />
+                        <p:outputLabel value="#{bundle.CreateMarcheLabel_avancement}" for="avancement" />
+                        <p:inputText id="avancement" value="#{marcheController.selected.avancement}" title="#{bundle.CreateMarcheTitle_avancement}" />
+                        <p:outputLabel value="#{bundle.CreateMarcheLabel_degrer}" for="degrer" />
+                        <p:inputText id="degrer" value="#{marcheController.selected.degrer}" title="#{bundle.CreateMarcheTitle_degrer}" />
+                        <p:outputLabel value="#{bundle.CreateMarcheLabel_dateDebut}" for="dateDebut" />
+                        <p:calendar id="dateDebut" pattern="MM/dd/yyyy HH:mm:ss" value="#{marcheController.selected.dateDebut}" title="#{bundle.EditMarcheTitle_dateDebut}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateMarcheLabel_dateFin}" for="dateFin" />
+                        <p:calendar id="dateFin" pattern="MM/dd/yyyy HH:mm:ss" value="#{marcheController.selected.dateFin}" title="#{bundle.EditMarcheTitle_dateFin}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateMarcheLabel_gerant}" for="gerant" />
+                        <p:selectOneMenu id="gerant" value="#{marcheController.selected.gerant}" >
+                            <f:selectItems value="#{employeController.itemsAvailableSelectOne}"
+                                           var="gerantItem"
+                                           itemValue="#{gerantItem}"/>
+                        </p:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{marcheController.create}" value="#{bundle.Save}" update="display,:MarcheListForm:datalist,:growl" oncomplete="handleSubmit(args,'MarcheCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="MarcheCreateDialog.hide()"/>

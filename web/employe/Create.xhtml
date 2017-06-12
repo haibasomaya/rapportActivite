@@ -11,41 +11,41 @@
         <p:dialog id="EmployeCreateDlg" widgetVar="EmployeCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateEmployeTitle}">
             <h:form id="EmployeCreateForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{employeController.selected != null}">
+                    <p:panelGrid columns="2" rendered="#{employeController.employe != null}">
                         <p:outputLabel value="#{bundle.CreateEmployeLabel_nom}" for="nom" />
-                        <p:inputText id="nom" value="#{employeController.selected.nom}" title="#{bundle.CreateEmployeTitle_nom}" />
+                        <p:inputText id="nom" value="#{employeController.employe.nom}" title="#{bundle.CreateEmployeTitle_nom}" />
                         <p:outputLabel value="#{bundle.CreateEmployeLabel_prenom}" for="prenom" />
-                        <p:inputText id="prenom" value="#{employeController.selected.prenom}" title="#{bundle.CreateEmployeTitle_prenom}" />
+                        <p:inputText id="prenom" value="#{employeController.employe.prenom}" title="#{bundle.CreateEmployeTitle_prenom}" />
                         <p:outputLabel value="#{bundle.CreateEmployeLabel_login}" for="login" />
-                        <p:inputText id="login" value="#{employeController.selected.login}" title="#{bundle.CreateEmployeTitle_login}" />
+                        <p:inputText id="login" value="#{employeController.employe.login}" title="#{bundle.CreateEmployeTitle_login}" />
                         <p:outputLabel value="#{bundle.CreateEmployeLabel_cin}" for="cin" />
-                        <p:inputText id="cin" value="#{employeController.selected.cin}" title="#{bundle.CreateEmployeTitle_cin}" />
+                        <p:inputText id="cin" value="#{employeController.employe.cin}" title="#{bundle.CreateEmployeTitle_cin}" />
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListEmployeTitle_tel}"/>
                             </f:facet>
                              <p:outputLabel for="tel" value="Tel:" />
-                             <p:inputMask id="tel" value="#{employeController.selected.tel}" mask="(999) 999-9999"/>
+                             <p:inputMask id="tel" value="#{employeController.employe.tel}" mask="(999) 999-9999"/>
                                <f:facet name="header">
                                 <h:outputText value="#{bundle.ListEmployeTitle_email}"/>
                             </f:facet>
                              <p:outputLabel for="email" value="Email:" />
-                             <p:inputMask id="email" value="#{employeController.selected.email}" mask="aaaaaaaaaaaaaaaa@aaaaa.aaa"/>
+                             <p:inputMask id="email" value="#{employeController.employe.email}" mask="aaaaaaaaaaaaaaaa@aaaaa.aaa"/>
                                
                         <h:outputText value="password: " />
-                       <p:password id="password" value="#{employeController.selected.password}" feedback="true" inline="true"/>
+                       <p:password id="password" value="#{employeController.employe.password}" feedback="true" inline="true"/>
  
                         <p:outputLabel value="#{bundle.CreateEmployeLabel_numPost}" for="numPost" />
-                        <p:inputText id="numPost" value="#{employeController.selected.numPost}" title="#{bundle.CreateEmployeTitle_numPost}" />
+                        <p:inputText id="numPost" value="#{employeController.employe.numPost}" title="#{bundle.CreateEmployeTitle_numPost}" />
                         <p:outputLabel value="#{bundle.CreateEmployeLabel_numBureau}" for="numBureau" />
-                        <p:inputText id="numBureau" value="#{employeController.selected.numBureau}" title="#{bundle.CreateEmployeTitle_numBureau}" />
+                        <p:inputText id="numBureau" value="#{employeController.employe.numBureau}" title="#{bundle.CreateEmployeTitle_numBureau}" />
                         <p:outputLabel value="#{bundle.CreateEmployeLabel_service}" for="service" />
-                        <p:selectOneMenu id="service" value="#{employeController.selected.service}" >
+                        <p:selectOneMenu id="service" value="#{employeController.employe.service}" >
                             <f:selectItems value="#{serviceController.itemsAvailableSelectOne}"
                                            var="serviceItem"
                                            itemValue="#{serviceItem}"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="#{bundle.CreateEmployeLabel_fonction}" for="fonction" />
-                        <p:inputText id="fonction" value="#{employeController.selected.fonction}" title="#{bundle.CreateEmployeTitle_fonction}" />
+                        <p:inputText id="fonction" value="#{employeController.employe.fonction}" title="#{bundle.CreateEmployeTitle_fonction}" />
                     </p:panelGrid>
                     <p:commandButton actionListener="#{employeController.create}" value="#{bundle.Save}" update="display,:EmployeListForm:datalist" oncomplete="handleSubmit(args,'EmployeCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="EmployeCreateDialog.hide()"/>

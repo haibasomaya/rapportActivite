@@ -33,6 +33,12 @@
                             </f:facet>
                             <h:outputText value="#{item.id}"/>
                         </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListCommandeItemTitle_bonCommande}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.bonCommande}"/>
+                        </p:column>
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{commandeItemController.prepareCreate}" update=":CommandeItemCreateForm" oncomplete="PF('CommandeItemCreateDialog').show()"/>
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":CommandeItemViewForm" oncomplete="PF('CommandeItemViewDialog').show()" disabled="#{empty commandeItemController.selected}"/>

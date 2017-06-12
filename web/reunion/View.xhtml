@@ -14,12 +14,16 @@
                     <p:panelGrid columns="2" rendered="#{reunionController.selected != null}">
                         <h:outputText value="#{bundle.ViewReunionLabel_id}"/>
                         <h:outputText value="#{reunionController.selected.id}" title="#{bundle.ViewReunionTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewReunionLabel_activite}"/>
+                        <h:outputText value="#{reunionController.selected.activite}" title="#{bundle.ViewReunionTitle_activite}"/>
                         <h:outputText value="#{bundle.ViewReunionLabel_discreption}"/>
                         <h:outputText value="#{reunionController.selected.discreption}" title="#{bundle.ViewReunionTitle_discreption}"/>
                         <h:outputText value="#{bundle.ViewReunionLabel_dateDebut}"/>
                         <h:outputText value="#{reunionController.selected.dateDebut}" title="#{bundle.ViewReunionTitle_dateDebut}">
                             <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
                         </h:outputText>
+                        <h:outputText value="#{bundle.ViewReunionLabel_gerant}"/>
+                        <h:outputText value="#{reunionController.selected.gerant}" title="#{bundle.ViewReunionTitle_gerant}"/>
                     </p:panelGrid>
                     <p:commandButton value="#{bundle.Close}" onclick="ReunionViewDialog.hide()"/>
                 </h:panelGroup>

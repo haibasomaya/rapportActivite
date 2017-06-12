@@ -53,33 +53,27 @@
                 </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <h:form id="adminB" style="align-items: baseline" rendered="#{employeController.selected.admin==true}">
+
+                    <h:form id="adminB" style="align-items: baseline" rendered="#{employeController.employe.admin==true}">
                         <ul class="nav navbar-nav">
                             <li><a href="../admine/createEmp.xhtml" class="fa-user-plus">Nouveau Employe </a></li>
                             <li><a href="../admine/CreateReunion.xhtml">Nouveau Ruenion </a></li>
-                            <li><a href="#">Nouveau Activite  </a></li>
                             <!--<li><a href="../admine/createService.xhtml">Nouveau Service </a></li>-->
                         </ul>
                     </h:form>
-                    <h:form id="superB" style="align-items: baseline" rendered="#{employeController.selected.superAdmin==1}">
+                    <h:form id="superB" style="align-items: baseline" rendered="#{employeController.employe.superAdmin==1}">
                         <ul class="nav navbar-nav">
                             <li><a href="../superAdmine/nvEmp.xhtml">Nouveau Employe </a></li>
                             <li><a href="../superAdmine/nvRuenion.xhtml">Nouveau Ruenion </a></li>
-                            <li><a href="#">Nouveau Activite </a></li>
+                            <li><a href="../superAdmine/createService.xhtml">Nouveau Service </a></li>
+                            <li><a href="../superAdmine/nvActivitie.xhtml"> Nouveau Activités </a></li>
                         </ul>
                     </h:form>
                     <h:form id="employeB" style=" alignment-adjust: auto" rendered="#{(employeController.simpleUser()==true)}">
-                        <li><a href="../tacheElementaire/EmpTache.xhtml"> new Taches </a></li>
+                        <ul class="nav navbar-nav">
+                            <li><a href="../tacheElementaire/EmpTache.xhtml"> new Taches </a></li>
+                        </ul>
                     </h:form>
-                    <!--                        <li>
-                                                <a href="#">About</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">Services</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">Contact</a>
-                                            </li-->
                     <div style="float:right;">
                         <a  href="#{employeController.deconnexion()}" class="glyphicon glyphicon-off btn btn-default" style="margin-top: 10px;"/>
                     </div>
@@ -100,17 +94,19 @@
                         <h:form id="employe" style=" alignment-adjust: auto" rendered="#{employeController.simpleUser()==true}">
                             <li><a href="../tacheElementaire/List.xhtml"> Mes Taches </a></li>
                             <li><a href="../grandeTache/List.xhtml"> Mes Grandes Taches </a></li>
+                            <li><a href="../tacheElementaire/StatiqueTache.xhtml"> Mes Grandes Taches </a></li>
                         </h:form>
-                        <h:form id="admin" style=" alignment-adjust: auto" rendered="#{employeController.selected.admin==true}">
+                        <h:form id="admin" style=" alignment-adjust: auto" rendered="#{employeController.employe.admin==true}">
                             <li><a href="../admine/ListEmp.xhtml"> Mes Employes </a></li>
                             <li><a href="../admine/ListTacheQot.xhtml"> Taches Employes </a></li>
                             <li><a href="../reunion/List.xhtml"> Mes Reunions </a></li>
                             <li><a href="../tacheElementaire/List.xhtml"> Mes Taches </a></li>
                         </h:form>
-                        <h:form id="super" style=" alignment-adjust: auto" rendered="#{employeController.selected.superAdmin==1}">
-                            <li><a href="../employe/ListEmp.xhtml"> Listes Employes </a></li>
+                        <h:form id="super" style=" alignment-adjust: auto" rendered="#{employeController.employe.superAdmin==1}">
+                            <li><a href="../superAdmine/ListAdmine.xhtml"> Listes Admines </a></li>
                             <li><a href="../grandeTache/List.xhtml"> Listes des Grandes Taches </a></li>
                             <li><a href="../activite/List.xhtml"> Listes des Activités </a></li>
+                            <li><a href="../reunion/List.xhtml"> Listes des Activités </a></li>
                         </h:form>
 
                     </ul>
@@ -119,7 +115,7 @@
                 <div id="page-content-wrapper">
                     <div class="container-fluid">
                         <div class="row">
-                            <h4><b:label text="Bienvenu Mr.#{employeController.selected.nom}"  style="float: right;" ></b:label></h4>
+                            <h4><b:label text="Bienvenu Mr.#{employeController.employe.nom}"  style="float: right;" ></b:label></h4>
                             <hr></hr><br></br>
                             <ui:insert name="body">
                             </ui:insert>

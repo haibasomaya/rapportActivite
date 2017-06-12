@@ -1,7 +1,7 @@
 package controler;
 
 import bean.CommandeItem;
-import util.JsfUtil;
+import controler.util.JsfUtil;
 import util.JsfUtil.PersistAction;
 import service.CommandeItemFacade;
 
@@ -57,7 +57,7 @@ public class CommandeItemController implements Serializable {
 
     public void create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("CommandeItemCreated"));
-        if (!JsfUtil.isValidationFailed()) {
+        if (!util.JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
@@ -68,7 +68,7 @@ public class CommandeItemController implements Serializable {
 
     public void destroy() {
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("CommandeItemDeleted"));
-        if (!JsfUtil.isValidationFailed()) {
+        if (!util.JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
             items = null;    // Invalidate list of items to trigger re-query.
         }

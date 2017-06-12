@@ -1,13 +1,15 @@
 package controler;
 
 import bean.Activite;
+import bean.BonCommande;
 import bean.Employe;
-import util.JsfUtil;
+import bean.Marche;
+import bean.Projet;
+import controler.util.JsfUtil;
 import util.JsfUtil.PersistAction;
 import service.ActiviteFacade;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -20,33 +22,85 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import service.EmployeFacade;
 
 @Named("activiteController")
 @SessionScoped
 public class ActiviteController implements Serializable {
 
+    private Activite selected;
+    private String type = "";
+    private List<Activite> items = null;
+    private List<Employe> admins = null;
     @EJB
     private service.ActiviteFacade ejbFacade;
-    private List<Activite> items = null;
-    private Activite selected;
-    private String nom;
-    private Date dateMin;
-    private Date dateMax;
-    private Employe employe;
-    private Long avancement;
+    @EJB
+    private EmployeFacade employeFacade;
 
     public ActiviteController() {
     }
 
-    public void search() {
-        items = ejbFacade.search(nom, employe, avancement, dateMin, dateMax);
-        initpara();
+    public int typeActivite() {
+        if (type.equals("")) {
+            switch (type) {
+                case "projet":
+                    return 1;
+                case "Marche":
+                    return 2;
+                case "Bon Commande":
+                    return 3;
+                default:
+                    return 0;
+            }
+        }
+        return -1;
     }
-    private void initpara(){
-        dateMax =  null;
-        dateMin = null;
-        employe= null;
-        avancement = 0L;
+
+    public List<Employe> getAdmins() {
+        if (admins == null) {
+            admins = employeFacade.admines();
+        }
+        return admins;
+    }
+
+    public void setAdmins(List<Employe> admins) {
+        this.admins = admins;
+    }
+
+    public Activite getSelected() {
+        if (selected == null) {
+            switch (typeActivite()) {
+                case 1:
+                    selected = new Projet();
+                    break;
+                case 2:
+                    selected = new Marche();
+                    break;
+                case 3:
+                    selected = new BonCommande();
+                    break;
+                case 0:
+                    selected = new BonCommande();
+                    break;
+                default:
+                    break;
+            }
+        }
+        return selected;
+    }
+
+    public void setSelected(Activite selected) {
+        this.selected = selected;
+    }
+
+    protected void setEmbeddableKeys() {
+    }
+
+    protected void initializeEmbeddableKey() {
+    }
+
+    private ActiviteFacade getFacade() {
+        return ejbFacade;
     }
 
     public Activite prepareCreate() {
@@ -57,7 +111,7 @@ public class ActiviteController implements Serializable {
 
     public void create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("ActiviteCreated"));
-        if (!JsfUtil.isValidationFailed()) {
+        if (!util.JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
@@ -68,10 +122,17 @@ public class ActiviteController implements Serializable {
 
     public void destroy() {
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("ActiviteDeleted"));
-        if (!JsfUtil.isValidationFailed()) {
+        if (!util.JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
             items = null;    // Invalidate list of items to trigger re-query.
         }
+    }
+
+    public List<Activite> getItems() {
+        if (items == null) {
+            items = getFacade().findAll();
+        }
+        return items;
     }
 
     private void persist(PersistAction persistAction, String successMessage) {
@@ -155,75 +216,12 @@ public class ActiviteController implements Serializable {
 
     }
 
-    public Activite getSelected() {
-        if (selected == null) {
-            selected = new Activite();
-        }
-        return selected;
+    public String getType() {
+        return type;
     }
 
-    public void setSelected(Activite selected) {
-        this.selected = selected;
-    }
-
-    protected void setEmbeddableKeys() {
-    }
-
-    protected void initializeEmbeddableKey() {
-    }
-
-    public List<Activite> getItems() {
-        if (items == null) {
-            items = getFacade().findAll();
-        }
-        return items;
-    }
-
-    private ActiviteFacade getFacade() {
-        return ejbFacade;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public Date getDateMin() {
-        return dateMin;
-    }
-
-    public void setDateMin(Date dateMin) {
-        this.dateMin = dateMin;
-    }
-
-    public Date getDateMax() {
-        return dateMax;
-    }
-
-    public void setDateMax(Date dateMax) {
-        this.dateMax = dateMax;
-    }
-
-    public Employe getEmploye() {
-        if (employe == null) {
-            employe = new Employe();
-        }
-        return employe;
-    }
-
-    public void setEmploye(Employe employe) {
-        this.employe = employe;
-    }
-
-    public Long getAvancement() {
-        return avancement;
-    }
-
-    public void setAvancement(Long avancement) {
-        this.avancement = avancement;
+    public void setType(String type) {
+        this.type = type;
     }
 
 }

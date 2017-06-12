@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/grTemplate.xhtml">
+
+        <ui:define name="title">
+        </ui:define>
+
+        <ui:define name="body">
+
+            <h:form id="TacheForm">
+                <b:panel>
+                    <h:outputText value="Annee"/>
+                    <h:inputText id='annee' value="#{tacheElementaireController.annee}" title="#{bundle.CreateTacheTitle_annee}"/>
+                    <p:outputLabel value="Employe"/>
+                    <b:selectOneMenu id="employe" value="#{tacheElementaireController.employe}" >
+                        <f:selectItems  value="#{tacheElementaireController.employes}" var="employeItem" itemValue="#{employeItem.login}" itemLabel="#{employeItem.nom}"/>
+                    </b:selectOneMenu>
+                    <b:commandButton  actionListener="#{tacheElementaireController.tryMethod()}" update="chart"  value="previewChart" />
+                    <p:chart type="bar" id="chart" model="#{tacheElementaireController.model}" style="height:300px"/>
+
+                </b:panel>
+            </h:form>  
+        </ui:define>
+    </ui:composition>
+</html>
+

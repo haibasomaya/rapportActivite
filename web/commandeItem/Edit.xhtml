@@ -14,6 +14,13 @@
                     <p:panelGrid columns="2" rendered="#{commandeItemController.selected != null}">
                         <p:outputLabel value="#{bundle.EditCommandeItemLabel_id}" for="id" />
                         <p:inputText id="id" value="#{commandeItemController.selected.id}" title="#{bundle.EditCommandeItemTitle_id}" />
+                        <p:outputLabel value="#{bundle.EditCommandeItemLabel_bonCommande}" for="bonCommande" />
+                        <p:selectOneMenu id="bonCommande" value="#{commandeItemController.selected.bonCommande}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{bonCommandeController.itemsAvailableSelectOne}"
+                                           var="bonCommandeItem"
+                                           itemValue="#{bonCommandeItem}"/>
+                        </p:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{commandeItemController.update}" value="#{bundle.Save}" update="display,:CommandeItemListForm:datalist,:growl" oncomplete="handleSubmit(args, 'CommandeItemEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="CommandeItemEditDialog.hide()"/>

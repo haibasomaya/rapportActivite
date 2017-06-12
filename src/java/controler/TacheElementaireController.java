@@ -23,6 +23,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import org.primefaces.component.chart.bar.BarChart;
+import org.primefaces.model.chart.BarChartModel;
+import service.DivisionFacade;
 import service.EmployeFacade;
 
 @Named("tacheElementaireController")
@@ -38,6 +41,8 @@ public class TacheElementaireController implements Serializable {
     private String prenom;
     private String login;
     private int type;
+    private BarChartModel model;
+    private int annee;
     private Date dateCherche;
     private Employe employe;
     private Employe user = util.SessionUtil.getConnectedUser();
@@ -46,7 +51,29 @@ public class TacheElementaireController implements Serializable {
     @EJB
     private EmployeFacade employeFacaede;
 
+    @EJB
+    private DivisionFacade divisionFacade;
+
     public TacheElementaireController() {
+    }
+
+    public List<Employe> employes() {
+        if (user.isAdmin()) {
+            return divisionFacade.findEmpByAdmin(user);
+        } else if (user.getSuperAdmin() == 1) {
+            return employeFacaede.admines();
+        } else {
+            return null;
+        }
+    }
+
+    //statistique
+    public void tryMethod() {
+        ejbFacade.tacheByMonth(user, annee, 2);
+        System.out.println("------------>create Model ");
+        System.out.println("hahowa employe " + user);
+        System.out.println("hahowa annee " + annee);
+        System.out.println("hahowa Model controler---> " + model);
     }
 //pr admine de divisioni
 
@@ -237,6 +264,14 @@ public class TacheElementaireController implements Serializable {
         return ejbFacade;
     }
 
+    public int getAnnee() {
+        return annee;
+    }
+
+    public void setAnnee(int annee) {
+        this.annee = annee;
+    }
+
     public List<TacheElementaire> getItems() {
         if (items == null) {
             items = ejbFacade.findByEmploye(user);
@@ -279,8 +314,14 @@ public class TacheElementaireController implements Serializable {
     }
 
     public List<String> getNames() {
-        if (names == null) {
-            names = new ArrayList<>();
+        if (names.isEmpty()) {
+            names.add(nom);
+        } else {
+            for (String nam : names) {
+                if (!nom.equals(nam)) {
+                    names.add(nam);
+                }
+            }
         }
         return names;
     }
@@ -297,6 +338,7 @@ public class TacheElementaireController implements Serializable {
     }
 
     public String getNom() {
+        nom = "";
         return nom;
     }
 
@@ -310,6 +352,17 @@ public class TacheElementaireController implements Serializable {
 
     public void setPrenom(String prenom) {
         this.prenom = prenom;
+    }
+
+    public BarChartModel getModel() {
+        if (model == null) {
+            model = new BarChartModel();
+        }
+        return model;
+    }
+
+    public void setModel(BarChartModel model) {
+        this.model = model;
     }
 
     public String getLogin() {

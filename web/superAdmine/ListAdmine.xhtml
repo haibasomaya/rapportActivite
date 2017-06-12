@@ -23,25 +23,18 @@
                                 <b:selectOneMenu id="division" value="#{employeController.division}" >
                                     <f:selectItem  itemLabel="-select Division-"/>
                                     <f:selectItems value="#{employeController.divisions}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
-                                    <f:ajax listener="#{employeController.ListServices}"  event="change" execute="@form" render="service" ></f:ajax>
                                 </b:selectOneMenu>
                             </div>
                         </div>
-                        <div class="col-md-offset-1 col-md-3">
-                            <div class="form-group">
-                                <p:outputLabel value="Service" />
-                                <b:selectOneMenu id="service" value="#{employeController.service}" >
-                                    <f:selectItems value="#{employeController.services}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
-                                </b:selectOneMenu>
-                            </div>
-                        </div>
+                        <center><b:commandButton actionListener="#{employeController.empByServiceDivision()}" value="Chercher" update=":EmployeListForm:datalist"/></center>
                     </div>
-                    <center><b:commandButton actionListener="#{employeController.empByServiceDivision()}" value="Chercher" update=":EmployeListForm:datalist"/></center>
                 </b:panel>
+
+
             </h:form>
             <h:form id="EmployeListForm">
                 <b:panel>
-                    <b:dataTable id="datalist" value="#{employeController.items}" var="item"
+                    <b:dataTable id="datalist" value="#{employeController.admines}" var="item"
                                  >
                         <b:column>
                             <f:facet name="header">
@@ -93,22 +86,11 @@
                         </b:column>
                         <b:column>
                             <f:facet name="header">
-                                <h:outputText value="SERVICE"/>
-                            </f:facet>
-                            <h:outputText  value="#{item.service.nom}"/>
-                        </b:column>
-                        <b:column>
-                            <f:facet name="header">
-                                <h:outputText value="FONCTION"/>
-                            </f:facet>
-                            <h:outputText value="#{item.fonction}"/>
-                        </b:column>
-                        <b:column>
-                            <f:facet name="header">
                                 <h:outputText value="Gestion"/>
                             </f:facet>
                             <b:commandButton  id="buttonBloquer" class="#{(item.bloquer==1)?'fa fa-lock':'fa fa-unlock-alt'}"  actionListener="#{employeController.bloquerDebloquer(item)}"/>
-                            <b:button id="viewButton"   class="fa fa-user"  onclick="$('.modalPseudoClass').modal()" disabled="#{empty employeController.selected}"/>
+                            <b:commandButton id="viewButton"   class="fa fa-user" onclick="$('.modalPseudoClass').modal()" disabled="#{empty employeController.selected}"/>
+                            <b:commandButton id="deleteButton" class="fa fa-trash"   actionListener="#{employeController.destroy}" update=":growl,datalist" disabled="#{empty employeControselectedr.emp}"/>
                         </b:column>
                     </b:dataTable>
                 </b:panel>
@@ -121,46 +103,24 @@
                             <div class="col-md-offset-2 col-md-3">
                                 <div class="form-group">
                                     <b:label value="Num de Post" />
-                                    <b:inputText id="numPost" value="#{employeController.selected.numPost}" title="#{bundle.EditEmployeTitle_numPost}" />
+                                    <b:inputText id="numPost" value="#{employeCselectedroller.emp.numPost}" title="#{bundle.EditEmployeTitle_numPost}" />
                                 </div>
                             </div>
                             <div class="col-md-offset-1 col-md-3">
                                 <div class="form-group">
                                     <b:label value="Num de Bureau" />
-                                    <b:inputText id="numBureau" value="#{employeController.selected.numBureau}" title="#{bundle.EditEmployeTitle_numBureau}" />
+                                    <b:inputText id="numBureau" value="#{empselectedeController.emp.numBureau}" title="#{bundle.EditEmployeTitle_numBureau}" />
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-offset-2 col-md-3">
+                            <div class="col-md-offset-1 col-md-3">
                                 <div class="form-group">
                                     <b:label  value="Division" />
-                                    <b:selectOneMenu id="division2" value="#{employeController.division}" >
+                                    <b:selectOneMenu id="division" value="#{employeController.division}" >
                                         <f:selectItem value="#{null}" itemLabel="-select Service-"/>
                                         <f:selectItems value="#{employeController.divisions}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
-                                        <f:ajax listener="#{reunionController.listServices()}" event="change" execute="@form" render="service2" ></f:ajax>
                                     </b:selectOneMenu>
-                                </div>
-                            </div>
-                            <div class="col-md-offset-2 col-md-3">
-                                <div class="form-group">
-                                    <b:label  value="Service" />
-                                    <b:selectOneMenu id="service2" value="#{employeController.selected.service}" >
-                                        <f:selectItems value="#{employeController.services}"
-                                                       var="serviceItem" itemLabel="#{serviceItem.nom}"
-                                                       itemValue="#{serviceItem.id}"/>
-                                    </b:selectOneMenu>
-<!--                                    <b:selectOneMenu id="service" value="#{employeController.selected.service}" >
-                                        <f:selectItems value="#{employeController.services}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
-                                    </b:selectOneMenu>-->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-offset-2 col-md-3">
-                                <div class="form-group">
-                                    <b:label value="Fonction" />
-                                    <p:inputText id="fonction" value="#{employeController.selected.fonction}" class="form-control" />
                                 </div>
                             </div>
                         </div>

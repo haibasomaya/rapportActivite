@@ -12,13 +12,6 @@
             <h:form id="ActiviteEditForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{activiteController.selected != null}">
-                        <p:outputLabel value="#{bundle.EditActiviteLabel_employe}" for="employe" />
-                        <p:selectOneMenu id="employe" value="#{activiteController.selected.employe}" >
-                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
-                            <f:selectItems value="#{employeController.itemsAvailableSelectOne}"
-                                           var="employeItem"
-                                           itemValue="#{employeItem}"/>
-                        </p:selectOneMenu>
                         <p:outputLabel value="#{bundle.EditActiviteLabel_id}" for="id" />
                         <p:inputText id="id" value="#{activiteController.selected.id}" title="#{bundle.EditActiviteTitle_id}" />
                         <p:outputLabel value="#{bundle.EditActiviteLabel_nom}" for="nom" />
@@ -31,6 +24,13 @@
                         <p:calendar id="dateDebut" pattern="MM/dd/yyyy HH:mm:ss" value="#{activiteController.selected.dateDebut}" title="#{bundle.EditActiviteTitle_dateDebut}"  showOn="button"/>
                         <p:outputLabel value="#{bundle.EditActiviteLabel_dateFin}" for="dateFin" />
                         <p:calendar id="dateFin" pattern="MM/dd/yyyy HH:mm:ss" value="#{activiteController.selected.dateFin}" title="#{bundle.EditActiviteTitle_dateFin}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.EditActiviteLabel_gerant}" for="gerant" />
+                        <p:selectOneMenu id="gerant" value="#{activiteController.selected.gerant}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{employeController.itemsAvailableSelectOne}"
+                                           var="gerantItem"
+                                           itemValue="#{gerantItem}"/>
+                        </p:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{activiteController.update}" value="#{bundle.Save}" update="display,:ActiviteListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ActiviteEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="ActiviteEditDialog.hide()"/>

@@ -15,23 +15,33 @@
 
             <div class="container">
                 <h:form>
-                    <b:panel style="background-color: #1b6d85;">
+                    <b:panel style="background-color: #FFFFFF">
                         <div class="row">
-                            <div class="col-md-offset-2 col-md-3">
+                            <div class="col-md-offset-1 col-md-2">
                                 <div class="form-group">
                                     <p:outputLabel value="#{bundle.CreateReunionLabel_dateDebut}" />
                                     <b:datepicker value="#{reunionController.selected.dateDebut}" mode="popup-icon" id="dateDebut"  placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>
                                 </div>
                             </div>
-                            <div class="col-md-offset-1 col-md-3">
+                            <div class="col-md-offset-2 col-md-2">
                                 <div class="form-group">
                                     <p:outputLabel value="#{bundle.CreateReunionLabel_discreption}" for="discreption" />
                                     <p:inputText id="discreption" value="#{reunionController.selected.discreption}" title="#{bundle.CreateReunionTitle_discreption}" />
                                 </div>
                             </div>
+                            <div class="col-md-offset-2 col-md-2">
+                                <div class="form-group">
+                                    <p:outputLabel value="Activite"/>
+                                    <b:selectOneMenu id="activite" value="#{reunionController.selected.activite}" >
+                                        <f:selectItems value="#{activiteController.items}"
+                                                       var="item" itemLabel="#{item.nom}"
+                                                       itemValue="#{item.id}"/>
+                                    </b:selectOneMenu> 
+                                </div>
+                            </div>
                         </div> <hr></hr>
                         <div class="row">
-                            <div class="col-md-offset-2 col-md-3">
+                            <div class="col-md-offset-1 col-md-2">
                                 <div class="form-group">
                                     <p:outputLabel value="Division" />
                                     <b:selectOneMenu id="division" value="#{reunionController.division}" >
@@ -41,31 +51,28 @@
                                     </b:selectOneMenu>
                                 </div>
                             </div>
-                            <div class="col-md-offset-1 col-md-3">
+                            <div class="col-md-offset-2 col-md-2">
                                 <div class="form-group">
                                     <p:outputLabel value="Service" />
                                     <b:selectOneMenu id="service" value="#{reunionController.service}" >
-                                        <f:selectItem itemValue="#{null}" itemLabel="-select Service-"/>
                                         <f:selectItems value="#{reunionController.services}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
                                         <f:ajax listener="#{reunionController.listEmp}" event="change" execute="@form" render="emp" ></f:ajax>
                                     </b:selectOneMenu>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div style="text-align: center;" class="col-md-offset-2 col-md-3">
+                            <div class="col-md-offset-2 col-md-2">
                                 <div class="form-group">
                                     <p:outputLabel value="Employes"/>
                                     <b:selectOneMenu id="emp" value="#{reunionController.emp}" >
-                                        <f:selectItem itemValue="#{null}" itemLabel="-select employe-"/>
                                         <f:selectItems value="#{reunionController.employes}" var="item" itemValue="#{item.login}" itemLabel="#{item.nom}"/>
                                     </b:selectOneMenu>
                                 </div>
                             </div>
+
                         </div>
                         <div class="row">
                             <div style="text-align: center;">
-                                <b:commandButton actionListener="#{reunionController.ajoutEmp()}" update=":itemsList:datalist" value="ajouter" ></b:commandButton>
+                                <b:commandButton actionListener="#{reunionController.ajoutEmp()}"  update=":itemsList:datalist" value="ajouter" ></b:commandButton>
                             </div>
                         </div>
                     </b:panel>
@@ -75,19 +82,19 @@
             <h:form id="itemsList">
                 <p:dataTable value="#{reunionController.emps}" var="item" id="datalist" class="data">
                     <p:column>
-                        <f:facet name="header">
+                        <f:facet name="header" >
                             <h:outputText value="Employe"/>
                         </f:facet>
                         <h:outputText value="#{item.nom}"/>
                     </p:column>
                     <p:column>
-                        <f:facet name="header">
+                        <f:facet name="header" >
                             <h:outputText value="Prenom"/>
                         </f:facet>
                         <h:outputText value="#{item.prenom}"/>
                     </p:column>
                     <p:column>
-                        <f:facet name="header">
+                        <f:facet name="header" >
                             <h:outputText value="Division"/>
                         </f:facet>
                         <h:outputText value="#{item.service.division.nom}"/>
@@ -121,8 +128,6 @@
                     50%  {left:100px;}
                     100% { left:0px;}
                 }
-
-
             </style>
         </ui:define>
     </ui:composition>

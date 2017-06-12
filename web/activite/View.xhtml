@@ -12,8 +12,6 @@
             <h:form id="ActiviteViewForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{activiteController.selected != null}">
-                        <h:outputText value="#{bundle.ViewActiviteLabel_employe}"/>
-                        <h:outputText value="#{activiteController.selected.employe}" title="#{bundle.ViewActiviteTitle_employe}"/>
                         <h:outputText value="#{bundle.ViewActiviteLabel_id}"/>
                         <h:outputText value="#{activiteController.selected.id}" title="#{bundle.ViewActiviteTitle_id}"/>
                         <h:outputText value="#{bundle.ViewActiviteLabel_nom}"/>
@@ -30,6 +28,8 @@
                         <h:outputText value="#{activiteController.selected.dateFin}" title="#{bundle.ViewActiviteTitle_dateFin}">
                             <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
                         </h:outputText>
+                        <h:outputText value="#{bundle.ViewActiviteLabel_gerant}"/>
+                        <h:outputText value="#{activiteController.selected.gerant}" title="#{bundle.ViewActiviteTitle_gerant}"/>
                     </p:panelGrid>
                     <p:commandButton value="#{bundle.Close}" onclick="ActiviteViewDialog.hide()"/>
                 </h:panelGroup>

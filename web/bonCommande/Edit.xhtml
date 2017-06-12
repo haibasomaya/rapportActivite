@@ -14,6 +14,23 @@
                     <p:panelGrid columns="2" rendered="#{bonCommandeController.selected != null}">
                         <p:outputLabel value="#{bundle.EditBonCommandeLabel_id}" for="id" />
                         <p:inputText id="id" value="#{bonCommandeController.selected.id}" title="#{bundle.EditBonCommandeTitle_id}" />
+                        <p:outputLabel value="#{bundle.EditBonCommandeLabel_nom}" for="nom" />
+                        <p:inputText id="nom" value="#{bonCommandeController.selected.nom}" title="#{bundle.EditBonCommandeTitle_nom}" />
+                        <p:outputLabel value="#{bundle.EditBonCommandeLabel_avancement}" for="avancement" />
+                        <p:inputText id="avancement" value="#{bonCommandeController.selected.avancement}" title="#{bundle.EditBonCommandeTitle_avancement}" />
+                        <p:outputLabel value="#{bundle.EditBonCommandeLabel_degrer}" for="degrer" />
+                        <p:inputText id="degrer" value="#{bonCommandeController.selected.degrer}" title="#{bundle.EditBonCommandeTitle_degrer}" />
+                        <p:outputLabel value="#{bundle.EditBonCommandeLabel_dateDebut}" for="dateDebut" />
+                        <p:calendar id="dateDebut" pattern="MM/dd/yyyy HH:mm:ss" value="#{bonCommandeController.selected.dateDebut}" title="#{bundle.EditBonCommandeTitle_dateDebut}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.EditBonCommandeLabel_dateFin}" for="dateFin" />
+                        <p:calendar id="dateFin" pattern="MM/dd/yyyy HH:mm:ss" value="#{bonCommandeController.selected.dateFin}" title="#{bundle.EditBonCommandeTitle_dateFin}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.EditBonCommandeLabel_gerant}" for="gerant" />
+                        <p:selectOneMenu id="gerant" value="#{bonCommandeController.selected.gerant}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{employeController.itemsAvailableSelectOne}"
+                                           var="gerantItem"
+                                           itemValue="#{gerantItem}"/>
+                        </p:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{bonCommandeController.update}" value="#{bundle.Save}" update="display,:BonCommandeListForm:datalist,:growl" oncomplete="handleSubmit(args, 'BonCommandeEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="BonCommandeEditDialog.hide()"/>

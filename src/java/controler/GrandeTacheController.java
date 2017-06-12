@@ -177,7 +177,7 @@ public class GrandeTacheController implements Serializable {
 
     public List<Activite> getActivites() {
         if (activites == null) {
-            activites = activiteFacade.activiteEnCours();
+            activites = new ArrayList();
         }
         return activites;
     }

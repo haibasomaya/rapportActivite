@@ -39,6 +39,10 @@ public class EmployeFacade extends AbstractFacade<Employe> {
         super(Employe.class);
     }
 
+    public List<Employe> admines() {
+        return em.createQuery("SELECT emp FROM Employe emp WHERE emp.admin = 1").getResultList();
+    }
+
     public List<Employe> findByService(Service service) {
         return em.createQuery("SELECT emp FROM Employe emp WHERE emp.service.id = " + service.getId()).getResultList();
     }

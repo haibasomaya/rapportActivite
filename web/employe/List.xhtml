@@ -17,7 +17,7 @@
             <h:form id="EmployeListForm">
                 <p:panel header="#{bundle.ListEmployeTitle}">
                     <p:dataTable id="datalist" value="#{employeController.items}" var="item"
-                                 selectionMode="single" selection="#{employeController.selected}"
+                                 selectionMode="single" selection="#{employeController.employe}"
                                  paginator="true"
                                  rowKey="#{item.login}"
                                  rows="10"
