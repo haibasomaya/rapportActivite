@@ -85,14 +85,26 @@ public class EmployeController implements Serializable {
         }
     }
 
+//    public void listBloque() {
+//        items = ejbFacade.liseBloquer(etat);
+//        System.out.println("liiiste des compte bmoquer sont ----->" + items);
+//    }
     public void empAdminBloquer() {
         employes = ejbFacade.EmpAdminBloquer(etat, employes);
         System.out.println("Employes ------>" + employes);
     }
 
-    public void listBloque() {
-        items = ejbFacade.liseBloquer(etat);
-        System.out.println("liiiste des compte bmoquer sont ----->" + items);
+    public void chercher() {
+        if (service != null) {
+            employes = ejbFacade.findByService(service);
+        }
+        if (etat >= 0) {
+            employes = ejbFacade.EmpAdminBloquer(etat, employes);
+        }
+        if (etat < 0 && service == null) {
+            employes = null;
+        }
+        System.out.println("Employes dyal recherche ------>" + employes);
     }
 
     public void recherche() {
@@ -101,19 +113,21 @@ public class EmployeController implements Serializable {
             employes.addAll(ejbFacade().recherche(nom, prenom, login));
         }
         if (ejbFacade.liseBloquer(etat) != null) {
-            employes.addAll(ejbFacade.liseBloquer(etat));
+            employes = ejbFacade.EmpAdminBloquer(etat, employes);
         }
         System.out.println("List employes----->" + employes);
-
+        if (etat == -1) {
+            employes = null;
+        }
     }
 
-    private void findByDivision() {
-        if (employe.isAdmin()) {
-            division = divisionFacade.findDivisionByAdmin(employe);
-            services = serviceFacade.findByDivision(division);
-        } else {
-            services = new ArrayList<>();
-        }
+    public void bloquerDebloquer(Employe employe) {
+        ejbFacade.bloquerDebloquer(employe);
+    }
+
+    public void creationEmp() throws MessagingException {
+        ejbFacade.creerEmp(selected);
+        prepareCreate();
     }
 
     public String deconnexion() {
@@ -155,15 +169,6 @@ public class EmployeController implements Serializable {
             util.SessionUtil.redirect("/rapportActivite/faces/simpleUser/EmpTache");
             return "/simpleUser/EmpTache.xhtml";
         }
-    }
-
-    public void bloquerDebloquer(Employe employe) {
-        int res = ejbFacade.bloquerDebloquer(employe);
-    }
-
-    public void creationEmp() throws MessagingException {
-        ejbFacade.creerEmp(selected);
-        prepareCreate();
     }
 
     public void create() {
@@ -363,7 +368,12 @@ public class EmployeController implements Serializable {
 
     public List<Service> getServices() {
         if (services == null) {
-            findByDivision();
+            if (employe.isAdmin()) {
+                division = divisionFacade.findDivisionByAdmin(employe);
+                services = serviceFacade.findByDivision(division);
+            } else {
+                services = new ArrayList<>();
+            }
         }
         return services;
     }

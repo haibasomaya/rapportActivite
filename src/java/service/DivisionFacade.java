@@ -46,10 +46,9 @@ public class DivisionFacade extends AbstractFacade<Division> {
                 if (services.isEmpty()) {
                     return null;
                 } else {
-                    for (Service service : services) {
-                        List<Employe> emps = em.createQuery("SELECT emp FROM Employe emp WHERE emp.service.id=" + service.getId()).getResultList();
+                    services.stream().map((service) -> em.createQuery("SELECT emp FROM Employe emp WHERE emp.service.id=" + service.getId()).getResultList()).forEachOrdered((emps) -> {
                         employes.addAll(emps);
-                    }
+                    });
                 }
             }
             return employes;

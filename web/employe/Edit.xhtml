@@ -13,32 +13,32 @@
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{employeController.employe != null}">
                         <p:outputLabel value="#{bundle.EditEmployeLabel_nom}" for="nom" />
-                        <p:inputText id="nom" value="#{employeController.semployenom}" title="#{bundle.EditEmployeTitle_nom}" />
+                        <p:inputText id="nom" value="#{employeController.selected.nom}" title="#{bundle.EditEmployeTitle_nom}" />
                         <p:outputLabel value="#{bundle.EditEmployeLabel_prenom}" for="prenom" />
-                        <p:inputText id="prenom" value="#{employeController.semployeprenom}" title="#{bundle.EditEmployeTitle_prenom}" />
+                        <p:inputText id="prenom" value="#{employeController.selected.prenom}" title="#{bundle.EditEmployeTitle_prenom}" />
                         <p:outputLabel value="#{bundle.EditEmployeLabel_login}" for="login" />
-                        <p:inputText id="login" value="#{employeController.selemployegin}" title="#{bundle.EditEmployeTitle_login}" />
+                        <p:inputText id="login" value="#{employeController.selected.login}" title="#{bundle.EditEmployeTitle_login}" />
                         <p:outputLabel value="#{bundle.EditEmployeLabel_cin}" for="cin" />
-                        <p:inputText id="cin" value="#{employeController.seleemploye}" title="#{bundle.EditEmployeTitle_cin}" />
+                        <p:inputText id="cin" value="#{employeController.selected.cin}" title="#{bundle.EditEmployeTitle_cin}" />
                         <p:outputLabel value="#{bundle.EditEmployeLabel_tel}" for="tel" />
-                        <p:inputText id="tel" value="#{employeController.employe.tel}" title="#{bundle.EditEmployeTitle_tel}" />
+                        <p:inputText id="tel" value="#{employeController.selected.tel}" title="#{bundle.EditEmployeTitle_tel}" />
                         <p:outputLabel value="#{bundle.EditEmployeLabel_password}" for="password" />
-                        <p:inputText id="password" value="#{employeController.seleemployesword}" title="#{bundle.EditEmployeTitle_password}" />
+                        <p:inputText id="password" value="#{employeController.selected.password}" title="#{bundle.EditEmployeTitle_password}" />
                         <p:outputLabel value="#{bundle.EditEmployeLabel_email}" for="email" />
-                        <p:inputText id="email" value="#{employeController.selecteemploye" title="#{bundle.EditEmployeTitle_email}" />
+                        <p:inputText id="email" value="#{employeController.selected.email}" title="#{bundle.EditEmployeTitle_email}" />
                         <p:outputLabel value="#{bundle.EditEmployeLabel_numPost}" for="numPost" />
-                        <p:inputText id="numPost" value="#{employeController.selemployemPost}" title="#{bundle.EditEmployeTitle_numPost}" />
+                        <p:inputText id="numPost" value="#{employeController.selected.numPost}" title="#{bundle.EditEmployeTitle_numPost}" />
                         <p:outputLabel value="#{bundle.EditEmployeLabel_numBureau}" for="numBureau" />
-                        <p:inputText id="numBureau" value="#{employeController.semployenumBureau}" title="#{bundle.EditEmployeTitle_numBureau}" />
+                        <p:inputText id="numBureau" value="#{employeController.selected.numBureau}" title="#{bundle.EditEmployeTitle_numBureau}" />
                         <p:outputLabel value="#{bundle.EditEmployeLabel_service}" for="service" />
-                        <p:selectOneMenu id="service" value="#{employeController.seemployeervice}" >
+                        <p:selectOneMenu id="service" value="#{employeController.selected.service}" >
                             <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
                             <f:selectItems value="#{serviceController.itemsAvailableSelectOne}"
                                            var="serviceItem"
                                            itemValue="#{serviceItem}"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="#{bundle.EditEmployeLabel_fonction}" for="fonction" />
-                        <p:inputText id="fonction" value="#{employeController.semployefonction}" title="#{bundle.EditEmployeTitle_fonction}" />
+                        <p:inputText id="fonction" value="#{employeController.selected.fonction}" title="#{bundle.EditEmployeTitle_fonction}" />
                     </p:panelGrid>
                     <p:commandButton actionListener="#{employeController.update}" value="#{bundle.Save}" update="display,:EmployeListForm:datalist" oncomplete="handleSubmit(args, 'EmployeEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="EmployeEditDialog.hide()"/>

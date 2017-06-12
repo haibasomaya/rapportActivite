@@ -18,9 +18,7 @@
                 <b:panel style="background-color: #1b6d85;">
                     <div class="row">
                         <div class="col-lg-6">
-                            <b:label value="#{bundle.CreateEmployeLabel_login}" />
-                            <b:inputText id="login" value="#{employeController.login}" title="#{bundle.CreateEmployeTitle_login}" />
-                            <b:label value="Etat des compte:" />
+                            <b:label value="Etat des Comptes d'Employes" />
                             <b:selectOneMenu id="etat" value="#{employeController.etat}" >
                                 <f:selectItem itemLabel="-select-" itemValue="-1"/>
                                 <f:selectItem itemLabel="Bloquer" itemValue="1"/>
@@ -28,18 +26,22 @@
                             </b:selectOneMenu>
                         </div>
                         <div class="col-lg-6">
-                            <b:label value="#{bundle.CreateEmployeLabel_nom}"/>
-                            <b:inputText id="nom" value="#{employeController.nom}" title="#{bundle.CreateEmployeTitle_nom}" />
-                            <b:label value="#{bundle.CreateEmployeLabel_prenom}"  />
-                            <b:inputText id="prenom" value="#{employeController.prenom}" title="#{bundle.CreateEmployeTitle_prenom}" />
+                            <b:label value="Service des Employes:" />
+                            <b:selectOneMenu id="service" value="#{employeController.service}" >
+                                <f:selectItem itemLabel="-select service-" itemValue="#{null}"/>
+                                <f:selectItems value="#{employeController.services}" var="item" itemLabel="#{item.nom}" itemValue="#{item.id}"/>
+                            </b:selectOneMenu>
                         </div>
                     </div> 
-                    <b:commandButton action="#{employeController.recherche()}" value="Chercher" update=":EmployeListForm:datalist" style="float: left;"></b:commandButton><br></br>
+                    <b:commandButton action="#{employeController.chercher()}" value="Chercher" update=":EmployeListForm:datalist" style="float: left;"></b:commandButton><br></br>
                 </b:panel>
             </h:form>
 
             <h:form id="EmployeListForm">
                 <b:dataTable id="datalist" value="#{employeController.employes}" var="item"    class="data" >
+                    <f:ajax event="click"   render="viewButton editButton deleteButton"/>
+                    <!--<f:ajax event="click" render="viewButton editButton deleteButton"/>-->
+
                     <b:column>
                         <f:facet name="header">
                             <h:outputText value="Nom"/>
@@ -92,16 +94,110 @@
                         <f:facet name="header">
                             <h:outputText value="Gestion"/>
                         </f:facet>
-                        <b:commandButton class="inline" icon="#{(item.bloquer==1)?'ui-icon-key':'ui-icon-locked'}"  actionListener="#{employeController.bloquerDebloquer(item)}" />
-                        <b:commandButton id="viewButton" class="inline"  icon="ui-icon-person"  update=":EmployeViewForm" oncomplete="PF('EmployeViewDialog').show()" disabled="#{empty employeController.selected}"/>
-                        <b:commandButton id="editButton"  class="inline" icon="ui-icon-pencil"  update=":EmployeEditForm" oncomplete="PF('EmployeEditDialog').show()" disabled="#{empty employeController.selected}"/>
-                        <b:commandButton id="deleteButton" class="inline" icon="ui-icon-trash"   actionListener="#{employeController.destroy}" update=":EmployeListForm:datalist" disabled="#{empty employeController.selected}"/>
+                        <b:commandButton class="#{(item.bloquer==1)?'fa fa-key ':'fa fa-lock'} inline "  actionListener="#{employeController.bloquerDebloquer(item)}" disabled="true" />
+<!--                        <b:commandButton id="viewButton" class="inline fa fa-user" update=":EmployeViewForm" oncomplete="PF('EmployeViewDialog').show()" disabled="#{empty employeController.selected}"/>-->
+<!--                        <b:commandButton id="ViewtButton"  class="inline fa fa-pencil" update=":EmployeEditForm" oncomplete="PF('EmployeEditDialog').show()" disabled="#{empty employeController.selected}"/>-->
+                        <b:button id="editButton"   class="inline fa fa-pencil"  onclick="$('.modalPseudoClass').modal()" disabled="#{empty employeController.selected}"/>
+                        <b:button id="viewButton"   class="inline fa fa-user"  onclick="$('.modalPseudoClass2').modal()" disabled="#{empty employeController.selected}"/>
+                        <b:commandButton id="deleteButton" class="inline fa fa-trash"  actionListener="#{employeController.destroy}" update=":EmployeListForm:datalist" disabled="#{empty employeController.selected}"/>
 
                     </b:column>
                 </b:dataTable>
             </h:form>
-            <ui:include src="/employe/Edit.xhtml"/>
-            <ui:include src="/employe/View.xhtml"/>
+            <b:modal id="EmployeViewDlg" title="New Affectation" styleClass="modalPseudoClass">    
+                <h:form id="EmployeViewForm" >
+                    <h:panelGroup id="display">
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-3">
+                                <div class="form-group">
+                                    <b:label value="Num de Post" />
+                                    <b:inputText id="numPost" value="#{employeController.selected.numPost}" title="#{bundle.EditEmployeTitle_numPost}" />
+                                </div>
+                            </div>
+                            <div class="col-md-offset-1 col-md-3">
+                                <div class="form-group">
+                                    <b:label value="Num de Bureau" />
+                                    <b:inputText id="numBureau" value="#{employeController.selected.numBureau}" title="#{bundle.EditEmployeTitle_numBureau}" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-3">
+                                <div class="form-group">
+                                    <b:label  value="Division" />
+                                    <b:selectOneMenu id="division2" value="#{employeController.division}" >
+                                        <f:selectItem value="#{null}" itemLabel="-select Service-"/>
+                                        <f:selectItems value="#{employeController.divisions}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
+                                        <f:ajax listener="#{reunionController.listServices()}" event="change" execute="@form" render="Service" ></f:ajax>
+                                    </b:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="col-md-offset-2 col-md-3">
+                                <div class="form-group">
+                                    <b:label  value="Service" />
+                                    <b:selectOneMenu id="Service" value="#{employeController.selected.service}" >
+                                        <f:selectItem value="#{null}" itemLabel="-selecte service-"/>
+                                        <f:selectItems value="#{employeController.services}"
+                                                       var="serviceItem" itemLabel="#{serviceItem.nom}"
+                                                       itemValue="#{serviceItem.id}"/>
+                                    </b:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-3">
+                                <div class="form-group">
+                                    <b:label value="Fonction" />
+                                    <p:inputText id="fonction" value="#{employeController.selected.fonction}" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="float: right;">
+                            <div class="form-group">
+                                <b:commandButton look="primary" actionListener="#{employeController.update}" value="#{bundle.Save}" update="display,:EmployeListForm:datalist" oncomplete="handleSubmit(args, 'EmployeEditDialog');"/>
+                                <b:commandButton  value="#{bundle.Cancel}" onclick="EmployeEditDialog.hide()"/>
+                            </div>
+                        </div>
+                    </h:panelGroup>
+                </h:form>
+            </b:modal>
+            <b:modal id="amodal2" title="Profile" styleClass="modalPseudoClass2">
+
+                <b:panel>
+                    <div class="col-lg-6">
+                        <p:outputLabel value="#{bundle.ViewEmployeLabel_nom}"/>
+                        <b:inputText value="#{employeController.selected.nom}" title="#{bundle.ViewEmployeTitle_nom}" placeholder="#{employeController.selected.nom}"/>
+                        <p:outputLabel value="#{bundle.ViewEmployeLabel_prenom}"/>
+                        <h:outputText value="#{employeController.selected.prenom}" title="#{bundle.ViewEmployeTitle_prenom}"/>
+                        <p:outputLabel value="#{bundle.ViewEmployeLabel_login}"/>
+                        <h:outputText value="#{employeController.selected.login}" title="#{bundle.ViewEmployeTitle_login}"/>
+                        <p:outputLabel value="#{bundle.ViewEmployeLabel_cin}"/>
+                        <h:outputText value="#{employeController.selected.cin}" title="#{bundle.ViewEmployeTitle_cin}"/>
+                        <p:outputLabel value="#{bundle.ViewEmployeLabel_tel}"/>
+                        <h:outputText value="#{employeController.selected.tel}" title="#{bundle.ViewEmployeTitle_tel}"/>
+                    </div>
+                    <div class="col-lg-6">
+                        <p:outputLabel value="#{bundle.ViewEmployeLabel_password}"/>
+                        <h:outputText value="#{employeController.selected.password}" title="#{bundle.ViewEmployeTitle_password}"/>
+                        <p:outputLabel value="#{bundle.ViewEmployeLabel_email}"/>
+                        <h:outputText value="#{employeController.selected.email}" title="#{bundle.ViewEmployeTitle_email}"/>
+                        <p:outputLabel value="#{bundle.ViewEmployeLabel_numPost}"/>
+                        <h:outputText value="#{employeController.selected.numPost}" title="#{bundle.ViewEmployeTitle_numPost}"/>
+                        <p:outputLabel value="#{bundle.ViewEmployeLabel_numBureau}"/>
+                        <h:outputText value="#{employeController.selected.numBureau}" title="#{bundle.ViewEmployeTitle_numBureau}"/>
+                        <p:outputLabel value="#{bundle.ViewEmployeLabel_service}"/>
+                        <h:outputText value="#{employeController.selected.service}" title="#{bundle.ViewEmployeTitle_service}"/>
+                        <p:outputLabel value="#{bundle.ViewEmployeLabel_fonction}"/>
+                        <h:outputText value="#{employeController.selected.fonction}" title="#{bundle.ViewEmployeTitle_fonction}"/>
+                    </div>
+                </b:panel>
+                <f:facet name="footer">
+                    <b:button value="#{bundle.Close}" look="primary" onclick="EmployeViewDialog.hide()"/>
+                </f:facet>
+            </b:modal>
+            <!--<ui:include src="/employe/Edit.xhtml"/>-->
+            <!--<ui:include src="/employe/View.xhtml"/>-->
         </ui:define>
     </ui:composition>
 
