@@ -6,7 +6,6 @@
 package bean;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Entity;
 
 /**
@@ -16,7 +15,6 @@ import javax.persistence.Entity;
 @Entity
 public class Projet extends Activite implements Serializable {
 
-    private String locale;
     private String discription;
 
     public String getDiscription() {
@@ -27,17 +25,10 @@ public class Projet extends Activite implements Serializable {
         this.discription = discription;
     }
 
-    public String getLocale() {
-        return locale;
-    }
-
-    public void setLocale(String locale) {
-        this.locale = locale;
-    }
-
+    
     @Override
     public String toString() {
-        return "Projet{" + "locale=" + locale + "activite" + discription + '}';
+        return "Projet{" + "activite" + discription + '}';
     }
 
 }

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui">
+
+    <ui:composition template="/templates/grTemplate.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListEmployeTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <b:panel style="color: #5e5e5e;">
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="Division" />
+                                <b:selectOneMenu id="division" value="#{employeController.division}" >
+                                    <f:selectItem  itemLabel="-select Division-"/>
+                                    <f:selectItems value="#{employeController.divisions}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
+                                    <f:ajax listener="#{employeController.ListServices()}"  event="change" execute="@form" render="service" ></f:ajax>
+                                </b:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="col-md-offset-1 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="Service" />
+                                <b:selectOneMenu id="service" value="#{employeController.service}" >
+                                    <f:selectItems value="#{employeController.services}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
+                                </b:selectOneMenu>
+                            </div>
+                        </div>
+                    </div>
+                    <center><b:commandButton actionListener="#{employeController.empByServiceDivision()}" value="Chercher" update=":EmployeListForm:datalist"/></center>
+                </b:panel>
+            </h:form>
+            <h:form id="EmployeListForm">
+                <b:panel>
+                    <b:dataTable id="datalist" value="#{employeController.items}" var="item"
+                                 >
+                        <b:column>
+                            <f:facet name="header">
+                                <h:outputText value="NOM"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nom}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">
+                                <h:outputText value="PRENOM"/>
+                            </f:facet>
+                            <h:outputText value="#{item.prenom}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">
+                                <h:outputText value="LOGIN"/>
+                            </f:facet>
+                            <h:outputText value="#{item.login}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">
+                                <h:outputText value="CIN"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cin}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">
+                                <h:outputText value="TELEPHONE"/>
+                            </f:facet>
+                            <h:outputText value="#{item.tel}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">
+                                <h:outputText value="POSTE"/>
+                            </f:facet>
+                            <h:outputText value="#{item.numPost}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">
+                                <h:outputText value="BUREAU"/>
+                            </f:facet>
+                            <h:outputText value="#{item.numBureau}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">
+                                <h:outputText value="Division"/>
+                            </f:facet>
+                            <h:outputText  value="#{item.service.division.nom}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">
+                                <h:outputText value="SERVICE"/>
+                            </f:facet>
+                            <h:outputText  value="#{item.service.nom}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">
+                                <h:outputText value="FONCTION"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fonction}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">
+                                <h:outputText value="Gestion"/>
+                            </f:facet>
+                            <b:commandButton  id="buttonBloquer" class="#{(item.bloquer==1)?'fa fa-lock':'fa fa-unlock-alt'}"  actionListener="#{employeController.bloquerDebloquer(item)}"/>
+                            <b:button id="viewButton"   class="fa fa-user"  onclick="$('.modalPseudoClass').modal()" disabled="#{empty employeController.selected}"/>
+                        </b:column>
+                    </b:dataTable>
+                </b:panel>
+            </h:form>
+
+            <b:modal id="EmployeViewDlg" styleClass="modalPseudoClass">    
+                <h:form id="EmployeViewForm" >
+                    <h:panelGroup id="display">
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-3">
+                                <div class="form-group">
+                                    <b:label value="Num de Post" />
+                                    <b:inputText id="numPost" value="#{employeController.selected.numPost}" title="#{bundle.EditEmployeTitle_numPost}" />
+                                </div>
+                            </div>
+                            <div class="col-md-offset-1 col-md-3">
+                                <div class="form-group">
+                                    <b:label value="Num de Bureau" />
+                                    <b:inputText id="numBureau" value="#{employeController.selected.numBureau}" title="#{bundle.EditEmployeTitle_numBureau}" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-3">
+                                <div class="form-group">
+                                    <b:label  value="Division" />
+                                    <b:selectOneMenu id="division2" value="#{employeController.division}" >
+                                        <f:selectItem value="#{null}" itemLabel="-select Service-"/>
+                                        <f:selectItems value="#{employeController.divisions}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
+                                        <f:ajax listener="#{reunionController.listServices()}" event="change" execute="@form" render="service2" ></f:ajax>
+                                    </b:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="col-md-offset-2 col-md-3">
+                                <div class="form-group">
+                                    <b:label  value="Service" />
+                                    <b:selectOneMenu id="service2" value="#{employeController.selected.service}" >
+                                        <f:selectItems value="#{employeController.services}"
+                                                       var="serviceItem" itemLabel="#{serviceItem.nom}"
+                                                       itemValue="#{serviceItem.id}"/>
+                                    </b:selectOneMenu>
+<!--                                    <b:selectOneMenu id="service" value="#{employeController.selected.service}" >
+                                        <f:selectItems value="#{employeController.services}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
+                                    </b:selectOneMenu>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-3">
+                                <div class="form-group">
+                                    <b:label value="Fonction" />
+                                    <p:inputText id="fonction" value="#{employeController.selected.fonction}" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </h:panelGroup>
+                    <div class="row">
+                        <div class="form-group">
+                            <b:commandButton actionListener="#{employeController.update}" value="#{bundle.Save}" update="display,:EmployeListForm:datalist" oncomplete="handleSubmit(args, 'EmployeEditDialog');"/>
+                            <b:commandButton value="#{bundle.Cancel}" onclick="EmployeEditDialog.hide()"/>
+                        </div>
+                    </div>
+                </h:form>
+            </b:modal>
+        </ui:define>
+    </ui:composition>
+
+</html>

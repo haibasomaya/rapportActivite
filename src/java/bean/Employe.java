@@ -222,7 +222,7 @@ public class Employe implements Serializable {
 
     @Override
     public String toString() {
-        return "Employe{" + ", nom=" + nom + ", prenom=" + prenom + "fonction=" + fonction + ", cin=" + cin + ", tel=" + tel + ", password=" + password + ", email=" + email + ", numPost=" + numPost + ", numBureau=" + numBureau + '}';
+        return "Employe{" + "login=" + login + ", nom=" + nom + ", prenom=" + prenom + "fonction=" + fonction + ", cin=" + cin + ", tel=" + tel + ", password=" + password + ", email=" + email + ", numPost=" + numPost + ", numBureau=" + numBureau + '}';
     }
 
 }

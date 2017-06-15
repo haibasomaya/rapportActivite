@@ -56,12 +56,12 @@
                             <div class="col-md-offset-1 col-md-3">
                                 <div class="form-group">
                                     <p:outputLabel  value="Type d'activite"  />
-                                    <b:selectOneMenu value="#{activiteController.type}">
+                                    <b:selectOneMenu value="#{activiteController.type}" id="comboBoxActivite">
                                         <f:selectItem itemLabel="-selecte type-" itemValue="" />
                                         <f:selectItem itemLabel="Projet" itemValue="projet" />
                                         <f:selectItem itemLabel="Marche" itemValue="Marche" />
                                         <f:selectItem itemLabel="Bon Commande" itemValue="Bon Commande" />
-                                        <f:ajax  event="change" execute="@form" render="reste" ></f:ajax>
+                                        <f:ajax  event="change" execute="comboBoxActivite" render=":reste" ></f:ajax>
                                     </b:selectOneMenu>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@
                 </h:form>
             </div>
             <h:form id="reste">
-                <h:form rendered="#{activiteController.type==1}">
+                <b:panel rendered="#{activiteController.type==1}">
                     <h1><h:outputText value="Creation de Projet"/></h1>
                     <p:panelGrid columns="2">
                         <p:outputLabel value="Discription:" for="discription" />
@@ -83,32 +83,32 @@
                             <f:selectItems value="#{activiteController.admins}" var="item" itemValue="#{item.login}" itemLabel="#{item.nom}"/>
                         </p:selectOneMenu>
                     </p:panelGrid>
-                </h:form>
+                </b:panel>
 
 
-                <h:form rendered="#{activiteController.type==3}">
+                <b:panel rendered="#{activiteController.type==3}">
                     <h1><h:outputText value="Create Bon Commande"/></h1>
                     <b:panel>
-                        <p:outputLabel value="Gerant:" for="gerant" />
-                        <p:selectOneMenu id="gerant" value="#{activiteController.selected.gerant}" >
+                        <p:outputLabel value="Gerant:" for="gerant1" />
+                        <p:selectOneMenu id="gerant1" value="#{activiteController.selected.gerant}" >
                             <f:selectItem itemLabel="-select Gerant--"/>
                             <f:selectItems value="#{activiteController.admins}" var="item" itemValue="#{item.login}" itemLabel="#{item.nom}"/>
                         </p:selectOneMenu>
                     </b:panel>>
-                </h:form>
+                </b:panel>
 
 
-                <h:form rendered="#{activiteController.type==2}">
+                <b:panel rendered="#{activiteController.type==2}">
                     <h1><h:outputText value="Create Marche"/></h1>
                     <b:panel>
                         <p:outputLabel value="Fournisseur:" for="fournisseur" />
                         <p:inputText id="fournisseur" value="#{activiteController.selected.fournisseurs}" title="Fournisseurs" />
-                        <p:selectOneMenu id="gerant" value="#{activiteController.selected.gerant}" >
+                        <p:selectOneMenu id="gerant2" value="#{activiteController.selected.gerant}" >
                             <f:selectItem itemLabel="-select Gerant--"/>
                             <f:selectItems value="#{activiteController.admins}" var="item" itemValue="#{item.login}" itemLabel="#{item.nom}"/>
                         </p:selectOneMenu>
                     </b:panel>
-                </h:form>
+                </b:panel>
             </h:form>
 
             

@@ -60,8 +60,9 @@
                     </b:panel>
                 </div>
             </h:form>
+
             <h:form id="itemsList">
-                <h3> <center><p:outputLabel value="Employes Participants"/></center></h3>
+                <h3> <center><b:label value="Employes Participants"/></center></h3>
                 <p:dataTable value="#{reunionController.emps}" var="item" id="datalist" class="data" selectionMode="single" rowKey="#{item.login}">
                     <p:column>
                         <f:facet name="header">
@@ -79,7 +80,7 @@
                         <f:facet name="header">
                             <p:outputLabel value="Service"/>
                         </f:facet>
-                        <h:outputText value="#{item.service.nom}"/>
+                        <h:outputText value="#{item.service}"/>
                     </p:column>
                     <p:column>
                         <f:facet name="header">

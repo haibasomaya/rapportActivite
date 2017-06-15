@@ -171,9 +171,9 @@ public class ActiviteController implements Serializable {
         return getFacade().findAll();
     }
 
-    public List<Activite> getItemsAvailableSelectOne() {
-        return getFacade().findAll();
-    }
+//    public List<Activite> getItemsAvailableSelectOne() {
+//        return getFacade().findAll();
+//    }
 
     @FacesConverter(forClass = Activite.class)
     public static class ActiviteControllerConverter implements Converter {
@@ -217,6 +217,7 @@ public class ActiviteController implements Serializable {
     }
 
     public String getType() {
+        System.out.println("type "+type);
         return type;
     }
 

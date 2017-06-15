@@ -29,6 +29,7 @@ public class Activite implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nom;
+    private String local;
     private long avancement;
     private int degrer;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -54,6 +55,14 @@ public class Activite implements Serializable {
         return nom;
     }
 
+    public String getLocal() {
+        return local;
+    }
+
+    public void setLocal(String local) {
+        this.local = local;
+    }
+
     public void setNom(String nom) {
         this.nom = nom;
     }
@@ -75,6 +84,9 @@ public class Activite implements Serializable {
     }
 
     public Date getDateDebut() {
+        if(dateDebut == null){
+            dateDebut = new Date();
+        }
         return dateDebut;
     }
 
@@ -83,6 +95,9 @@ public class Activite implements Serializable {
     }
 
     public Date getDateFin() {
+        if(dateFin == null){
+            dateFin = new Date();
+        }
         return dateFin;
     }
 

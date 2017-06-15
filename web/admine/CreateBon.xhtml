@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui">
+
+    <ui:composition template="/templates/grTemplate.xhtml">
+
+        <ui:define name="title">
+            <center><h:outputText value="Employes de la Division"></h:outputText></center>
+        </ui:define>
+        <ui:define name="body">
+            
+            <f:view>
+
+
+                <h:form>
+                    <p:inputText id="nom" value="#{bonCommandeController.selected.nom}" title="Nom" />
+                        <p:outputLabel value="Degrer:" for="degrer" />
+                        <p:inputText id="degrer" value="#{bonCommandeController.selected.degrer}" title="Degrer" />
+                        <p:outputLabel value="DateDebut:" for="dateDebut" />
+                        <p:inputText id="dateDebut" value="#{bonCommandeController.selected.dateDebut}" title="DateDebut" >
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </p:inputText>
+                        <p:outputLabel value="DateFin:" for="dateFin" />
+                        <p:inputText id="dateFin" value="#{bonCommandeController.selected.dateFin}" title="DateFin" >
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </p:inputText>
+
+
+                        <h:form>
+                            <h1><h:outputText value="List"/></h1>
+                            <p:dataTable value="#{commandeItemController.items}" var="item">
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Id"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.id}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="BonCommande"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.bonCommande}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>
+
+                    </p:panelGrid>
+                </h:form>
+            </f:view>
+
+        </ui:define>
+   </ui:composition>

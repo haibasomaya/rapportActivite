@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/grTemplate.xhtml">
+        <ui:define name="title">
+            <!--<h:outputText value="CREATE NOUVEAU EMPLOYE"></h:outputText>-->
+        </ui:define>
+        <ui:define name="body">
+            <center><h3><b:label value="CREATE NOUVEAU Marchet"></b:label></h3></center>
+            <div class="container">
+                <h:form id="CreateEmpForm" >
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="Nom" for="nom" />
+                                <b:inputText id="nom" value="#{marcheController.selected.nom}" title="#{bundle.CreateMarcheTitle_nom}" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-offset-1 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="Fournisseur" for="fournisseurs" />
+                                <b:inputText id="fournisseurs" value="#{marcheController.nom}" title="#{bundle.CreateMarcheTitle_fournisseurs}" class="form-control" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="Locale:" for="locale" />
+                                <b:inputText id="locale" value="#{marcheController.selected.local}" title="Locale" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col-md-offset-1 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="Degrer d'importance:" />
+                                <b:selectOneMenu value="#{marcheController.selected.degrer}" class="form-control" title="Choisir Degrer">
+                                    <f:selectItem itemLabel="Urgent" itemValue="1" />
+                                    <f:selectItem itemLabel="Modéré" itemValue="2" />
+                                    <f:selectItem itemLabel="minim" itemValue="3" />
+                                </b:selectOneMenu>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"> 
+                        <div class="col-md-offset-2 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="Date Debut:"  />
+                                <b:datepicker value="#{marcheController.selected.dateDebut}" id="dateDebut" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>
+                            </div> 
+                        </div>
+                        <div class="col-md-offset-1 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="Date Finale:" />
+                                <b:datepicker value="#{marcheController.selected.dateFin}" id="dateFin" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-offset-5 col-md-1">
+                        <center><b:commandButton actionListener="#{marcheController.creation()}" value=" CREER " class="btn btn-primary fa fa-plus-square" style="float: inside;" /></center>
+                    </div>
+                </h:form> 
+            </div>
+
+
+
+        </ui:define>
+    </ui:composition>
+</html>

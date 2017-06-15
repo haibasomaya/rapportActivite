@@ -11,7 +11,7 @@
         <p:dialog id="EmployeEditDlg" widgetVar="EmployeEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditEmployeTitle}">
             <h:form id="EmployeEditForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{employeController.employe != null}">
+                    <p:panelGrid columns="2" rendered="#{employeController.user != null}">
                         <p:outputLabel value="#{bundle.EditEmployeLabel_nom}" for="nom" />
                         <p:inputText id="nom" value="#{employeController.selected.nom}" title="#{bundle.EditEmployeTitle_nom}" />
                         <p:outputLabel value="#{bundle.EditEmployeLabel_prenom}" for="prenom" />

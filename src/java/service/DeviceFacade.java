@@ -11,6 +11,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -36,6 +37,14 @@ public class DeviceFacade extends AbstractFacade<Device> {
 
     public DeviceFacade() {
         super(Device.class);
+    }
+
+    public List<Device> findBYEmp(Employe employe) {
+        if (employe != null) {
+            return em.createQuery("SELECT d FROM Device d WHERE d.employe.login ='" + employe.getLogin() + "'").getResultList();
+        } else {
+            return null;
+        }
     }
 
     public Device findMac(Device device) {

@@ -25,7 +25,7 @@
                         <div class="col-md-offset-1 col-md-3">
                             <div class="form-group">
                                 <p:outputLabel value="Prenom" for="prenom" />
-                                <p:inputText id="prenom" value="#{employeControselectedr.emp.prenom}" class="form-control" />
+                                <p:inputText id="prenom" value="#{employeController.selected.prenom}" class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -39,20 +39,20 @@
                         <div class="col-md-offset-1 col-md-3">
                             <div class="form-group">
                                 <p:outputLabel value="CIN" for="cin" />
-                                <p:inputText id="cin" value="#{empselectedeController.emp.cin}" class="form-control"/>
+                                <p:inputText id="cin" value="#{employeController.selected.cin}" class="form-control"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-offset-2 col-md-3">
                                 <div>
                                     <p:outputLabel value="Bureau" for="numBureau" />
-                                    <p:inputText id="numBureau" value="#{employeCselectedroller.emp.numBureau}" class="form-control"/>
+                                    <p:inputText id="numBureau" value="#{employeController.selected.numBureau}" class="form-control"/>
                                 </div>
                             </div>
                             <div class="col-md-offset-1 col-md-3">
                                 <div class="form-group">
                                     <p:outputLabel value="Post" for="numPost" />
-                                    <p:inputText id="numPost" value="#{empselectedeController.emp.numPost}" class="form-control" />
+                                    <p:inputText id="numPost" value="#{employeController.selected.numPost}" class="form-control" />
                                 </div>
                             </div>
                         </div>
@@ -69,7 +69,7 @@
                                 <div class="input-group-addon-group">
                                     <p:outputLabel value="E-mail" for="email" />
                                     <span class="input-group-addon glyphicon glyphicon-globe"></span>
-                                    <p:inputText id="email" value="#{empselectedeController.emp.email}" class="form-control"/>
+                                    <p:inputText id="email" value="#{employeController.selected.email}" class="form-control"/>
                                     <!--<input type="text" class="form-control" placeholder="Adresse" aria-describedby="basic-addon1"/>-->
                                 </div>
                             </div>
@@ -78,13 +78,13 @@
                             <div class="col-md-offset-2 col-md-3">
                                 <div>
                                     <p:outputLabel value="Fonction" for="fonction" />
-                                    <p:inputText iselectedfonction" value="#{employeController.emp.fonction}" class="form-control" />
+                                    <p:inputText id="fonction" value="#{employeController.selected.fonction}" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-offset-1 col-md-3">
                                 <div class="form-group">
                                     <p:outputLabel value="Service" />
-                                    <b:selectOneMenu id="service" value="Service" >
+                                    <b:selectOneMenu id="service" value="#{employeController.selected.service}" >
                                         <f:selectItem value="#{null}" itemLabel="-select Service-"/>
                                         <f:selectItems value="#{employeController.services}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
                                     </b:selectOneMenu>

@@ -54,24 +54,51 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-                    <h:form id="adminB" style="align-items: baseline" rendered="#{employeController.employe.admin==true}">
+                    <h:form id="adminB" style="align-items: baseline" rendered="#{employeController.user.admin==true}">
                         <ul class="nav navbar-nav">
-                            <li><a href="../admine/createEmp.xhtml" class="fa-user-plus">Nouveau Employe </a></li>
-                            <li><a href="../admine/CreateReunion.xhtml">Nouveau Ruenion </a></li>
+                            <li><a href="../admine/createEmp.xhtml" class="fa fa-user-plus"> Nouveau Employe </a></li>
+                            <li><a href="../simpleUser/EmpTache.xhtml" class="fa fa-pencil-square-o"> Nouveuu Tache Quotidienne </a></li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle fa fa-plus-square"  id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    Nouveua Activitie
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                    <li><a href="../admine/CreateReunion.xhtml" class="fa fa-plus-square"> Nouveau Ruenion </a></li>
+                                    <li><a href="../admine/CreateProjet.xhtml">Nouveau Projet</a></li>
+                                    <li><a href="../admine/CreationMarche.xhtml">Nouveau Marche</a></li>
+                                    <li><a href="#">Nouveau Bon de Commande</a></li>
+                                    <!-- <li role="separator" class="divider"></li>
+                                    <li><a href="#">Separated link</a></li>-->
+                                </ul>
+                            </li>
                             <!--<li><a href="../admine/createService.xhtml">Nouveau Service </a></li>-->
                         </ul>
                     </h:form>
-                    <h:form id="superB" style="align-items: baseline" rendered="#{employeController.employe.superAdmin==1}">
+                    <h:form id="superB" style="align-items: baseline" rendered="#{employeController.user.superAdmin==1}">
                         <ul class="nav navbar-nav">
-                            <li><a href="../superAdmine/nvEmp.xhtml">Nouveau Employe </a></li>
-                            <li><a href="../superAdmine/nvRuenion.xhtml">Nouveau Ruenion </a></li>
-                            <li><a href="../superAdmine/createService.xhtml">Nouveau Service </a></li>
-                            <li><a href="../superAdmine/nvActivitie.xhtml"> Nouveau Activités </a></li>
+                            <li><a href="../superAdmine/CreateAdmine.xhtml" class="fa fa-user-plus"> Nouveau Admine </a></li>
+                            <!--<li><a href="../superAdmine/nvRuenion.xhtml" class="fa fa-plus-square"> Nouveau Ruenion </a></li>-->
+                            <li><a href="../superAdmine/createService.xhtml" class="fa fa-pencil-square-o" > Nouveau Service </a></li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle fa fa-plus-square"  id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    Nouveua Activitie
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                    <li><a href="../superAdmine/nvRuenion.xhtml"> Nouveau Ruenion </a></li>
+                                    <li><a href="../admine/CreateProjet.xhtml"> Nouveau Projet</a></li>
+                                    <li><a href="../admine/CreationMarche.xhtml"> Nouveau Marche</a></li>
+                                    <li><a href="#"> Nouveau Bon de Commande</a></li>
+                                    <!-- <li role="separator" class="divider"></li>
+                                    <li><a href="#">Separated link</a></li>-->
+                                </ul>
+                            </li>
                         </ul>
                     </h:form>
                     <h:form id="employeB" style=" alignment-adjust: auto" rendered="#{(employeController.simpleUser()==true)}">
                         <ul class="nav navbar-nav">
-                            <li><a href="../tacheElementaire/EmpTache.xhtml"> new Taches </a></li>
+                            <centre><li><a href="../tacheElementaire/EmpTache.xhtml" class="fa fa-pencil-square-o" > Nouveuu Tache Quotidienne  </a></li></centre>
                         </ul>
                     </h:form>
                     <div style="float:right;">
@@ -92,20 +119,31 @@
                         <li class="sidebar-brand">
                         </li>
                         <h:form id="employe" style=" alignment-adjust: auto" rendered="#{employeController.simpleUser()==true}">
-                            <li><a href="../tacheElementaire/List.xhtml"> Mes Taches </a></li>
-                            <li><a href="../grandeTache/List.xhtml"> Mes Grandes Taches </a></li>
-                            <li><a href="../tacheElementaire/StatiqueTache.xhtml"> Mes Grandes Taches </a></li>
+                            <li><a href="../tacheElementaire/List.xhtml" class="fa fa-pencil-square-o"> Mes Taches </a></li><br></br>
+                            <li><a href="../grandeTache/List.xhtml" class="fa fa-pencil-square-o"> Mes Grandes Taches </a></li><br></br>
+                            <li><a href="../tacheElementaire/StatiqueTache.xhtml" class="fa fa-area-chart"> Statistique </a></li><br></br>
+                            <li><a href="#" class="fa fa-university">Mes Reunion</a></li><br></br>
                         </h:form>
-                        <h:form id="admin" style=" alignment-adjust: auto" rendered="#{employeController.employe.admin==true}">
-                            <li><a href="../admine/ListEmp.xhtml"> Mes Employes </a></li>
-                            <li><a href="../admine/ListTacheQot.xhtml"> Taches Employes </a></li>
-                            <li><a href="../reunion/List.xhtml"> Mes Reunions </a></li>
-                            <li><a href="../tacheElementaire/List.xhtml"> Mes Taches </a></li>
+
+
+                        <h:form id="admin" style=" alignment-adjust: auto" rendered="#{employeController.user.admin==true}">
+                            <li><a href="../superAdmine/ListAdmine.xhtml" class="fa fa-group">  Mes Employes </a></li><br></br>
+                            <li><a href="../superAdmine/TacheAdmine.xhtml" class="fa fa-list-alt"> Listes Des Taches Employes </a></li><br></br>
+                            <li><a href="../reunion/List.xhtml" class="fa fa-university"> Mes Reunions </a></li><br></br>
+                            <li><a href="../tacheElementaire/List.xhtml" class="fa fa-list"> Mes Taches </a></li><br></br>
+                            <li><a href="../tacheElementaire/StatiqueTache.xhtml" class="fa fa-area-chart"> Statistique </a></li><br></br>
                         </h:form>
-                        <h:form id="super" style=" alignment-adjust: auto" rendered="#{employeController.employe.superAdmin==1}">
-                            <li><a href="../superAdmine/ListAdmine.xhtml"> Listes Admines </a></li>
-                            <li><a href="../grandeTache/List.xhtml"> Listes des Grandes Taches </a></li>
-                            <li><a href="../activite/List.xhtml"> Listes des Activités </a></li>
+
+
+
+                        <h:form id="super" style=" alignment-adjust: auto" rendered="#{employeController.user.superAdmin==1}">
+                            <li><a href="../superAdmine/ListAdmine.xhtml" class="fa fa-group"> Les Admines des Divisions </a></li><br></br>
+                            <li><a href="../admine/ListTacheQot.xhtml" class="fa fa-list-alt"> Listes Des Taches Employes </a></li><br></br>
+                            <li><a href="../listes/ListReunion.xhtml" class="fa fa-university">Mes Reunion</a></li><br></br>
+                            <li><a href="../grandeTache/List.xhtml"> Listes des Grandes Taches </a></li><br></br>
+                            <li><a href="../activite/List.xhtml" class="fa  fa-list"> Listes des Activités </a></li><br></br>
+                            <li><a href="../tacheElementaire/StatiqueTache.xhtml" class="fa fa-area-chart"> Statistique </a></li><br></br>
+                            <!--<li><a href="../superAdmine/ListEmp.xhtml" class="fa fa-group"> Listes des Employes </a></li><br></br>-->
                         </h:form>
 
                     </ul>
@@ -114,7 +152,7 @@
                 <div id="page-content-wrapper">
                     <div class="container-fluid">
                         <div class="row">
-                            <h4><b:label text="Bienvenu Mr.#{employeController.employe.nom}"  style="float: right;" ></b:label></h4>
+                            <h4><b:label text="Bienvenu Mr/Mme: #{employeController.user.nom}  #{employeController.user.prenom}" style="float: right;" ></b:label></h4>
                             <hr></hr><br></br>
                             <ui:insert name="body">
                             </ui:insert>
@@ -128,7 +166,7 @@
                 <footer>
                     <div class="row">
                         <div class="col-lg-12">
-                            <p>Copyright &copy; Your Website 2014</p>
+                            <p>El Wilaya Marrakech-safi</p>
                         </div>
                     </div>
                     <!-- /.row -->
@@ -137,8 +175,8 @@
         </div>
         <!-- /.container -->
         <!-- jQuery -->
-        <h:outputScript name="newBar/js/jquery.js"/>
-        <h:outputScript name="sideBar/js/jquery.js"/>
+        <!--        <h:outputScript name="newBar/js/jquery.js"/>
+                <h:outputScript name="sideBar/js/jquery.js"/>-->
 
 
         <!-- Bootstrap Core JavaScript -->
@@ -153,6 +191,8 @@
                 e.preventDefault();
                 $("#wrapper").toggleClass("toggled");
             });
+
+            $('.dropdown-toggle').dropdown();
         </script>
 
     </h:body>

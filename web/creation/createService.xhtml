@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui">
+
+    <ui:composition template="/templates/grTemplate.xhtml">
+
+        <ui:define name="title">
+            <center><h:outputText value="Employes de la Division"></h:outputText></center>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+
+                <div class="row">
+                    <div class="col-md-offset-2 col-md-3">
+                        <div class="form-group">
+                            <p:outputLabel value="Nom"/><br></br>
+                            <p:inputText id="nom" value="#{serviceController.selected.nom}" title="Nom" />
+                        </div>
+                    </div>
+                    <div class="col-md-offset-1 col-md-3">
+                        <div class="form-group">
+                            <p:outputLabel  value="Employe"/>
+                            <b:selectOneMenu id="emp" value="#{serviceController.emp}">
+                                <f:selectItem itemValue="#{null}" itemLabel="-selecte-" />
+                                <f:selectItems value="#{serviceController.employes}" var="item" itemValue="#{item}"  itemLabel="#{item.nom}"/>
+                            </b:selectOneMenu>
+                        </div>
+                    </div>
+                </div>
+                <center><div class="row">
+                        <p:commandButton actionListener="#{serviceController.ajouter()}" value="Ajouter" update=":ListEmployes:datalist" />
+                    </div></center>
+            </h:form>
+
+            <h:form id="ListEmployes">
+                <p:outputLabel value="Employes"/>
+                <p:dataTable value="#{serviceController.emps}" var="item" id="datalist">
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Nom"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nom}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Prenom"/>
+                        </f:facet>
+                        <h:outputText value="#{item.prenom}"/>
+                    </p:column>
+
+                    <!--                    <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Ignorer"/>
+                                            </f:facet>
+                                            <p:commandButton actionListener="#{serviceController.ignorer(item)}" update="ListEmployes:datalist" value="Ignorer" ></p:commandButton>   
+                                        </p:column>-->
+                </p:dataTable>
+                <p:commandButton actionListener="#{serviceController.createService()}" value="creer" update=":ListEmployes:datalist"></p:commandButton>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

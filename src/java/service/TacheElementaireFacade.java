@@ -107,6 +107,7 @@ public class TacheElementaireFacade extends AbstractFacade<TacheElementaire> {
             if (type > 0) {
                 rq += "AND t.type =" + type;
             }
+            System.out.println("haaaa la requette de recherche -----> "+rq);
             List<TacheElementaire> taches = em.createQuery(rq).getResultList();
             return taches;
         }

@@ -14,33 +14,43 @@
         </ui:define>
         <ui:define name="body">
             <h:form>
-
-                <div class="row">
-                    <div class="col-md-offset-2 col-md-3">
-                        <div class="form-group">
-                            <p:outputLabel value="Nom"/><br></br>
-                            <p:inputText id="nom" value="#{serviceController.selected.nom}" title="Nom" />
+                <b:panel style="background-color: #1b6d85;" >
+                    <div class="row">
+                        <div class="col-lg-4 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="Nom du Nouveau Service"/><br></br>
+                                <p:inputText id="nom" value="#{serviceController.selected.nom}" title="Nom" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel  value="Employe"/>
+                                <b:selectOneMenu id="emp" value="#{serviceController.emp}">
+                                    <f:selectItem itemValue="#{null}" itemLabel="-selecte-" />
+                                    <f:selectItems value="#{serviceController.employes}" var="item" itemValue="#{item}"  itemLabel="#{item.nom}"/>
+                                </b:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel  value="Division"/>
+                                <b:selectOneMenu id="division" value="#{serviceController.selected.division}">
+                                    <f:selectItem itemValue="#{null}" itemLabel="-selecte-" />
+                                    <f:selectItems value="#{serviceController.divisions}" var="item" itemValue="#{item.id}"  itemLabel="#{item.nom}"/>
+                                </b:selectOneMenu>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-offset-1 col-md-3">
-                        <div class="form-group">
-                            <p:outputLabel  value="Employe"/>
-                            <b:selectOneMenu id="emp" value="#{serviceController.emp}">
-                                <f:selectItem itemValue="#{null}" itemLabel="-selecte-" />
-                                <f:selectItems value="#{serviceController.employes}" var="item" itemValue="#{item}"  itemLabel="#{item.nom}"/>
-                            </b:selectOneMenu>
-                        </div>
-                    </div>
-                </div>
-                <center><div class="row">
-                        <p:commandButton actionListener="#{serviceController.ajouter()}" value="Ajouter" update=":ListEmployes:datalist" />
-                    </div></center>
+                    <center><div class="row">
+                            <p:commandButton actionListener="#{serviceController.ajouter()}" value="Affecter Employe" icon="ui-icon-plus" update=":ListEmployes:datalist" />
+                            <p:commandButton actionListener="#{serviceController.createService()}" value="Creer Service" icon="ui-icon-floppy-o" update=":ListEmployes:datalist"></p:commandButton>
+                        </div></center>
+                </b:panel>
             </h:form>
 
             <h:form id="ListEmployes">
-                <p:outputLabel value="Employes"/>
+                <p:outputLabel value="Employes Affectees"/>
                 <p:dataTable value="#{serviceController.emps}" var="item" id="datalist">
-
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="Nom"/>
@@ -53,15 +63,13 @@
                         </f:facet>
                         <h:outputText value="#{item.prenom}"/>
                     </p:column>
-
-                    <!--                    <p:column>
-                                            <f:facet name="header">
-                                                <h:outputText value="Ignorer"/>
-                                            </f:facet>
-                                            <p:commandButton actionListener="#{serviceController.ignorer(item)}" update="ListEmployes:datalist" value="Ignorer" ></p:commandButton>   
-                                        </p:column>-->
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Ignorer"/>
+                        </f:facet>
+                        <p:commandButton actionListener="#{serviceController.ignorer(item)}" update="ListEmployes:datalist" value="Ignorer" ></p:commandButton>   
+                    </p:column>
                 </p:dataTable>
-                <p:commandButton actionListener="#{serviceController.createService()}" value="creer" update=":ListEmployes:datalist"></p:commandButton>
             </h:form>
         </ui:define>
     </ui:composition>

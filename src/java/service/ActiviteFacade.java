@@ -6,6 +6,8 @@
 package service;
 
 import bean.Activite;
+import bean.Employe;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,5 +30,13 @@ public class ActiviteFacade extends AbstractFacade<Activite> {
     public ActiviteFacade() {
         super(Activite.class);
     }
-    
+
+    public List<Activite> findByGerant(Employe employe) {
+        if (employe != null && employe.isAdmin()) {
+            return em.createQuery("SELECT act FROM Activite act WHERE act.gerant.login ='" + employe.getLogin() + "'").getResultList();
+        } else {
+            return null;
+        }
+
+    }
 }

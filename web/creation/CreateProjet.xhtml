@@ -12,38 +12,30 @@
         </ui:define>
         <ui:define name="body">
             <center><h3><b:label value="CREATE NOUVEAU Projet"></b:label></h3></center>
-            <div >
+            <div class="container">
                 <h:form id="CreateEmpForm" >
                     <div class="row">
-                        <div class="col-md-offset-2 col-md-25">
+                        <div class="col-md-offset-2 col-md-3">
                             <div class="form-group">
                                 <p:outputLabel value="Nom:" for="nom"/>
                                 <b:inputText  value="#{projetController.selected.nom}"  id="nom" title="Nom" class="form-control" />
                             </div>
                         </div>
-                        <div class="col-md-offset-2 col-md-25">
+                        <div class="col-md-offset-1 col-md-3">
                             <div class="form-group">
                                 <p:outputLabel value="Discription:" for="discription" />
                                 <b:inputText id="discription" value="#{projetController.selected.discription}" title="Discription" class="form-control" />
                             </div>
                         </div>
                     </div>
-                    <div class="row"> 
-                        <div class="col-md-offset-2 col-md-25">
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-3">
                             <div class="form-group">
-                                <p:outputLabel value="Date Debut:"  />
-                                <b:datepicker value="#{projetController.selected.dateDebut}" id="dateDebut" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>
-                            </div> 
-                        </div>
-                        <div class="col-md-offset-2 col-md-25">
-                            <div class="form-group">
-                                <p:outputLabel value="Date Finale:" />
-                                <b:datepicker value="#{projetController.selected.dateFin}" id="dateFin" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>
+                                <p:outputLabel value="Locale:" for="locale" />
+                                <b:inputText id="locale" value="#{projetController.selected.locale}" title="Locale" class="form-control"/>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-offset-2 col-md-25">
+                        <div class="col-md-offset-1 col-md-3">
                             <div class="form-group">
                                 <p:outputLabel value="Degrer d'importance:" />
                                 <b:selectOneMenu value="#{projetController.selected.degrer}" class="form-control" title="Choisir Degrer">
@@ -54,12 +46,26 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row"> 
+                        <div class="col-md-offset-2 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="Date Debut:"  />
+                                <b:datepicker value="#{projetController.selected.dateDebut}" id="dateDebut" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>
+                            </div> 
+                        </div>
+                        <div class="col-md-offset-1 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="Date Finale:" />
+                                <b:datepicker value="#{projetController.selected.dateFin}" id="dateFin" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="col-md-offset-5 col-md-1">
                         <center><b:commandButton actionListener="#{projetController.creation()}" value=" CREER " class="btn btn-primary fa fa-plus-square" style="float: inside;" /></center>
                     </div>
                 </h:form> 
-                </div>
+            </div>
 
 
 

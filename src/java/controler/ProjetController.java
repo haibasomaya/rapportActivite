@@ -1,5 +1,6 @@
 package controler;
 
+import bean.Employe;
 import bean.Projet;
 import controler.util.JsfUtil;
 import util.JsfUtil.PersistAction;
@@ -19,35 +20,25 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-
 @Named("projetController")
 @SessionScoped
 public class ProjetController implements Serializable {
 
-
-    @EJB private service.ProjetFacade ejbFacade;
+    @EJB
+    private service.ProjetFacade ejbFacade;
     private List<Projet> items = null;
     private Projet selected;
+    Employe user = util.SessionUtil.getConnectedUser();
 
     public ProjetController() {
     }
 
-    public Projet getSelected() {
-        return selected;
-    }
-
-    public void setSelected(Projet selected) {
-        this.selected = selected;
-    }
-
-    protected void setEmbeddableKeys() {
-    }
-
-    protected void initializeEmbeddableKey() {
-    }
-
-    private ProjetFacade getFacade() {
-        return ejbFacade;
+    public void creation() {
+        if (user.isAdmin() || user.getSuperAdmin() == 1) {
+            selected.setGerant(user);
+        }
+        ejbFacade.create(selected);
+        prepareCreate();
     }
 
     public Projet prepareCreate() {
@@ -73,13 +64,6 @@ public class ProjetController implements Serializable {
             selected = null; // Remove selection
             items = null;    // Invalidate list of items to trigger re-query.
         }
-    }
-
-    public List<Projet> getItems() {
-        if (items == null) {
-            items = getFacade().findAll();
-        }
-        return items;
     }
 
     private void persist(PersistAction persistAction, String successMessage) {
@@ -110,19 +94,7 @@ public class ProjetController implements Serializable {
         }
     }
 
-    public Projet getProjet(java.lang.Long id) {
-        return getFacade().find(id);
-    }
-
-    public List<Projet> getItemsAvailableSelectMany() {
-        return getFacade().findAll();
-    }
-
-    public List<Projet> getItemsAvailableSelectOne() {
-        return getFacade().findAll();
-    }
-
-    @FacesConverter(forClass=Projet.class)
+    @FacesConverter(forClass = Projet.class)
     public static class ProjetControllerConverter implements Converter {
 
         @Override
@@ -130,7 +102,7 @@ public class ProjetController implements Serializable {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            ProjetController controller = (ProjetController)facesContext.getApplication().getELResolver().
+            ProjetController controller = (ProjetController) facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "projetController");
             return controller.getProjet(getKey(value));
         }
@@ -163,4 +135,43 @@ public class ProjetController implements Serializable {
 
     }
 
+    public Projet getProjet(java.lang.Long id) {
+        return getFacade().find(id);
+    }
+
+    public List<Projet> getItemsAvailableSelectMany() {
+        return getFacade().findAll();
+    }
+
+    public List<Projet> getItemsAvailableSelectOne() {
+        return getFacade().findAll();
+    }
+
+    public List<Projet> getItems() {
+        if (items == null) {
+            items = getFacade().findAll();
+        }
+        return items;
+    }
+
+    public Projet getSelected() {
+        if (selected == null) {
+            selected = new Projet();
+        }
+        return selected;
+    }
+
+    public void setSelected(Projet selected) {
+        this.selected = selected;
+    }
+
+    protected void setEmbeddableKeys() {
+    }
+
+    protected void initializeEmbeddableKey() {
+    }
+
+    private ProjetFacade getFacade() {
+        return ejbFacade;
+    }
 }

@@ -5,8 +5,11 @@
  */
 package service;
 
+import bean.Activite;
 import bean.Device;
+import bean.Division;
 import bean.Employe;
+import bean.Reunion;
 import bean.Service;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,7 +29,12 @@ public class EmployeFacade extends AbstractFacade<Employe> {
 
     @EJB
     private DeviceFacade deviceFacade;
-
+    @EJB
+    private DivisionFacade divisionFacade;
+    @EJB
+    private ReunionFacade reunionFacade;
+    @EJB
+    private ActiviteFacade activiteFacade;
     @PersistenceContext(unitName = "rapportActivitePU")
     private EntityManager em;
 
@@ -37,6 +45,65 @@ public class EmployeFacade extends AbstractFacade<Employe> {
 
     public EmployeFacade() {
         super(Employe.class);
+    }
+
+    public int deleteEmploye(Employe employe) {
+        if (employe.isAdmin()) {
+            if (!divisionFacade.findDivisionByAdmin(employe).isEmpty()) {
+                Division d = divisionFacade.findDivisionByAdmin(employe).get(0);
+                if (d != null) {
+                    System.out.println("**********haaaaa divison--->" + d);
+                    d.setDirecteur(null);
+                    divisionFacade.edit(d);
+                }
+            }
+            List<Reunion> reunions = reunionFacade.findByGerant(employe);
+            if (reunions != null) {
+                for (Reunion reunion : reunions) {
+                    reunionFacade.remove(reunion);
+                }
+                System.out.println("*********haniii msa7eeet les reunion***********");
+            }
+            List<Activite> activites = activiteFacade.findByGerant(employe);
+            if (activites != null) {
+                for (Activite activite : activites) {
+                    activiteFacade.remove(activite);
+                }
+                System.out.println("*************haniii msa7eeet les activitii*********");
+            }
+        }
+        List<Device> dv = deviceFacade.findBYEmp(employe);
+        if (dv != null) {
+            for (Device device : dv) {
+                deviceFacade.remove(device);
+            }
+            System.out.println("*************haniii msa7eeet les device*********");
+        }
+        remove(employe);
+        System.out.println("*************haniii msa7eeet les employee*********");
+        return 0;
+    }
+
+    public List<Employe> empNonAffecter() {
+        return em.createQuery("SELECT e FROM Employe e WHERE e.service= NULL AND e.admin=0 AND e.superAdmin=0").getResultList();
+    }
+
+    public List<Employe> findByString(String nom, String prenom, String login) {
+        List<Employe> emp = new ArrayList();
+        String requette = "SELECT emp from Employe emp WHERE 1=1";
+        if (!login.equals("")) {
+            emp.add(find(login));
+            return emp;
+        } else {
+            if (!nom.equals("")) {
+                requette += util.SearchUtil.addConstraint("emp", "nom", "=", nom);
+            }
+            if (!prenom.equals("")) {
+                requette += util.SearchUtil.addConstraint("emp", "prenom", "=", prenom);
+            }
+        }
+        System.out.println("haa la requette --->" + requette);
+        return emp = em.createQuery(requette).getResultList();
     }
 
     public List<Employe> admines() {
@@ -53,23 +120,6 @@ public class EmployeFacade extends AbstractFacade<Employe> {
         } else {
             return null;
         }
-    }
-
-    public List<Employe> recherche(String nom, String prenom, String login) {
-        List<Employe> emp = new ArrayList();
-        String requette = "SELECT emp from Employe emp WHERE 1=1";
-        if (!login.equals("")) {
-            emp.add(find(login));
-            return emp;
-        } else {
-            if (!nom.equals("")) {
-                requette += util.SearchUtil.addConstraint("emp", "nom", "=", nom);
-            }
-            if (!prenom.equals("")) {
-                requette += util.SearchUtil.addConstraint("emp", "prenom", "=", prenom);
-            }
-        }
-        return emp = em.createQuery(requette).getResultList();
     }
 
     public int deconexion(Employe employe) {
@@ -91,14 +141,19 @@ public class EmployeFacade extends AbstractFacade<Employe> {
         }
     }
 
-    public void creerEmp(Employe employe) throws MessagingException {
-        String pass = util.HashageUtil.genererMdp();
-        System.out.println("haaaa mot de pass lii t'genera----->" + pass);
-        String message = "votre login est :" + employe.getLogin() + " votre password " + pass + "  'vous pouvez le changer apres s'il vous volez ' ";
-        String objecte = "compte Wilaya";
+    public int creerEmp(Employe employe) throws MessagingException {
+        if (find(employe.getLogin()) != null) {
+            return -1;
+        } else {
+            String pass = util.HashageUtil.genererMdp();
+            System.out.println("haaaa mot de pass lii t'genera----->" + pass);
+            String message = "votre login est :" + employe.getLogin() + " votre password " + pass + "  'vous pouvez le changer apres s'il vous volez ' ";
+            String objecte = "compte Wilaya";
 //        util.EmailUtil.sendMail("wlialaya.marrakech@gmail.com", "somaya@wijdan", "Bonjour M/Mme" + employe.getNom() + " " + message, employe.getEmail(), objecte);
-        employe.setPassword(util.HashageUtil.sha256(pass));
-        create(employe);
+            employe.setPassword(util.HashageUtil.sha256(pass));
+            create(employe);
+            return 1;
+        }
     }
 
     public int connexion(String login, String password) {
@@ -151,11 +206,9 @@ public class EmployeFacade extends AbstractFacade<Employe> {
 
     public List<Employe> EmpAdminBloquer(int etat, List<Employe> employes) {
         List<Employe> emps = new ArrayList();
-        for (Employe emp : employes) {
-            if (emp.getBloquer() == etat) {
-                emps.add(emp);
-            }
-        }
+        employes.stream().filter((emp) -> (emp.getBloquer() == etat)).forEachOrdered((emp) -> {
+            emps.add(emp);
+        });
         return emps;
     }
 

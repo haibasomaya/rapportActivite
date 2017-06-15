@@ -6,6 +6,7 @@
 package bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -22,6 +23,9 @@ public class Marche extends Activite implements Serializable {
     private List<Division> divisions;
 
     public List<String> getFournisseurs() {
+        if (fournisseurs == null) {
+            fournisseurs = new ArrayList<>();
+        }
         return fournisseurs;
     }
 

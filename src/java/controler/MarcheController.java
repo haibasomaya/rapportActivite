@@ -1,5 +1,6 @@
 package controler;
 
+import bean.Employe;
 import bean.Marche;
 import controler.util.JsfUtil;
 import util.JsfUtil.PersistAction;
@@ -27,11 +28,43 @@ public class MarcheController implements Serializable {
     private service.MarcheFacade ejbFacade;
     private List<Marche> items = null;
     private Marche selected;
+    private String nom;
+    private Employe user = util.SessionUtil.getConnectedUser();
 
     public MarcheController() {
     }
 
+    public void creation() {
+        if (user.isAdmin() || user.getSuperAdmin() == 1) {
+            selected.setGerant(user);
+        }
+        if (!nom.equals("")) {
+            selected.getFournisseurs().add(nom);
+        }
+        ejbFacade.create(selected);
+        prepareCreate();
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public Employe getUser() {
+        return user;
+    }
+
+    public void setUser(Employe user) {
+        this.user = user;
+    }
+
     public Marche getSelected() {
+        if (selected == null) {
+            selected = new Marche();
+        }
         return selected;
     }
 
@@ -51,6 +84,7 @@ public class MarcheController implements Serializable {
 
     public Marche prepareCreate() {
         selected = new Marche();
+        nom = "";
         initializeEmbeddableKey();
         return selected;
     }

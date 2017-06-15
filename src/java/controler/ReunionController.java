@@ -11,6 +11,7 @@ import service.ReunionFacade;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -23,6 +24,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import org.primefaces.context.RequestContext;
 import service.DivisionFacade;
 import service.EmployeFacade;
 import service.ServiceFacade;
@@ -35,40 +37,63 @@ public class ReunionController implements Serializable {
     private Division division;
     private Service service;
     private Employe emp;
+    private Date datechercher;
     private List<Reunion> items = null;
     private List<Service> services = null;
     private List<Employe> employes = null;
     private List<Employe> emps = null;
+    private List<Employe> participants = null;
     private List<Division> divisions = null;
+    private int i = 0;
     @EJB
     private service.ReunionFacade ejbFacade;
     @EJB
     private DivisionFacade divisionFacade;
     @EJB
     private ServiceFacade serviceFacade;
-
     @EJB
     private EmployeFacade employeFacade;
 
-    private Employe employe = util.SessionUtil.getConnectedUser();
+    private Employe user = util.SessionUtil.getConnectedUser();
 
     public ReunionController() {
+    }
+
+    public void findByDate() {
+        System.out.println("haaa la daate----->" + datechercher);
+        items = ejbFacade.findByDate(datechercher);
+        System.out.println("liste trouuverrr--->" + items);
+    }
+
+    public void detail(Reunion reunion) {
+        participants = reunion.getParticipants();
+        RequestContext.getCurrentInstance().execute("PF('ReunionDetailDialog').show()");
+
+    }
+
+    public void testDate() {
+        if (selected.getDateDebut().before(new Date())) {
+            selected.setDateDebut(new Date());
+            System.out.println("**************** IMPOSSIIIBLEEEE DAAATEEEE PREEXIISTERRRR*********************");
+        }
     }
 
     public void listServices() {
         if (division != null) {
             System.out.println("la divisionnn est-----> " + division);
             services = serviceFacade.findByDivision(division);
+            i = 0;
         }
 
     }
 
     public void valider() {
-        selected.setGerant(employe);
+        testDate();
+        selected.setGerant(user);
         ejbFacade.create(selected);
         ejbFacade.valider(emps, selected);
         System.out.println("haaaa new Reunion---->" + selected);
-        emps = null;
+        emps = new ArrayList<>();
     }
 
     public void ignorer(Employe emp) {
@@ -76,6 +101,10 @@ public class ReunionController implements Serializable {
     }
 
     public void ajoutEmp() {
+        if (division != null && i <= 0) {
+            emps.add(division.getDirecteur());
+            i++;
+        }
         emps.add(emp);
     }
 
@@ -85,14 +114,12 @@ public class ReunionController implements Serializable {
     }
 
     private void initAdmine() {
-        if (employe != null && (employe.isAdmin())) {
-            division = divisionFacade.findDivisionByAdmin(employe);
+        if (user != null && (user.isAdmin())) {
+            division = divisionFacade.findDivisionByAdmin(user).get(0);
             services = serviceFacade.findByDivision(division);
-            items = ejbFacade.findByGerant(employe);
         } else {
             division = new Division();
             services = new ArrayList();
-            items = ejbFacade.findByGerant(employe);
             System.out.println("haaaaa a5eeer fct dyal rn par employe ----->" + items);
         }
     }
@@ -114,7 +141,8 @@ public class ReunionController implements Serializable {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("ReunionUpdated"));
     }
 
-    public void destroy() {
+    public void destroy(Reunion reunion) {
+        ejbFacade.remove(reunion);
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("ReunionDeleted"));
         if (util.JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
@@ -203,9 +231,31 @@ public class ReunionController implements Serializable {
 
     }
 
+    private void testItmes() {
+        if (user.isAdmin() || user.getSuperAdmin() == 1) {
+            if (ejbFacade.findByGerant(user) != null) {
+                items = ejbFacade.findByGerant(user);
+            }
+        } else if (ejbFacade.findByParticipant(user) != null) {
+            items = ejbFacade.findByParticipant(user);
+        } else {
+            items = new ArrayList<>();
+        }
+    }
+
+    protected void setEmbeddableKeys() {
+    }
+
+    protected void initializeEmbeddableKey() {
+    }
+
+    private ReunionFacade getFacade() {
+        return ejbFacade;
+    }
+
     public List<Reunion> getItems() {
         if (items == null) {
-            initAdmine();
+            testItmes();
         }
         return items;
     }
@@ -221,14 +271,12 @@ public class ReunionController implements Serializable {
         this.selected = selected;
     }
 
-    protected void setEmbeddableKeys() {
+    public Date getDatechercher() {
+        return datechercher;
     }
 
-    protected void initializeEmbeddableKey() {
-    }
-
-    private ReunionFacade getFacade() {
-        return ejbFacade;
+    public void setDatechercher(Date datechercher) {
+        this.datechercher = datechercher;
     }
 
     public Division getDivision() {
@@ -308,15 +356,26 @@ public class ReunionController implements Serializable {
         this.divisions = divisions;
     }
 
-    public Employe getEmploye() {
-        if (employe == null) {
-            employe = new Employe();
+    public Employe getUser() {
+        if (user == null) {
+            user = new Employe();
         }
-        return employe;
+        return user;
     }
 
-    public void setEmploye(Employe employe) {
-        this.employe = employe;
+    public void setUser(Employe user) {
+        this.user = user;
+    }
+
+    public List<Employe> getParticipants() {
+        if (participants == null) {
+            participants = new ArrayList<>();
+        }
+        return participants;
+    }
+
+    public void setParticipants(List<Employe> participants) {
+        this.participants = participants;
     }
 
 }

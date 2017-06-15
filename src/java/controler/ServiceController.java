@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import service.DivisionFacade;
+import service.EmployeFacade;
 
 @Named("serviceController")
 @SessionScoped
@@ -37,9 +38,11 @@ public class ServiceController implements Serializable {
     private List<Division> divisions = null;
     private List<Employe> employes = null;
     private List<Employe> emps = null;
-    private Employe employe = util.SessionUtil.getConnectedUser();
+    private Employe user = util.SessionUtil.getConnectedUser();
     @EJB
     private DivisionFacade divisionFacade;
+    @EJB
+    private EmployeFacade employeFacade;
 
     public ServiceController() {
     }
@@ -53,11 +56,14 @@ public class ServiceController implements Serializable {
     }
 
     public void createService() {
-        if (employe != null && employe.isAdmin()) {
-            selected.setDivision(divisionFacade.findDivisionByAdmin(employe));
+        if (user.isAdmin()) {
+            selected.setDivision(divisionFacade.findDivisionByAdmin(user).get(0));
+        } else if (selected.getDivision() != null) {
             selected.setEmployes(emps);
             ejbFacade.create(selected);
-            emps = null;
+            emps = new ArrayList();
+        } else {
+            System.out.println("*********** Inpossible de crer Pas de division *********");
         }
     }
 
@@ -179,6 +185,7 @@ public class ServiceController implements Serializable {
     }
 
     protected void initializeEmbeddableKey() {
+
     }
 
     private ServiceFacade getFacade() {
@@ -187,7 +194,11 @@ public class ServiceController implements Serializable {
 
     public List<Division> getDivisions() {
         if (divisions == null) {
-            divisions = new ArrayList<>();
+            if (user.getSuperAdmin() == 1) {
+                divisions = divisionFacade.findAll();
+            } else {
+                divisions = new ArrayList<>();
+            }
         }
         return divisions;
     }
@@ -217,7 +228,7 @@ public class ServiceController implements Serializable {
 //pr creation
 
     public Employe getEmp() {
-        if(emp == null){
+        if (emp == null) {
             emp = new Employe();
         }
         return emp;
@@ -241,11 +252,11 @@ public class ServiceController implements Serializable {
     // pr initialisation
     public List<Employe> getEmployes() {
         if (employes == null) {
-            if (employe != null && employe.isAdmin()) {
-                employes = divisionFacade.findEmpByAdmin(employe);
+            if (user != null && user.isAdmin()) {
+                employes = divisionFacade.findEmpByAdmin(user);
                 System.out.println("haa les employe-------> " + employes);
-            } else {
-                employes = new ArrayList();
+            } else if (user != null && user.getSuperAdmin() == 1) {
+                employes = employeFacade.empNonAffecter();
             }
         }
         return employes;
@@ -255,12 +266,12 @@ public class ServiceController implements Serializable {
         this.employes = employes;
     }
 
-    public Employe getEmploye() {
-        return employe;
+    public Employe getUser() {
+        return user;
     }
 
-    public void setEmploye(Employe employe) {
-        this.employe = employe;
+    public void setUser(Employe user) {
+        this.user = user;
     }
 
     public Service getSelected() {

@@ -33,14 +33,18 @@ public class DivisionFacade extends AbstractFacade<Division> {
         super(Division.class);
     }
 
-    public Division findDivisionByAdmin(Employe employe) {
-        return (Division) em.createQuery("SELECT d FROM Division d WHERE d.directeur.login='" + employe.getLogin() + "'").getSingleResult();
+    public List<Division> findDivisionByAdmin(Employe employe) {
+        if (employe.isAdmin()) {
+            return em.createQuery("SELECT d FROM Division d WHERE d.directeur.login = '" + employe.getLogin() + "'").getResultList();
+        } else {
+            return null;
+        }
     }
 
     public List<Employe> findEmpByAdmin(Employe employe) {
         if (employe != null) {
             List<Employe> employes = new ArrayList();
-            Division division = findDivisionByAdmin(employe);
+            Division division = findDivisionByAdmin(employe).get(0);
             if (division != null) {
                 List<Service> services = em.createQuery("SELECT srv FROM Service srv WHERE srv.division.id=" + division.getId()).getResultList();
                 if (services.isEmpty()) {
