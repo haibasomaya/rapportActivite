@@ -1,12 +1,14 @@
 package controler;
 
 import bean.Employe;
+import bean.GrandeTache;
 import bean.Projet;
 import controler.util.JsfUtil;
 import util.JsfUtil.PersistAction;
 import service.ProjetFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -19,18 +21,46 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import org.primefaces.context.RequestContext;
+import service.ActiviteFacade;
+import service.GrandeTacheFacade;
 
 @Named("projetController")
 @SessionScoped
 public class ProjetController implements Serializable {
 
-    @EJB
-    private service.ProjetFacade ejbFacade;
     private List<Projet> items = null;
+    private List<Employe> emps = null;
+    private GrandeTache grandeTach = null;
     private Projet selected;
     Employe user = util.SessionUtil.getConnectedUser();
+    @EJB
+    private service.ProjetFacade ejbFacade;
+    @EJB
+    private ActiviteFacade activiteFacade;
+    @EJB
+    private GrandeTacheFacade grandeTacheFacade;
 
     public ProjetController() {
+    }
+
+    public void AffecterGrandeTache() {
+
+    }
+
+    public void deletProjet(Projet projet) {
+        selected = projet;
+        RequestContext.getCurrentInstance().execute("PF('Supression').show()");
+    }
+
+    public String detail(Projet projet) {
+        selected = projet;
+        return "/projet/ProjetDetail.xhtml";
+    }
+
+    public String ModifierProjet(Projet projet) {
+        selected = projet;
+        return "/projet/ModifierProjet.xhtml";
     }
 
     public void creation() {
@@ -59,6 +89,7 @@ public class ProjetController implements Serializable {
     }
 
     public void destroy() {
+        ejbFacade.deleteProjet(selected);
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("ProjetDeleted"));
         if (!util.JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
@@ -149,9 +180,21 @@ public class ProjetController implements Serializable {
 
     public List<Projet> getItems() {
         if (items == null) {
-            items = getFacade().findAll();
+            testItmes();
         }
         return items;
+    }
+
+    private void testItmes() {
+        if (user.isAdmin() || user.getSuperAdmin() == 1) {
+            if (ejbFacade.findByGerant(user) != null) {
+                items = ejbFacade.findByGerant(user);
+            }
+        } else if (ejbFacade.findByUser(user) != null) {
+            items = ejbFacade.findByUser(user);
+        } else {
+            items = new ArrayList<>();
+        }
     }
 
     public Projet getSelected() {
@@ -174,4 +217,35 @@ public class ProjetController implements Serializable {
     private ProjetFacade getFacade() {
         return ejbFacade;
     }
+
+    public List<Employe> getEmps() {
+        if (emps == null) {
+            emps = activiteFacade.activiteEmploye(selected);
+        }
+        return emps;
+    }
+
+    public void setEmps(List<Employe> emps) {
+        this.emps = emps;
+    }
+
+    public Employe getUser() {
+        return user;
+    }
+
+    public void setUser(Employe user) {
+        this.user = user;
+    }
+
+    public GrandeTache getGrandeTach() {
+        if (grandeTach == null) {
+            grandeTach = new GrandeTache();
+        }
+        return grandeTach;
+    }
+
+    public void setGrandeTach(GrandeTache grandeTach) {
+        this.grandeTach = grandeTach;
+    }
+
 }

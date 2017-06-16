@@ -10,35 +10,28 @@
     <ui:composition template="/templates/grTemplate.xhtml">
 
         <ui:define name="body">
-                        <b:panel  style="background-color: #1b6d85;">
-                <h:form id="form">
-                    
+            <h:form id="form">
+                <b:panel  style="background-color: #1b6d85;">
                     <div class="row">
                         <div class="col-lg-4 col-md-3">
                             <h4> <h:outputLabel value="Date de la Tache"/> </h4>
                             <!--<p:calendar id="dateTache" pattern="MM/dd/yyyy HH:mm:ss" value="#{tacheElementaireController.selected.dateTache}" title="#{bundle.EditGrandeTacheTitle_dure}"  showOn="button"/>-->
                             <b:datepicker id="dateTache" placeholder="MM/dd/yyyy HH:mm:ss"  value="#{tacheElementaireController.selected.dateTache}" show-button-panel="button" ></b:datepicker>
-                            <!--<p:calendar id="dateTache" value="#{tacheElementaireController.selected.dateTache}" navigator="true" pattern="MM/dd/yyyy" ></p:calendar>-->
                         </div>
-
                         <div class="col-lg-4 col-md-3">
                             <h4> <h:outputLabel value="Choisir Tache"/> </h4>
                             <b:selectOneMenu value="#{tacheElementaireController.selected.nom}" id="ancient" class="form-control">
                                 <f:selectItem itemValue="" itemLabel="--select name tache--"/>
-                                <f:selectItems value="#{tacheElementaireController.taches}" var="item" itemLabel="#{item.nom}" itemValue="#{item.nom}"/>
+                                <f:selectItems value="#{tacheElementaireController.taches}" var="item"  itemLabel="#{item.nom}" itemValue="#{item.nom}"/>
                                 <!--<f:selectItem itemValue="autre" itemLabel="autre" id="name"/>-->
                                 <!--<p:ajax process="name"  update=":autre"/>--> 
                                 <!--<f:ajax event="change" render="autre"></f:ajax>-->
                             </b:selectOneMenu> 
                         </div>
-                    <!--</div>-->
-                    <!--                </h:form>
-                                    <h:form id="autre">-->
-                    <!--<div class="row" >-->
                         <div class="col-lg-4 col-md-3">
                             <h4> <h:outputLabel id="textLabel" value="Neaveau Tache" /> </h4>
-                            <p:inputText  value="#{tacheElementaireController.nom}" placeholder="autre" title="Neuveau Tache" id="autre" class="form-control"/>
-                            <!--<p:ajax  event="change" process="aute" update=":form:ancient" />-->
+                            <b:inputText  value="#{tacheElementaireController.nom}" placeholder="autre" title="Neuveau Tache" id="autre" class="form-control"/>
+                            <p:ajax  process="textLabel" listener="#{tacheElementaireController.addNames()}" update="ancient" />
                         </div>
                     </div>
                     <div>
@@ -46,9 +39,8 @@
                             <b:commandButton  actionListener="#{tacheElementaireController.ajouterList()}" update=":FormTacheElemt:ListTacheElemt" value="Ajouter"/>
                         </div>
                     </div>
-                </h:form>
-            </b:panel>
-
+                </b:panel>
+            </h:form>
             <h:form id="FormTacheElemt">
                 <!--<h1><h:outputText value="List"/></h1>-->
                 <p:dataTable value="#{tacheElementaireController.listes}" var="item" id="ListTacheElemt" class="data">

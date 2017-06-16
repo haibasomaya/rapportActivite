@@ -15,93 +15,83 @@
             <h:form>
                 <b:panel style="background-color: #1b6d85;">
                     <div class="row">
-                        <div class="col-md-offset-1 col-md-2">
+                        <div class="col-lg-4 col-md-3">
                             <div class="form-group">
-                                <p:outputLabel value="#{bundle.CreateReunionLabel_dateDebut}" />
-                                <b:datepicker value="#{reunionController.selected.dateDebut}" mode="popup-icon" id="dateDebut"  placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>
-                            </div>
-                        </div>
-                        <div class="col-md-offset-2 col-md-2">
-                            <div class="form-group">
-                                <p:outputLabel value="#{bundle.CreateReunionLabel_discreption}" for="discreption" />
-                                <b:inputText id="discreption" value="#{reunionController.selected.discreption}" title="#{bundle.CreateReunionTitle_discreption}" />
-                            </div>
-                        </div>
-                        <div class="col-md-offset-2 col-md-2">
-                            <div class="form-group">
-
-                            </div>
-                        </div>
-                    </div> <hr></hr>
-                    <div class="row">
-                        <div class="col-md-offset-1 col-md-2">
-                            <div class="form-group">
-                                <p:outputLabel value="Division" />
-                                <b:selectOneMenu id="division" value="#{reunionController.division}" >
-                                    <f:selectItem itemValue="#{null}" itemLabel="-select Division-"/>
-                                    <f:selectItems value="#{reunionController.divisions}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
-                                    <f:ajax listener="#{reunionController.listServices}"  event="change" execute="@form" render="service" ></f:ajax>
+                                <b:label value=" choix Activitie" />
+                                <b:selectOneMenu value="#{reunionController.selected.activite}">
+                                    <f:selectItem itemLabel="-selecte Activite-" itemValue="#{null}" ></f:selectItem>
+                                    <f:selectItems value="#{activiteController.items}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
                                 </b:selectOneMenu>
                             </div>
                         </div>
-                        <div class="col-md-offset-2 col-md-2">
+                        <div class="col-lg-4 col-md-3">
                             <div class="form-group">
-                                <p:outputLabel value="Service" />
+                                <b:label value="#{bundle.CreateReunionLabel_dateDebut}" />
+                                <b:datepicker value="#{reunionController.selected.dateDebut}" id="dateDebut" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3">
+                            <div class="form-group">
+                                <b:label value="Description" />
+                                <b:inputText id="discreption" value="#{reunionController.selected.discreption}" title="#{bundle.CreateReunionTitle_discreption}" />
+                            </div>
+                        </div>
+                    </div>
+                    <hr></hr>
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-3">
+                            <div class="form-group">
+                                <b:label value="Service" />
                                 <b:selectOneMenu id="service" value="#{reunionController.service}" >
+                                    <f:selectItem value="#{null}" itemLabel="-select Service-"/>
                                     <f:selectItems value="#{reunionController.services}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
                                     <f:ajax listener="#{reunionController.listEmp}" event="change" execute="@form" render="emp" ></f:ajax>
                                 </b:selectOneMenu>
                             </div>
                         </div>
-                        <div class="col-md-offset-2 col-md-2">
+                        <div class="col-md-offset-1 col-md-3">
                             <div class="form-group">
-                                <p:outputLabel value="Employes"/>
+                                <b:label value="Employes"/>
                                 <b:selectOneMenu id="emp" value="#{reunionController.emp}" >
+                                    <f:selectItem value="#{null}" itemLabel="-select employe-"/>
                                     <f:selectItems value="#{reunionController.employes}" var="item" itemValue="#{item.login}" itemLabel="#{item.nom}"/>
                                 </b:selectOneMenu>
                             </div>
                         </div>
-
                     </div>
                     <div class="row">
-                        <div style="text-align: center;">
-                            <p:commandButton actionListener="#{reunionController.ajoutEmp()}"  update=":itemsList:datalist" value="ajouter" class="btn btn-primary"/>
-                        </div>
+                        <centre><div class="col-md-offset-5 col-md-1">
+                                <b:commandButton actionListener="#{reunionController.ajoutEmp()}" update=":itemsList:datalist" value="ajouter"  class="btn btn-primary"/>
+                            </div></centre>
                     </div>
                 </b:panel>
             </h:form>
             <h:form id="itemsList">
-                <p:outputLabel value="Employes"/>
-                <p:dataTable value="#{reunionController.emps}" var="item" id="datalist" class="data">
+                <h3> <center><p:outputLabel value="Employes Participants"/></center></h3>
+                <p:dataTable value="#{reunionController.emps}" var="item" id="datalist" class="data" selectionMode="single" rowKey="#{item.login}">
                     <p:column>
-                        <f:facet name="header" >
-                            <h:outputText value="Employe"/>
+                        <f:facet name="header">
+                            <p:outputLabel value="Employe"/>
                         </f:facet>
                         <h:outputText value="#{item.nom}"/>
                     </p:column>
                     <p:column>
-                        <f:facet name="header" >
-                            <h:outputText value="Prenom"/>
+                        <f:facet name="header">
+                            <p:outputLabel value="Prenom"/>
                         </f:facet>
                         <h:outputText value="#{item.prenom}"/>
                     </p:column>
                     <p:column>
-                        <f:facet name="header" >
-                            <h:outputText value="Division"/>
+                        <f:facet name="header">
+                            <p:outputLabel value="Service"/>
                         </f:facet>
-                        <h:outputText value="#{item.service.division.nom}"/>
+                        <h:outputText value="#{item.service.nom}"/>
                     </p:column>
                     <p:column>
                         <f:facet name="header">
-                            <h:outputText value="Service"/>
+                            <p:outputLabel value="Ignorer"/>
                         </f:facet>
-                        <h:outputText value="#{item.service}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Ignorer"/>
-                        </f:facet>
-                        <b:commandButton actionListener="#{reunionController.ignorer(item)}" icon="" update="itemsList:datalist" value="Ignorer" ></b:commandButton>   
+                        <p:commandButton actionListener="#{reunionController.ignorer(item)}" class="btn btn-primary" update="itemsList:datalist" value="Ignorer" icon="ui-icon-close"/>  
                     </p:column>
                 </p:dataTable>
                 <br></br>
@@ -122,15 +112,10 @@
                     50%  {left:100px;}
                     100% { left:0px;}
                 }
+
+
             </style>
         </ui:define>
     </ui:composition>
 </html>
 
-
-<!--                                    <p:outputLabel value="Activite"/>
-                                    <b:selectOneMenu id="activite" value="#{reunionController.selected.activite}" >
-                                        <f:selectItems value="#{activiteController.items}"
-                                                       var="item" itemLabel="#{item.nom}"
-                                                       itemValue="#{item.id}"/>
-                                    </b:selectOneMenu> -->

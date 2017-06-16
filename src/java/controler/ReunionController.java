@@ -1,5 +1,6 @@
 package controler;
 
+import bean.Activite;
 import bean.Division;
 import bean.Employe;
 import bean.Reunion;
@@ -25,6 +26,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import org.primefaces.context.RequestContext;
+import service.ActiviteFacade;
 import service.DivisionFacade;
 import service.EmployeFacade;
 import service.ServiceFacade;
@@ -53,10 +55,16 @@ public class ReunionController implements Serializable {
     private ServiceFacade serviceFacade;
     @EJB
     private EmployeFacade employeFacade;
-
+    @EJB
+    private ActiviteFacade activiteFacade;
     private Employe user = util.SessionUtil.getConnectedUser();
 
     public ReunionController() {
+    }
+
+    public void Supression(Reunion reunion) {
+        selected = reunion;
+        RequestContext.getCurrentInstance().execute("PF('Supression').show()");
     }
 
     public void findByDate() {
@@ -92,6 +100,12 @@ public class ReunionController implements Serializable {
         selected.setGerant(user);
         ejbFacade.create(selected);
         ejbFacade.valider(emps, selected);
+        if (selected.getActivite() != null) {
+//            selected.setActivite(new Activite());
+//        } else {
+            selected.getActivite().getReunions().add(selected);
+            activiteFacade.edit(selected.getActivite());
+        }
         System.out.println("haaaa new Reunion---->" + selected);
         emps = new ArrayList<>();
     }
@@ -141,8 +155,8 @@ public class ReunionController implements Serializable {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("ReunionUpdated"));
     }
 
-    public void destroy(Reunion reunion) {
-        ejbFacade.remove(reunion);
+    public void destroy() {
+        ejbFacade.remove(selected);
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("ReunionDeleted"));
         if (util.JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection

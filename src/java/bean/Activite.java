@@ -84,7 +84,7 @@ public class Activite implements Serializable {
     }
 
     public Date getDateDebut() {
-        if(dateDebut == null){
+        if (dateDebut == null) {
             dateDebut = new Date();
         }
         return dateDebut;
@@ -95,7 +95,7 @@ public class Activite implements Serializable {
     }
 
     public Date getDateFin() {
-        if(dateFin == null){
+        if (dateFin == null) {
             dateFin = new Date();
         }
         return dateFin;
@@ -156,7 +156,7 @@ public class Activite implements Serializable {
 
     @Override
     public String toString() {
-        return "Activite{" + "nom=" + nom + ", avancement=" + avancement + ", degrer=" + degrer + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + '}';
+        return "Activite{" + "id" + id + "nom=" + nom + ", avancement=" + avancement + ", degrer=" + degrer + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + '}';
     }
 
 }

@@ -17,7 +17,6 @@
         <ui:define name="body">
             <h:form >
                 <b:panel style="background-color: #1b6d85;">
-
                     <div class="row">
                         <div class="col-lg-4 col-md-3">
                             <div class="form-group">
@@ -38,7 +37,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col-md-offset-5 col-md-1">
                             <b:commandButton action="#{employeController.findByString()}"  value="Trouver Employe"  class="fa fa-search" update=":EmployeListForm:datalist" style="float: left;"></b:commandButton><br></br>
@@ -67,7 +65,6 @@
                             <b:commandButton action="#{employeController.chercher()}"  value="Trouver les comptes"  class="fa fa-search" update=":EmployeListForm:datalist" style="float: left;"></b:commandButton><br></br>
                         </div>
                     </div>
-
                 </b:panel>
             </h:form>
 
@@ -172,11 +169,10 @@
                 </h:form>
             </p:dialog>
 
-
             <p:dialog id="SupressionDlg" widgetVar="Supression" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateTacheTitle}">
                 <h:form id="SupressionForm">
                     <p>vous voulez vraiment supprimer le compte de <p:outputLabel value="#{employeController.selected.nom} #{employeController.selected.prenom}"/></p>
-                    <p:commandButton value="supprimer" action="#{employeController.remove()}" update=":EmployeListForm:datalist" onclick="Supression.hide()" />
+                    <p:commandButton value="supprimer" action="#{employeController.deleteEmploye()}" update=":EmployeListForm:datalist" onclick="Supression.hide()" />
                     <p:commandButton value="#{bundle.Cancel}" onclick="Supression.hide()"/>
                 </h:form>
             </p:dialog>

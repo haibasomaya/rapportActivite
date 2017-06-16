@@ -15,13 +15,13 @@
         </ui:define>
 
         <ui:define name="body">
-<!--            <h:form id="recherche">
+            <h:form id="recherche">
                 <b:panel style="background-color: #1b6d85;">
                     <div class="row">
                         <div class="col-md-offset-2 col-md-3">
                             <div class="form-group">
                                 <p:outputLabel value="Date de Recherche" />
-                                <b:datepicker value="#{reunionController.selected.dateDebut}" id="dateDebut" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>
+                                <!--<b:datepicker value="#{reunionController.selected.dateDebut}" id="dateDebut" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>-->
                                 <b:datepicker value="#{reunionController.datechercher}" id="datechercher" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>
                             </div>
                         </div>
@@ -29,11 +29,10 @@
                     <centre><div class="col-md-offset-5 col-md-1">
                             <p:commandButton actionListener="#{reunionController.findByDate()}" update=":ReunionListForm:datalist" value="Trouver" class="btn btn-primary"/>
                         </div></centre>
-
                 </b:panel>
-            </h:form>-->
+            </h:form>
             <h:form id="ReunionListForm">
-                <p:dataTable  value="#{reunionController.items}" var="item" id="datalist" class="data" selection="#{reunionController.selected}" selectionMode="single" rowKey="#{item.id}">                           
+                <p:dataTable  value="#{reunionController.items}" var="item" id="datalist" class="data">                           
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="#{bundle.ListReunionTitle_discreption}"/>
@@ -60,13 +59,13 @@
                         </f:facet>
                         <h:outputText value="#{item.activite}" />
                     </p:column>
-                    <p:column width="10px">
+                    <p:column >
                         <f:facet name="header">
                             <h:outputText value="Gestion"/>
                         </f:facet>
-                        <p:commandButton id="editButton"   icon="ui-icon-pencil" title="Modifier" update=":ReunionEditForm" oncomplete="PF('ReunionEditDialog').show()" />
-                        <p:commandButton id="deleteButton" icon="ui-icon-trash" title="Suprimer"  actionListener="#{reunionController.destroy(item)}" update=":growl,:ReunionListForm:datalist" />                   
-                        <p:commandButton id="detailButton" icon="ui-icon-info" title="Detail" update=":ReunionParticipesForm:datalist" actionListener="#{reunionController.detail(item)}"/>                   
+                        <p:commandButton id="editButton"   class="inline" icon="ui-icon-pencil" title="Modifier" update=":ReunionEditForm" oncomplete="PF('ReunionEditDialog').show()" />
+                        <p:commandButton id="deleteButton" class="inline" icon="ui-icon-trash" title="Suprimer"  actionListener="#{reunionController.destroy(item)}" update=":growl,:ReunionListForm:datalist" />                   
+                        <p:commandButton id="detailButton" class="inline" icon="ui-icon-info" title="Detail" update=":ReunionParticipesForm:datalist" actionListener="#{reunionController.detail(item)}"/>                   
                     </p:column>
 
                 </p:dataTable>

@@ -64,10 +64,10 @@
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><a href="../admine/CreateReunion.xhtml" class="fa fa-plus-square"> Nouveau Ruenion </a></li>
+                                    <li><a href="../admine/CreateReunion.xhtml"> Nouveau Ruenion </a></li>
                                     <li><a href="../admine/CreateProjet.xhtml">Nouveau Projet</a></li>
                                     <li><a href="../admine/CreationMarche.xhtml">Nouveau Marche</a></li>
-                                    <li><a href="#">Nouveau Bon de Commande</a></li>
+                                    <li><a href="../admine/CreateBon.xhtml">Nouveau Bon de Commande</a></li>
                                     <!-- <li role="separator" class="divider"></li>
                                     <li><a href="#">Separated link</a></li>-->
                                 </ul>
@@ -86,10 +86,10 @@
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><a href="../superAdmine/nvRuenion.xhtml"> Nouveau Ruenion </a></li>
-                                    <li><a href="../admine/CreateProjet.xhtml"> Nouveau Projet</a></li>
-                                    <li><a href="../admine/CreationMarche.xhtml"> Nouveau Marche</a></li>
-                                    <li><a href="#"> Nouveau Bon de Commande</a></li>
+                                    <li><a href="../superAdmine/CreateReunion.xhtml"> Nouveau Ruenion </a></li>
+                                    <li><a href="../superAdmine/CreateProjet.xhtml"> Nouveau Projet</a></li>
+                                    <li><a href="../superAdmine/CreationMarche.xhtml"> Nouveau Marche</a></li>
+                                    <li><a href="../superAdmine/CreateBon.xhtml"> Nouveau Bon de Commande</a></li>
                                     <!-- <li role="separator" class="divider"></li>
                                     <li><a href="#">Separated link</a></li>-->
                                 </ul>
@@ -120,30 +120,29 @@
                         </li>
                         <h:form id="employe" style=" alignment-adjust: auto" rendered="#{employeController.simpleUser()==true}">
                             <li><a href="../tacheElementaire/List.xhtml" class="fa fa-pencil-square-o"> Mes Taches </a></li><br></br>
-                            <li><a href="../grandeTache/List.xhtml" class="fa fa-pencil-square-o"> Mes Grandes Taches </a></li><br></br>
+                            <!--<li><a href="../grandeTache/List.xhtml" class="fa fa-pencil-square-o"> Mes Grandes Taches </a></li><br></br>-->
                             <li><a href="../tacheElementaire/StatiqueTache.xhtml" class="fa fa-area-chart"> Statistique </a></li><br></br>
-                            <li><a href="#" class="fa fa-university">Mes Reunion</a></li><br></br>
-                        </h:form>
+                            <li><a href="../myList/ListReunion.xhtml" class="fa fa-university"> Mes Reunions </a></li><br></br>
 
+                        </h:form>
 
                         <h:form id="admin" style=" alignment-adjust: auto" rendered="#{employeController.user.admin==true}">
-                            <li><a href="../superAdmine/ListAdmine.xhtml" class="fa fa-group">  Mes Employes </a></li><br></br>
-                            <li><a href="../superAdmine/TacheAdmine.xhtml" class="fa fa-list-alt"> Listes Des Taches Employes </a></li><br></br>
-                            <li><a href="../reunion/List.xhtml" class="fa fa-university"> Mes Reunions </a></li><br></br>
-                            <li><a href="../tacheElementaire/List.xhtml" class="fa fa-list"> Mes Taches </a></li><br></br>
+                            <li><a href="../admine/ListEmp.xhtml" class="fa fa-group">  Mes Employes </a></li><br></br>
+                            <li><a href="../tacheElementaire/ListMyTaches.xhtml" class="fa fa-list"> Mes Taches </a></li><br></br>
+                            <li><a href="../admine/ListTacheQot.xhtml" class="fa fa-list-alt"> Listes Des Taches Employes </a></li><br></br>
                             <li><a href="../tacheElementaire/StatiqueTache.xhtml" class="fa fa-area-chart"> Statistique </a></li><br></br>
+                            <li><a href="../myList/ListReunion.xhtml" class="fa fa-university"> Mes Reunions </a></li><br></br>
+                            <li><a href="../myList/ListProjet.xhtml" class="fa fa-folder-open"> Mes Projet </a></li><br></br>
+
                         </h:form>
-
-
 
                         <h:form id="super" style=" alignment-adjust: auto" rendered="#{employeController.user.superAdmin==1}">
                             <li><a href="../superAdmine/ListAdmine.xhtml" class="fa fa-group"> Les Admines des Divisions </a></li><br></br>
                             <li><a href="../admine/ListTacheQot.xhtml" class="fa fa-list-alt"> Listes Des Taches Employes </a></li><br></br>
-                            <li><a href="../listes/ListReunion.xhtml" class="fa fa-university">Mes Reunion</a></li><br></br>
-                            <li><a href="../grandeTache/List.xhtml"> Listes des Grandes Taches </a></li><br></br>
-                            <li><a href="../activite/List.xhtml" class="fa  fa-list"> Listes des Activités </a></li><br></br>
+                            <li><a href="../myList/ListReunion.xhtml" class="fa fa-university">Mes Reunion</a></li><br></br>
+                            <li><a href="../myList/ListProjet.xhtml" class="fa fa-folder-open"> Mes Projet </a></li><br></br>
+                            <li><a href="../myList/ListProjet.xhtml" class="fa fa-folder-open"> Mes Marchet </a></li><br></br>
                             <li><a href="../tacheElementaire/StatiqueTache.xhtml" class="fa fa-area-chart"> Statistique </a></li><br></br>
-                            <!--<li><a href="../superAdmine/ListEmp.xhtml" class="fa fa-group"> Listes des Employes </a></li><br></br>-->
                         </h:form>
 
                     </ul>
@@ -156,9 +155,6 @@
                             <hr></hr><br></br>
                             <ui:insert name="body">
                             </ui:insert>
-                            <!--    <div class="col-lg-12">
-                            <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
-                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -191,9 +187,27 @@
                 e.preventDefault();
                 $("#wrapper").toggleClass("toggled");
             });
-
             $('.dropdown-toggle').dropdown();
-        </script>
 
+        </script>
     </h:body>
 </html>
+
+
+<!--<li><a href="../superAdmine/ListEmp.xhtml" class="fa fa-group"> Listes des Employes </a></li><br></br>-->
+<!--<li><a href="../grandeTache/List.xhtml"> Listes des Grandes Taches </a></li><br></br>-->
+<!--<li><a href="../activite/List.xhtml" class="fa  fa-list"> Listes des Activités </a></li><br></br>-->
+
+
+
+<!--
+<li><a class="dropdown-toggle"  id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                               Mes Activites
+                                                               <span class="caret"></span>
+                                                           </a>
+                                                           <ul class="dropdown-menu">
+                                                               <li><a href="../myList/ListReunion.xhtml" class="fa fa-university"> Mes Reunions </a></li><br></br>
+                                                                                           <li><a href="../reunion/List.xhtml" class="fa fa-university"> Mes Projet </a></li><br></br>
+                                                                                           <li><a href="../reunion/List.xhtml" class="fa fa-university"> Mes Marches </a></li><br></br>
+                                                                                           <li><a href="../reunion/List.xhtml" class="fa fa-university"> Mes Bon de Commande </a></li><br></br>
+                                                           </ul></li>-->

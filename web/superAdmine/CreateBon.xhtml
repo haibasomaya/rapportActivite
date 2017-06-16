@@ -11,7 +11,7 @@
             <!--<h:outputText value="CREATE NOUVEAU EMPLOYE"></h:outputText>-->
         </ui:define>
         <ui:define name="body">
-            <center><h3><b:label value="CREATE NOUVEAU Bon de Commande"></b:label></h3></center>
+            <center><h3><b:label value="CREATE NOUVEAU Bon Commande"></b:label></h3></center>
             <h:form>
                 <div class="">
                     <b:panel style="background-color: #1b6d85;">
@@ -24,7 +24,7 @@
                             </div>
                             <div class="col-md-offset-1 col-md-3">
                                 <div class="form-group">
-                                    <p:outputLabel value="Degree d'importance:" />
+                                    <p:outputLabel value="Degrer d'importance:" />
                                     <b:selectOneMenu value="#{bonCommandeController.selected.degrer}" class="form-control" title="Choisir Degrer">
                                         <f:selectItem itemLabel="Urgent" itemValue="1" />
                                         <f:selectItem itemLabel="Modéré" itemValue="2" />
@@ -57,10 +57,8 @@
                             </div>
                             <div class="col-lg-6 col-md-3">
                                 <div class="form-group">
-
                                     <p:outputLabel  value="Fourniseur" />
                                     <b:inputText id="fourniseur" value="#{bonCommandeController.commandeItem.fourniseur}" title="#{bundle.CreateCommandeItemTitle_nom}" />
-
                                 </div>
                             </div>
                         </div>
@@ -96,7 +94,7 @@
                 </p:dataTable>
                 <br></br>
                 <div class="col-md-offset-5 col-md-1">
-                    <p:commandButton actionListener="#{bonCommandeController.valider()}" update="datalist"  class="btn btn-primary" value="Create Bon de Commande" />   
+                    <p:commandButton actionListener="#{bonCommandeController.valider()}" update="datalist"  class="btn btn-primary" value="Create Bon Commande" />   
                 </div>
             </h:form>
             <style>

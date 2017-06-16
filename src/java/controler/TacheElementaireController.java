@@ -60,23 +60,7 @@ public class TacheElementaireController implements Serializable {
         listes.remove(listes.indexOf(tacheElementaire));
     }
 
-    public void createList() {
-        addNames();
-        ejbFacade.createList(listes, user);
-        listes = new ArrayList<>();
-    }
-
-    public void ajouterList() {
-        addNames();
-        testDate();
-        listes.add(selected);
-        System.out.println("haa selected ----->" + selected);
-        System.out.println("tache de ________>" + user);
-        System.out.println("listes---->" + listes);
-        init();
-    }
-
-    private void addNames() {
+    public void addNames() {
         if ((!nom.equals(""))) {
             int p = taches.size();
             for (int i = 0; i < p; i++) {
@@ -87,6 +71,24 @@ public class TacheElementaireController implements Serializable {
                 }
             }
         }
+    }
+
+    public void createList() {
+        ejbFacade.createList(listes, user);
+        listes = new ArrayList<>();
+    }
+
+    public void ajouterList() {
+        if (selected.getNom().equals("")) {
+            selected.setNom(nom);
+            addNames();
+        }
+        testDate();
+        listes.add(selected);
+        System.out.println("haa selected ----->" + selected);
+        System.out.println("tache de ________>" + user);
+        System.out.println("listes---->" + listes);
+        init();
     }
 
     public void testDate() {
@@ -346,7 +348,6 @@ public class TacheElementaireController implements Serializable {
     }
 
     public String getNom() {
-        nom = "";
         return nom;
     }
 

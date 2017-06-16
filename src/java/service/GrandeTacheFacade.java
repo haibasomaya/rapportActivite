@@ -5,6 +5,7 @@
  */
 package service;
 
+import bean.Activite;
 import bean.GrandeTache;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -28,5 +29,11 @@ public class GrandeTacheFacade extends AbstractFacade<GrandeTache> {
     public GrandeTacheFacade() {
         super(GrandeTache.class);
     }
-    
+//    public int createGrandeTache(Activite activite , GrandeTache grandeTache){
+//        if(grandeTache!= null && activite!= null){
+//            grandeTache.setActivite(activite);
+//            grandeTache.setAvancement(gr);
+//            
+//        }
+//    }
 }

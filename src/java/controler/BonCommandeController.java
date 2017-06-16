@@ -1,11 +1,14 @@
 package controler;
 
 import bean.BonCommande;
+import bean.CommandeItem;
+import bean.Employe;
 import controler.util.JsfUtil;
 import util.JsfUtil.PersistAction;
 import service.BonCommandeFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -18,25 +21,42 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import service.CommandeItemFacade;
 
 @Named("bonCommandeController")
 @SessionScoped
 public class BonCommandeController implements Serializable {
 
-    @EJB
-    private service.BonCommandeFacade ejbFacade;
     private List<BonCommande> items = null;
     private BonCommande selected;
+    private List<CommandeItem> commandeItems;
+    private CommandeItem commandeItem;
+    private Employe user = util.SessionUtil.getConnectedUser();
+
+    @EJB
+    private service.BonCommandeFacade ejbFacade;
+    @EJB
+    private CommandeItemFacade commandeItemFacade;
 
     public BonCommandeController() {
     }
 
-    public BonCommande getSelected() {
-        return selected;
+    public void valider() {
+        selected.setGerant(user);
+//        selected.setCommandeItems(commandeItems);
+        ejbFacade.create(selected);
+        commandeItemFacade.createItems(commandeItems, selected);
+        commandeItems = new ArrayList();
+
     }
 
-    public void setSelected(BonCommande selected) {
-        this.selected = selected;
+    public void ignorer(CommandeItem commandeItem) {
+        commandeItems.remove(commandeItems.indexOf(commandeItems));
+    }
+
+    public void ajoutItem() {
+        commandeItems.add(commandeItem);
+        commandeItem = new CommandeItem();
     }
 
     protected void setEmbeddableKeys() {
@@ -72,13 +92,6 @@ public class BonCommandeController implements Serializable {
             selected = null; // Remove selection
             items = null;    // Invalidate list of items to trigger re-query.
         }
-    }
-
-    public List<BonCommande> getItems() {
-        if (items == null) {
-            items = getFacade().findAll();
-        }
-        return items;
     }
 
     private void persist(PersistAction persistAction, String successMessage) {
@@ -160,6 +173,55 @@ public class BonCommandeController implements Serializable {
             }
         }
 
+    }
+
+    public BonCommande getSelected() {
+        if (selected == null) {
+            selected = new BonCommande();
+        }
+        return selected;
+    }
+
+    public void setSelected(BonCommande selected) {
+
+        this.selected = selected;
+    }
+
+    public List<BonCommande> getItems() {
+        if (items == null) {
+            items = getFacade().findAll();
+        }
+        return items;
+    }
+
+    public List<CommandeItem> getCommandeItems() {
+        if (commandeItems == null) {
+            commandeItems = new ArrayList();
+        }
+        return commandeItems;
+    }
+
+    public void setCommandeItems(List<CommandeItem> commandeItems) {
+        this.commandeItems = commandeItems;
+    }
+
+    public CommandeItem getCommandeItem() {
+        if (commandeItem == null) {
+            commandeItem = new CommandeItem();
+        }
+        return commandeItem;
+    }
+
+    public void setCommandeItem(CommandeItem commandeItem) {
+        this.commandeItem = commandeItem;
+    }
+
+    public Employe getUser() {
+        return user;
+    }
+
+    public void setUser(Employe user) {
+        this.user = user;
     }
 
 }

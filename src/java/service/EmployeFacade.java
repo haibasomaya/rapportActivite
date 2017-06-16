@@ -149,7 +149,7 @@ public class EmployeFacade extends AbstractFacade<Employe> {
             System.out.println("haaaa mot de pass lii t'genera----->" + pass);
             String message = "votre login est :" + employe.getLogin() + " votre password " + pass + "  'vous pouvez le changer apres s'il vous volez ' ";
             String objecte = "compte Wilaya";
-//        util.EmailUtil.sendMail("wlialaya.marrakech@gmail.com", "somaya@wijdan", "Bonjour M/Mme" + employe.getNom() + " " + message, employe.getEmail(), objecte);
+        util.EmailUtil.sendMail("wlialaya.marrakech@gmail.com", "somaya@wijdan", "Bonjour M/Mme" + employe.getNom() + " " + message, employe.getEmail(), objecte);
             employe.setPassword(util.HashageUtil.sha256(pass));
             create(employe);
             return 1;

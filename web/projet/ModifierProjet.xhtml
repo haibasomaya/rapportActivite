@@ -7,18 +7,20 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:b="http://bootsfaces.net/ui">
 
-    <ui:composition>
+    <ui:composition template="/templates/grTemplate.xhtml">
 
-        <p:dialog id="ProjetEditDlg" widgetVar="ProjetEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditProjetTitle}">
+        <ui:define name="body">
+            <!--<p:dialog id="ProjetEditDlg" widgetVar="ProjetEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditProjetTitle}">-->
             <h:form id="ProjetEditForm">  
-                <h4><b:label value="Affectation Grande Tache"/></h4>
+                <h4><p:outputLabel value="Affectation Grande Tache"/></h4>
                 <div class="row">
                     <div class="col-lg-4 col-md-3 form-control" >
-                        <p:outputLabel value="Nom:" for="nom" />
-                        <b:selectOneMenu value="#{grandeTacheController.selected.nom}" >
+                        <p:outputLabel value="Nom:" />
+                        <b:inputText value="#{projetController.grandeTach.nom}" title="Nom Tache">
+<!--                        <b:selectOneMenu value="#{projetController.grandeTach.nom}" >
                             <f:selectItem itemValue="" itemLabel="-select Tache-"/>
                             <f:selectItems value="#{grandeTacheController.names}" />
-                        </b:selectOneMenu>
+                        </b:selectOneMenu>-->
                     </div>
                 </div>
                 <div class="row">
@@ -30,18 +32,15 @@
                 <div class="row">
                     <div class="col-lg-4 col-md-3 form-control">
                         <p:outputLabel value="DateFin:" for="dateFin" />
-                        <b:datepicker id="dateTache" placeholder="MM/dd/yyyy HH:mm:ss"  value="#{grandeTacheController.selected.dateTache}" show-button-panel="button" ></b:datepicker>
+                        <b:datepicker id="dateFin" placeholder="MM/dd/yyyy HH:mm:ss"  value="#{grandeTacheController.selected.dateTache}" show-button-panel="button" ></b:datepicker>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-4 col-md-3 form-control">
-
-
-
-                        <p:commandButton actionListener="#{grandeTacheController.creation()}" value="#{bundle.Save}" update="display,:ProjetListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ProjetEditDialog');"/>
-                        <p:commandButton value="#{bundle.Cancel}" onclick="ProjetEditDialog.hide()"/>
-                        </h:form>
-                        </p:dialog>
-
-                        </ui:composition>
-                        </html>
+                        <p:commandButton actionListener="#{projetController.AffecterGrandeTache()}" value="#{bundle.Save}"/>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

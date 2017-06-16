@@ -1,6 +1,7 @@
 package controler;
 
 import bean.Activite;
+import bean.Employe;
 import bean.GrandeTache;
 import util.JsfUtil;
 import util.JsfUtil.PersistAction;
@@ -29,16 +30,16 @@ public class GrandeTacheController implements Serializable {
     private List<GrandeTache> items = null;
     private GrandeTache selected;
     private List<Activite> activites = null;
+    private List<String> names = new ArrayList<>();
+    private Activite activite = null;
+    private List<Employe> emps;
     @EJB
     private service.GrandeTacheFacade ejbFacade;
     @EJB
     private ActiviteFacade activiteFacade;
+    private Employe emp = util.SessionUtil.getConnectedUser();
 
     public GrandeTacheController() {
-    }
-
-    public void createGrdTache() {
-
     }
 
     public GrandeTache prepareCreate() {
@@ -184,6 +185,53 @@ public class GrandeTacheController implements Serializable {
 
     public void setActivites(List<Activite> activites) {
         this.activites = activites;
+    }
+
+    public List<String> getNames() {
+        if (names == null) {
+            names.add("Envoi vers le service de marcher");
+            names.add("Publication de l'appelle d'offre sur marche public");
+            names.add("Ouverture de plie");
+            names.add("Ordre du service");
+            names.add("Livraison");//fourniture
+            names.add("Reception provesoir");//fourniture
+            names.add("Reception defenitive");//fourniture
+            names.add("Execution");//traveau du service
+            names.add("Attachement");//traveu au service
+        }
+
+        return names;
+    }
+
+    public void setNames(List<String> names) {
+        this.names = names;
+    }
+
+    public Activite getActivite() {
+        if (activite == null) {
+            activite = new Activite();
+        }
+        return activite;
+    }
+
+    public void setActivite(Activite activite) {
+        this.activite = activite;
+    }
+
+    public List<Employe> getEmps() {
+        return emps;
+    }
+
+    public void setEmps(List<Employe> emps) {
+        this.emps = emps;
+    }
+
+    public Employe getEmp() {
+        return emp;
+    }
+
+    public void setEmp(Employe emp) {
+        this.emp = emp;
     }
 
 }
