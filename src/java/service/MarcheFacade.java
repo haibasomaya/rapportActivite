@@ -11,6 +11,7 @@ import bean.Marche;
 import bean.Projet;
 import bean.Reunion;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 import javax.ejb.EJB;
@@ -41,13 +42,43 @@ public class MarcheFacade extends AbstractFacade<Marche> {
     public MarcheFacade() {
         super(Marche.class);
     }
-
+//    public List<Marche> mesMarche(Employe employe){
+//        return em.createQuery("SELECT m FROM Marche m WHERE m.")
+//    }
+ public List<Employe> activiteEmploye(Marche activite) {
+        if (activite != null) {
+            List<Employe> emps = new ArrayList();
+            List<GrandeTache> taches = em.createQuery("SELECT t FROM GrandeTache t WHERE t.activite.id =" + activite.getId()).getResultList();
+            if (!taches.isEmpty()) {
+                for (GrandeTache tache : taches) {
+                    emps.add(tache.getEmploye());
+                }
+                return emps;
+            }
+        }
+        return null;
+    }
     public List<Marche> findByGerant(Employe employe) {
         if (employe != null && (employe.isAdmin() || employe.getSuperAdmin() == 1)) {
-            return em.createQuery("SELECT act FROM Projet act WHERE act.gerant.login ='" + employe.getLogin() + "'").getResultList();
+            return em.createQuery("SELECT act FROM Marche act WHERE act.gerant.login ='" + employe.getLogin() + "'").getResultList();
         } else {
             return null;
         }
+    }
+
+    public List<Marche> findByTypeDate(Employe employe, int type, Date dateMin, Date dateMax) {
+        String rq = "SELECT p FROM Marche p WHERE p.gerant.login ='" + employe.getLogin() + "'";
+        if (type > 0) {
+            rq += " and p.degrer = " + type;
+        }
+        if (dateMax != null) {
+            rq += util.SearchUtil.addConstraintDate("p", "dateFin", "<=", dateMax);
+        }
+        if (dateMin != null) {
+            rq += util.SearchUtil.addConstraintDate("p", "dateDebut", ">=", dateMin);
+        }
+        System.out.println("reaquette findByTypeDate()------->" + rq);
+        return em.createQuery(rq).getResultList();
     }
 
     public List<Marche> findByUser(Employe employe) {
@@ -58,24 +89,6 @@ public class MarcheFacade extends AbstractFacade<Marche> {
                 list.add(p);
             });
             return list;
-        }
-        return null;
-    }
-
-    public List<Employe> activiteEmploye(Marche activite) {
-        if (activite != null) {
-            List<Employe> emps = new ArrayList();
-            List<GrandeTache> taches = em.createQuery("SELECT t FROM GrandeTache t WHERE t.activite.id =" + activite.getId()).getResultList();
-            if (!taches.isEmpty()) {
-                taches.forEach(new Consumer<GrandeTache>() {
-                    @Override
-                    public void accept(GrandeTache tache) {
-                        emps.addAll(tache.getEmployes());
-                    }
-                });
-            } else {
-                return null;
-            }
         }
         return null;
     }

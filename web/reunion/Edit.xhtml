@@ -55,7 +55,7 @@
                             </div>
                         </div>
                     </div>
-                    <b:commandButton actionListener="#{reunionController.update}" value="#{bundle.Save}" look="primary" update="display,:ReunionListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ReunionEditDialog');"/>
+                    <b:commandButton actionListener="#{reunionController.updating()}" value="#{bundle.Save}" look="primary" update="display,:ReunionListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ReunionEditDialog');"/>
                     <b:commandButton value="#{bundle.Cancel}" onclick="ReunionEditDialog.hide()"/>
                 </h:panelGroup>
             </h:form>

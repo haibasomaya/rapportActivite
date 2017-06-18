@@ -9,6 +9,7 @@ import service.GrandeTacheFacade;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -28,18 +29,25 @@ import service.ActiviteFacade;
 public class GrandeTacheController implements Serializable {
 
     private List<GrandeTache> items = null;
-    private GrandeTache selected;
     private List<Activite> activites = null;
-    private List<String> names = new ArrayList<>();
-    private Activite activite = null;
-    private List<Employe> emps;
+    private List<Employe> emps = null;
+    private GrandeTache selected;
+    private Activite activite;
+    private Date dateCherche;
     @EJB
     private service.GrandeTacheFacade ejbFacade;
     @EJB
     private ActiviteFacade activiteFacade;
-    private Employe emp = util.SessionUtil.getConnectedUser();
+
+    private Employe user = util.SessionUtil.getConnectedUser();
 
     public GrandeTacheController() {
+    }
+
+    public void GrandeByDate() {
+        System.out.println("h dateCherche ------> " + dateCherche);
+        items = ejbFacade.GrandeByDate(user, dateCherche);
+        System.out.println("haaa la liste trouver ------> " + items);
     }
 
     public GrandeTache prepareCreate() {
@@ -178,33 +186,17 @@ public class GrandeTacheController implements Serializable {
 
     public List<Activite> getActivites() {
         if (activites == null) {
-            activites = new ArrayList();
+            if (user.isAdmin() || user.getSuperAdmin() == 1) {
+                activites = activiteFacade.findByGerant(user);
+            } else {
+                activites = activiteFacade.findByUser(user);
+            }
         }
         return activites;
     }
 
     public void setActivites(List<Activite> activites) {
         this.activites = activites;
-    }
-
-    public List<String> getNames() {
-        if (names == null) {
-            names.add("Envoi vers le service de marcher");
-            names.add("Publication de l'appelle d'offre sur marche public");
-            names.add("Ouverture de plie");
-            names.add("Ordre du service");
-            names.add("Livraison");//fourniture
-            names.add("Reception provesoir");//fourniture
-            names.add("Reception defenitive");//fourniture
-            names.add("Execution");//traveau du service
-            names.add("Attachement");//traveu au service
-        }
-
-        return names;
-    }
-
-    public void setNames(List<String> names) {
-        this.names = names;
     }
 
     public Activite getActivite() {
@@ -226,12 +218,20 @@ public class GrandeTacheController implements Serializable {
         this.emps = emps;
     }
 
-    public Employe getEmp() {
-        return emp;
+    public Employe getUser() {
+        return user;
     }
 
-    public void setEmp(Employe emp) {
-        this.emp = emp;
+    public void setUser(Employe user) {
+        this.user = user;
+    }
+
+    public Date getDateCherche() {
+        return dateCherche;
+    }
+
+    public void setDateCherche(Date dateCherche) {
+        this.dateCherche = dateCherche;
     }
 
 }

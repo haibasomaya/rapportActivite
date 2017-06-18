@@ -114,14 +114,6 @@ public class EmployeFacade extends AbstractFacade<Employe> {
         return em.createQuery("SELECT emp FROM Employe emp WHERE emp.service.id = " + service.getId()).getResultList();
     }
 
-    public List<Employe> liseBloquer(int etat) {
-        if (etat > 0) {
-            return em.createQuery("SELECT emp from Employe emp WHERE emp.bloquer = " + etat).getResultList();
-        } else {
-            return null;
-        }
-    }
-
     public int deconexion(Employe employe) {
         if (employe != null) {
             List<Device> devices = employe.getDevices();
@@ -147,11 +139,13 @@ public class EmployeFacade extends AbstractFacade<Employe> {
         } else {
             String pass = util.HashageUtil.genererMdp();
             System.out.println("haaaa mot de pass lii t'genera----->" + pass);
-            String message = "votre login est :" + employe.getLogin() + " votre password " + pass + "  'vous pouvez le changer apres s'il vous volez ' ";
-            String objecte = "compte Wilaya";
-        util.EmailUtil.sendMail("wlialaya.marrakech@gmail.com", "somaya@wijdan", "Bonjour M/Mme" + employe.getNom() + " " + message, employe.getEmail(), objecte);
+            String message = "Bonjour Mr/Mme " + employe.getNom() + "  " + employe.getPrenom() + "  " + " votre login est :" + employe.getLogin() + " et votre password :" + pass + "  vous pouvez le changer apres s'il vous volez  ";
+            String objecte = " Nouveau compte Wilaya";
+            boolean send = util.EmailUtil.sendMail("marrakechsafiwilaya@gmail.com", "marrakech@safi", message, employe.getEmail(), objecte);
             employe.setPassword(util.HashageUtil.sha256(pass));
-            create(employe);
+            if (send == true) {
+                create(employe);
+            }
             return 1;
         }
     }
@@ -204,11 +198,23 @@ public class EmployeFacade extends AbstractFacade<Employe> {
         }
     }
 
+    public List<Employe> liseBloquer(int etat) {
+        if (etat > 0) {
+            return em.createQuery("SELECT emp from Employe emp WHERE emp.bloquer = " + etat).getResultList();
+        } else {
+            return null;
+        }
+    }
+
     public List<Employe> EmpAdminBloquer(int etat, List<Employe> employes) {
         List<Employe> emps = new ArrayList();
-        employes.stream().filter((emp) -> (emp.getBloquer() == etat)).forEachOrdered((emp) -> {
-            emps.add(emp);
-        });
+        if (employes != null || !employes.isEmpty()) {
+            for (Employe employe : employes) {
+                if (employe.getBloquer() == etat) {
+                    emps.add(employe);
+                }
+            }
+        }
         return emps;
     }
 

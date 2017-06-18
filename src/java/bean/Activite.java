@@ -6,6 +6,7 @@
 package bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -30,7 +31,7 @@ public class Activite implements Serializable {
     private Long id;
     private String nom;
     private String local;
-    private long avancement;
+    private long avancement = 0L;
     private int degrer;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dateDebut;
@@ -106,6 +107,9 @@ public class Activite implements Serializable {
     }
 
     public List<GrandeTache> getGrandeTaches() {
+        if (grandeTaches == null) {
+            grandeTaches = new ArrayList();
+        }
         return grandeTaches;
     }
 
@@ -114,6 +118,9 @@ public class Activite implements Serializable {
     }
 
     public Employe getGerant() {
+        if (gerant == null) {
+            gerant = new Employe();
+        }
         return gerant;
     }
 
@@ -122,6 +129,9 @@ public class Activite implements Serializable {
     }
 
     public List<Reunion> getReunions() {
+        if (reunions == null) {
+            reunions = new ArrayList();
+        }
         return reunions;
     }
 

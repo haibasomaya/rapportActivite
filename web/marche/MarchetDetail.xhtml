@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui">
+
+    <ui:composition template="/templates/grTemplate.xhtml">
+
+        <ui:define name="body">
+            <h:form>
+                <div style="float: right;">
+                    <b:commandButton value="retour" action="/myList/ListMarchet.xhtml" class="btn btn-primary"/>
+                </div>
+            </h:form>
+            <h:form id="projetDetailForm">
+                <h4><p:outputLabel value="Liste des employes participant de le Marchet #{marcheController.selected.nom}"/></h4>
+                <b:dataTable value="#{marcheController.emps}" var="item" id="datalist" class="data">
+                    <b:column>
+                        <f:facet name="header">
+                            <h:outputText value="Nom"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nom}"/>
+                    </b:column>
+                    <b:column>
+                        <f:facet name="header">
+                            <h:outputText value="Prenom"/>
+                        </f:facet>
+                        <h:outputText value="#{item.prenom}"/>
+                    </b:column>
+                    <b:column>
+                        <f:facet name="header">
+                            <h:outputText value="Tel"/>
+                        </f:facet>
+                        <h:outputText value="#{item.tel}"/>
+                    </b:column>
+                    <b:column>
+                        <f:facet name="header">
+                            <h:outputText value="Email"/>
+                        </f:facet>
+                        <h:outputText value="#{item.email}"/>
+                    </b:column>
+                    <b:column>
+                        <f:facet name="header">
+                            <h:outputText value="NumPost"/>
+                        </f:facet>
+                        <h:outputText value="#{item.numPost}"/>
+                    </b:column>
+                    <b:column>
+                        <f:facet name="header">
+                            <h:outputText value="NumBureau"/>
+                        </f:facet>
+                        <h:outputText value="#{item.numBureau}"/>
+                    </b:column>
+                    <b:column>
+                        <f:facet name="header">
+                            <h:outputText value="Service"/>
+                        </f:facet>
+                        <h:outputText value="#{item.service.nom}"/>
+                    </b:column>
+                    <b:column>
+                        <f:facet name="header">
+                            <h:outputText value="Fonction"/>
+                        </f:facet>
+                        <h:outputText value="#{marcheController.findDivision(item)}"/>
+                    </b:column>
+                </b:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

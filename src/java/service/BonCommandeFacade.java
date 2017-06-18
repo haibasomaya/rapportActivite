@@ -68,16 +68,16 @@ public class BonCommandeFacade extends AbstractFacade<BonCommande> {
         if (activite != null) {
             List<Employe> emps = new ArrayList();
             List<GrandeTache> taches = em.createQuery("SELECT t FROM GrandeTache t WHERE t.activite.id =" + activite.getId()).getResultList();
-            if (!taches.isEmpty()) {
-                taches.forEach(new Consumer<GrandeTache>() {
-                    @Override
-                    public void accept(GrandeTache tache) {
-                        emps.addAll(tache.getEmployes());
-                    }
-                });
-            } else {
-                return null;
-            }
+//            if (!taches.isEmpty()) {
+//                taches.forEach(new Consumer<GrandeTache>() {
+//                    @Override
+//                    public void accept(GrandeTache tache) {
+//                        emps.addAll(tache.getEmployes());
+//                    }
+//                });
+//            } else {
+//                return null;
+//            }
         }
         return null;
     }

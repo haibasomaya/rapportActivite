@@ -42,6 +42,8 @@ public class ReunionController implements Serializable {
     private Date datechercher;
     private List<Reunion> items = null;
     private List<Service> services = null;
+    private List<Service> srvs = null;
+    private List<Service> srv = null;
     private List<Employe> employes = null;
     private List<Employe> emps = null;
     private List<Employe> participants = null;
@@ -62,6 +64,21 @@ public class ReunionController implements Serializable {
     public ReunionController() {
     }
 
+    public void updating() {
+        if (emp != null) {
+            employes.add(emp);
+        }
+        ejbFacade.edit(selected);
+    }
+
+    public void modifier(Reunion reunion) {
+        emp = new Employe();
+        selected = reunion;
+        System.out.println(selected.getDateDebut());
+        RequestContext.getCurrentInstance().execute("PF('ReunionEditDialog').show()");
+
+    }
+
     public void Supression(Reunion reunion) {
         selected = reunion;
         RequestContext.getCurrentInstance().execute("PF('Supression').show()");
@@ -74,7 +91,7 @@ public class ReunionController implements Serializable {
     }
 
     public void detail(Reunion reunion) {
-        participants = reunion.getParticipants();
+        participants = ejbFacade.findParticips(reunion);
         RequestContext.getCurrentInstance().execute("PF('ReunionDetailDialog').show()");
 
     }
@@ -92,6 +109,12 @@ public class ReunionController implements Serializable {
             services = serviceFacade.findByDivision(division);
             i = 0;
         }
+    }
+    public void listSrvs() {
+        if (division != null) {
+            System.out.println("la divisionnn est-----> " + division);
+            srvs = serviceFacade.findByDivision(division);
+        }
 
     }
 
@@ -101,13 +124,34 @@ public class ReunionController implements Serializable {
         ejbFacade.create(selected);
         ejbFacade.valider(emps, selected);
         if (selected.getActivite() != null) {
-//            selected.setActivite(new Activite());
-//        } else {
             selected.getActivite().getReunions().add(selected);
             activiteFacade.edit(selected.getActivite());
         }
         System.out.println("haaaa new Reunion---->" + selected);
         emps = new ArrayList<>();
+    }
+
+    public void ajoutReunion() {
+        testDate();
+        selected.setGerant(user);
+        ejbFacade.createReunionParAdmin(services, selected);
+        if (selected.getActivite() != null) {
+            selected.getActivite().getReunions().add(selected);
+            activiteFacade.edit(selected.getActivite());
+        }
+        System.out.println("haaaa new Reunion---->" + selected);
+        services = null;
+
+    }
+
+    public void ignorerService(Service s) {
+        srv.remove(srv.indexOf(s));
+    }
+
+    public void ajoutService() {
+        if (service != null) {
+            srv.add(service);
+        }
     }
 
     public void ignorer(Employe emp) {
@@ -390,6 +434,28 @@ public class ReunionController implements Serializable {
 
     public void setParticipants(List<Employe> participants) {
         this.participants = participants;
+    }
+
+    public List<Service> getSrv() {
+        if (srv == null) {
+            srv = new ArrayList<>();
+        }
+        return srv;
+    }
+
+    public void setSrv(List<Service> srv) {
+        this.srv = srv;
+    }
+
+    public List<Service> getSrvs() {
+        if (srvs == null) {
+            srvs = new ArrayList<>();
+        }
+        return srvs;
+    }
+
+    public void setSrvs(List<Service> srvs) {
+        this.srvs = srvs;
     }
 
 }

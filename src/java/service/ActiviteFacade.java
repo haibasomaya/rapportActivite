@@ -53,29 +53,29 @@ public class ActiviteFacade extends AbstractFacade<Activite> {
         }
         return null;
     }
-
-    public List<Employe> activiteEmploye(Activite activite) {
-        if (activite != null) {
-            List<Employe> emps = new ArrayList();
-            List<GrandeTache> taches = em.createQuery("SELECT t FROM GrandeTache t WHERE t.activite.id =" + activite.getId()).getResultList();
-            if (!taches.isEmpty()) {
-                taches.forEach(new Consumer<GrandeTache>() {
-                    @Override
-                    public void accept(GrandeTache tache) {
-                        emps.addAll(tache.getEmployes());
-                    }
-                });
-            } else {
-                return null;
-            }
-        }
-        return null;
-   }
-
-//    requete  = "SELECT e.dtype FROM Employe e WHERE e.id=" + employe.getId();
-//    type  = (String) getEntityManager().createNativeQuery(requete).getSingleResult();
-    public String activiteType(Activite activite) {
-        String rq = "SELECT act FROM Activite act WHERE act.id=" + activite.getId();
-        return (String) getEntityManager().createNativeQuery("").getSingleResult();
-    }
 }
+//ghadii tbadeel
+//    public List<Employe> activiteEmploye(Activite activite) {
+//        if (activite != null) {
+//            List<Employe> emps = new ArrayList();
+//            List<GrandeTache> taches = em.createQuery("SELECT t FROM GrandeTache t WHERE t.activite.id =" + activite.getId()).getResultList();
+//            if (!taches.isEmpty()) {
+//                for (GrandeTache tache : taches) {
+//                    emps.add(tache.g)
+//                }
+//                });
+//                System.out.println("les participant dans un projet-------> " + emps);
+//            } else {
+//                return null;
+//            }
+//        }
+//        return null;
+//    }
+//}
+
+//requete  = "SELECT e.dtype FROM Employe e WHERE e.id=" + employe.getId();
+//    type  = (String) getEntityManager().createNativeQuery(requete).getSingleResult();
+//    public String activiteType(Activite activite) {
+//        String rq = "SELECT act FROM Activite act WHERE act.id=" + activite.getId();
+//        return (String) getEntityManager().createNativeQuery("").getSingleResult();
+//    }

@@ -1,12 +1,17 @@
 package controler;
 
+import bean.Division;
 import bean.Employe;
+import bean.GrandeTache;
 import bean.Marche;
 import controler.util.JsfUtil;
+import java.io.IOException;
 import util.JsfUtil.PersistAction;
 import service.MarcheFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -19,19 +24,97 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import org.primefaces.context.RequestContext;
+import service.DivisionFacade;
+import service.GrandeTacheFacade;
 
 @Named("marcheController")
 @SessionScoped
 public class MarcheController implements Serializable {
 
+    private Marche selected;
+    private GrandeTache grandeTach;
+    private String nom;
+    private Date dateMin;
+    private Date dateMax;
+    private int type;
+    private List<Marche> items = null;
+    private List<Employe> emps = null;
+    private List<Division> divisions = null;
+    private List<Division> dvsn = null;
+    List<String> names = new ArrayList<>();
+    private Division division;
+
     @EJB
     private service.MarcheFacade ejbFacade;
-    private List<Marche> items = null;
-    private Marche selected;
-    private String nom;
+    @EJB
+    private GrandeTacheFacade grandeTacheFacade;
+    @EJB
+    private DivisionFacade divisionFacade;
+
     private Employe user = util.SessionUtil.getConnectedUser();
 
     public MarcheController() {
+    }
+
+    public void igniorer(Division division) {
+        dvsn.remove(dvsn.indexOf(division));
+    }
+
+    public void ajoutDivision() {
+        dvsn.add(division);
+    }
+
+    public Division findDivision(Employe employe) {
+        return divisionFacade.findDivisionByAdmin(employe).get(0);
+    }
+
+    public void deletProjet(Marche projet) {
+        selected = projet;
+        RequestContext.getCurrentInstance().execute("PF('Supression').show()");
+    }
+
+    public String detail(Marche projet) throws IOException {
+        selected = projet;
+        util.SessionUtil.redirect("/rapportActivite/faces/marche/MarchetDetail");
+        return "/marche/MarchetDetail.xhtml";
+    }
+
+    public String ModifierProjet(Marche projet) throws IOException {
+        selected = projet;
+        util.SessionUtil.redirect("/rapportActivite/faces/marche/ModifierMarche");
+        return "/marche/ModifierMarche.xhtml";
+    }
+
+    public void findByTypeDate() {
+        if ((type == -1) && (dateMax == null && dateMin == null)) {
+            items = getItems();
+        }
+        items = ejbFacade.findByTypeDate(user, type, dateMin, dateMax);
+        System.out.println("Controler findByTypeDate()------->" + items);
+
+    }
+
+    public void AffecterGrandeTache() {
+        grandeTach.setEmploye(user);
+        grandeTach.setActivite(selected);
+        grandeTacheFacade.create(grandeTach);
+        selected.setAvancement(selected.getAvancement() + grandeTach.getAvancement());
+        selected.getGrandeTaches().add(grandeTach);
+        ejbFacade.edit(selected);
+    }
+
+    public String importance(Marche projet) {
+        switch (projet.getDegrer()) {
+            case 1:
+                return "Urgent";
+            case 2:
+                return "Moderer";
+            case 3:
+                return "Minim";
+            default:
+                return " ";
+        }
     }
 
     public void creation() {
@@ -41,35 +124,11 @@ public class MarcheController implements Serializable {
         if (!nom.equals("")) {
             selected.getFournisseurs().add(nom);
         }
+        if (!divisions.isEmpty()) {
+            selected.setDivisions(dvsn);
+        }
         ejbFacade.create(selected);
         prepareCreate();
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public Employe getUser() {
-        return user;
-    }
-
-    public void setUser(Employe user) {
-        this.user = user;
-    }
-
-    public Marche getSelected() {
-        if (selected == null) {
-            selected = new Marche();
-        }
-        return selected;
-    }
-
-    public void setSelected(Marche selected) {
-        this.selected = selected;
     }
 
     protected void setEmbeddableKeys() {
@@ -108,13 +167,6 @@ public class MarcheController implements Serializable {
         }
     }
 
-    public List<Marche> getItems() {
-        if (items == null) {
-            items = getFacade().findAll();
-        }
-        return items;
-    }
-
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
@@ -141,10 +193,6 @@ public class MarcheController implements Serializable {
                 JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             }
         }
-    }
-
-    public Marche getMarche(java.lang.Long id) {
-        return getFacade().find(id);
     }
 
     public List<Marche> getItemsAvailableSelectMany() {
@@ -196,4 +244,153 @@ public class MarcheController implements Serializable {
 
     }
 
+    public List<Employe> getEmps() {
+        if (emps == null) {
+            emps = ejbFacade.activiteEmploye(selected);
+        }
+        return emps;
+    }
+
+    public void setEmps(List<Employe> emps) {
+        this.emps = emps;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public Employe getUser() {
+        return user;
+    }
+
+    public void setUser(Employe user) {
+        this.user = user;
+    }
+
+    public Marche getSelected() {
+        if (selected == null) {
+            selected = new Marche();
+        }
+        return selected;
+    }
+
+    public void setSelected(Marche selected) {
+        this.selected = selected;
+    }
+
+    public List<Marche> getItems() {
+        if (items == null) {
+            testItmes();
+        }
+        return items;
+    }
+
+    private void testItmes() {
+        if (user.isAdmin() || user.getSuperAdmin() == 1) {
+            if (ejbFacade.findByGerant(user) != null) {
+                items = ejbFacade.findByGerant(user);
+            }
+        } else if (ejbFacade.findByUser(user) != null) {
+            items = ejbFacade.findByUser(user);
+        } else {
+            items = new ArrayList<>();
+        }
+    }
+
+    public Marche getMarche(java.lang.Long id) {
+        return getFacade().find(id);
+    }
+
+    public Division getDivision() {
+        if (division == null) {
+            division = new Division();
+        }
+        return division;
+    }
+
+    public void setDivision(Division division) {
+        this.division = division;
+    }
+
+    public List<Division> getDivisions() {
+        if (divisions == null) {
+            divisions = divisionFacade.findAll();
+        }
+        return divisions;
+    }
+
+    public void setDivisions(List<Division> divisions) {
+        this.divisions = divisions;
+    }
+
+    public List<Division> getDvsn() {
+        if (dvsn == null) {
+            dvsn = new ArrayList<>();
+        }
+        return dvsn;
+    }
+
+    public void setDvsn(List<Division> dvsn) {
+        this.dvsn = dvsn;
+    }
+
+    public GrandeTache getGrandeTach() {
+        if (grandeTach == null) {
+            grandeTach = new GrandeTache();
+        }
+        return grandeTach;
+    }
+
+    public void setGrandeTach(GrandeTache grandeTach) {
+        this.grandeTach = grandeTach;
+    }
+
+    public Date getDateMin() {
+        return dateMin;
+    }
+
+    public void setDateMin(Date dateMin) {
+        this.dateMin = dateMin;
+    }
+
+    public Date getDateMax() {
+        return dateMax;
+    }
+
+    public void setDateMax(Date dateMax) {
+        this.dateMax = dateMax;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public List<String> getNames() {
+        names.add("Envoi vers le service de marcher");
+        names.add("Publication de l'appelle d'offre sur marche public");
+        names.add("Ouverture de plie");
+        names.add("Ordre du service");
+        if (selected.getFournisseurs() != null) {
+            names.add("Livraison");//fourniture
+            names.add("Reception provesoir");//fourniture
+            names.add("Reception defenitive");//fournitur
+        }
+        if (selected.getDivisions() != null) {
+            names.add("Execution");//traveau du service
+            names.add("Attachement");//traveu au service
+        }
+        return names;
+    }
+
+    public void setNames(List<String> names) {
+        this.names = names;
+    }
 }

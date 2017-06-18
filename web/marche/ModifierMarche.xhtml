@@ -12,7 +12,7 @@
         <ui:define name="body">
             <h:form>
                 <div style="float: right;">
-                    <b:commandButton value="retour" action="/myList/ListProjet.xhtml" class="btn btn-primary"/>
+                    <b:commandButton value="retour" action="/myList/ListMarchet.xhtml" class="btn btn-primary"/>
                 </div>
             </h:form>
             <h:form id="ProjetEditForm">  
@@ -22,13 +22,17 @@
                     <div class="col-md-offset-2 col-md-25">
                         <div class="form-group">
                             <p:outputLabel value="Nom:" />
-                            <b:inputText value="#{projetController.grandeTach.nom}"   title="Nom Tache" class="form-control" />
+                            <!--<b:inputText value="#{marcheController.grandeTach.nom}"   title="Nom Tache" class="form-control" />-->
+                            <b:selectOneMenu value="#{marcheController.grandeTach.nom}">
+                                <f:selectItem itemLabel="-select-"/>
+                                <f:selectItems value="#{marcheController.names}" var="item" itemLabel="#{item}" itemValue="#{item}"/>
+                            </b:selectOneMenu>
                         </div>
                     </div>
                     <div class="col-md-offset-2 col-md-25">
                         <div class="form-group">
                             <p:outputLabel value="Avencement %:" for="avancement" /><br></br>
-                            <p:inputText id="avancement" value="#{projetController.grandeTach.avancement}" class="form-control" title="#{bundle.CreateGrandeTacheTitle_avancement}" />
+                            <p:inputText id="avancement" value="#{marcheController.grandeTach.avancement}" class="form-control" title="#{bundle.CreateGrandeTacheTitle_avancement}" />
                         </div>
                     </div>
                 </div>
@@ -36,46 +40,22 @@
                     <div class="col-md-offset-2 col-md-25">
                         <div class="form-group">
                             <p:outputLabel value="Date Debut:" for="dateTache" /><br></br>
-                            <!--<p:calendar id="dateTache" value="#{projetController.grandeTach.dateTache}"  navigator="true" pattern="MM/dd/yyyy" ></p:calendar>-->
+                            <!--<p:calendar id="dateTache" value="#{marcheController.grandeTach.dateTache}"  navigator="true" pattern="MM/dd/yyyy" ></p:calendar>-->
                             <b:datepicker id="dateTache" placeholder="MM/dd/yyyy HH:mm:ss"  value="#{grandeTacheController.selected.dateTache}" show-button-panel="button" ></b:datepicker>
                         </div>
                     </div>
                     <div class="col-md-offset-2 col-md-25">
                         <div class="form-group">
                             <p:outputLabel value="DateFin:" for="dateFin" /><br></br>
-                            <!--<p:calendar id="dateFin" value="#{projetController.grandeTach.dateFin}"  navigator="true" pattern="MM/dd/yyyy" ></p:calendar><br></br><br></br>-->
+                            <!--<p:calendar id="dateFin" value="#{marcheController.grandeTach.dateFin}"  navigator="true" pattern="MM/dd/yyyy" ></p:calendar><br></br><br></br>-->
                             <b:datepicker id="dateFin" placeholder="MM/dd/yyyy HH:mm:ss"  value="#{grandeTacheController.selected.dateTache}" show-button-panel="button" ></b:datepicker>
                         </div>
                     </div>
-                </div>   
-                <hr></hr>
-                <b:label value="Si vous etes l'acteur de cette tache ne selectionner pas un employe "/><br></br><br></br>
-                <div class="row">
-                    <div class="col-lg-6 col-md-3">
-                        <div class="form-group">
-                            <p:outputLabel value="Service" />
-                            <b:selectOneMenu id="service" value="#{projetController.service}" >
-                                <f:selectItem value="#{null}" itemLabel="-select Service-"/>
-                                <f:selectItems value="#{projetController.services}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
-                                <f:ajax listener="#{projetController.listEmp}" event="change" execute="@form" render="emp" ></f:ajax>
-                            </b:selectOneMenu>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-3">
-                        <div class="form-group">
-                            <p:outputLabel value="Employes"/>
-                            <b:selectOneMenu id="emp" value="#{projetController.emp}" >
-                                <f:selectItem value="#{null}" itemLabel="-select employe-"/>
-                                <f:selectItems value="#{projetController.employes}" var="item" itemValue="#{item.login}" itemLabel="#{item.nom}"/>
-                            </b:selectOneMenu>
-                        </div>
-                    </div>
                 </div>
-
                 <div class="row">
                     <div class="col-md-offset-4 col-md-3" >
                         <div class="form-group">
-                            <p:commandButton actionListener="#{projetController.AffecterGrandeTache()}" class="form-control btn btn-primary" value="#{bundle.Save}" />
+                            <p:commandButton actionListener="#{marcheController.AffecterGrandeTache()}" class="form-control btn btn-primary" value="#{bundle.Save}" />
                         </div>
                     </div>
                 </div>

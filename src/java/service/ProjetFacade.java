@@ -10,8 +10,8 @@ import bean.GrandeTache;
 import bean.Projet;
 import bean.Reunion;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.function.Consumer;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -41,6 +41,21 @@ public class ProjetFacade extends AbstractFacade<Projet> {
         super(Projet.class);
     }
 
+    public List<Projet> findByTypeDate(Employe employe, int type, Date dateMin, Date dateMax) {
+        String rq = "SELECT p FROM Projet p WHERE p.gerant.login ='" + employe.getLogin() + "'";
+        if (type > 0) {
+            rq += " and p.degrer = " + type;
+        }
+        if (dateMax != null) {
+            rq += util.SearchUtil.addConstraintDate("p", "dateFin", "<=", dateMax);
+        }
+        if (dateMin != null) {
+            rq += util.SearchUtil.addConstraintDate("p", "dateDebut", ">=", dateMin);
+        }
+        System.out.println("reaquette findByTypeDate()------->" + rq);
+        return em.createQuery(rq).getResultList();
+    }
+
     public List<Projet> findByGerant(Employe employe) {
         if (employe != null && (employe.isAdmin() || employe.getSuperAdmin() == 1)) {
             return em.createQuery("SELECT act FROM Projet act WHERE act.gerant.login ='" + employe.getLogin() + "'").getResultList();
@@ -51,31 +66,15 @@ public class ProjetFacade extends AbstractFacade<Projet> {
 
     public List<Projet> findByUser(Employe employe) {
         if (employe != null) {
-            List<Projet> list = new ArrayList();
-            List<GrandeTache> taches = em.createQuery("SELECT t FROM GrandeTache t WHERE t.tacheElementaires.employe.login" + employe.getLogin()).getResultList();
-            for (GrandeTache tache : taches) {
-                Projet p = (Projet) tache.getActivite();
-                list.add(p);
-            }
-            return list;
+            List<Projet> taches = em.createQuery("SELECT DISTINCT t.activite FROM GrandeTache t WHERE t.tacheElementaires.employe.login" + employe.getLogin()).getResultList();
         }
         return null;
     }
 
     public List<Employe> activiteEmploye(Projet activite) {
         if (activite != null) {
-            List<Employe> emps = new ArrayList();
-            List<GrandeTache> taches = em.createQuery("SELECT t FROM GrandeTache t WHERE t.activite.id =" + activite.getId()).getResultList();
-            if (!taches.isEmpty()) {
-                taches.forEach(new Consumer<GrandeTache>() {
-                    @Override
-                    public void accept(GrandeTache tache) {
-                        emps.addAll(tache.getEmployes());
-                    }
-                });
-            } else {
-                return null;
-            }
+            List<Employe> emps = em.createQuery("SELECT DISTINCT t.employe FROM GrandeTache t WHERE t.activite.id =" + activite.getId()).getResultList();
+            return emps;
         }
         return null;
     }

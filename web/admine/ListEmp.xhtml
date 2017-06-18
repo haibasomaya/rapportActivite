@@ -45,16 +45,16 @@
                     <hr></hr>
                     <div class="row">
                         <div class="col-lg-6">
-                            <b:label value="Service des Employes:" />
+                            <b:label value="Employes de service :" />
                             <b:selectOneMenu id="service" value="#{employeController.service}" >
-<!--                                <f:selectItem itemValue="#{null}" itemLabel="-select Service-"/>-->
+                                <!--<f:selectItem  itemLabel="-select-" itemValue="#{null}"/>-->
                                 <f:selectItems value="#{employeController.services}" var="item" itemLabel="#{item.nom}" itemValue="#{item.id}"/>
                             </b:selectOneMenu>
                         </div>
                         <div class="col-lg-6">
-                            <b:label value="Etat des Comptes d'Employes" />
+                            <b:label value="Employes qui sont:" />
                             <b:selectOneMenu id="etat" value="#{employeController.etat}" >
-                                <f:selectItem itemLabel="-select-" itemValue="-1"/>
+                                <f:selectItem itemLabel="-None-" itemValue="-1"/>
                                 <f:selectItem itemLabel="Bloquer" itemValue="1"/>
                                 <f:selectItem itemLabel="Non Bloquer" itemValue="0"/>
                             </b:selectOneMenu>
@@ -200,11 +200,10 @@
 <!--                 <p:commandButton  id="deleteButton"   icon="ui-icon-trash"  actionListener="#{employeController.Supression(item)}" update=":EmployeListForm:datalist"   >
                             <p:confirm header="Confirmation"  message="Are you sure?" icon="ui-icon-alert" />
                         </p:commandButton>-->
-                <!--oncomplete="PF('EmployeEditDialog').show()"-->
+<!--oncomplete="PF('EmployeEditDialog').show()"-->
 
-                <!--                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" widgetVar="supession">
-                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" onclick="supession.hide()" update="EmployeListForm" />
-                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" onclick="supession.hide()" update="EmployeListForm" />
-                                </p:confirmDialog>
-                disabled="empty employeController.selected}" -->
-            
+<!--                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" widgetVar="supession">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" onclick="supession.hide()" update="EmployeListForm" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" onclick="supession.hide()" update="EmployeListForm" />
+                </p:confirmDialog>
+disabled="empty employeController.selected}" -->

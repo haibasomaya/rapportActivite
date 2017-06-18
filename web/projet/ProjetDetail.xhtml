@@ -8,13 +8,16 @@
       xmlns:b="http://bootsfaces.net/ui">
 
     <ui:composition template="/templates/grTemplate.xhtml">
-        <ui:define name="body">
 
-            <div style="float: right;">
-                <b:commandButton value="retour" action="/myList/ListProjet.xhtml" class="btn btn-primary"/>
-            </div>
+        <ui:define name="body">
+            <h:form>
+                <div style="float: right;">
+                    <b:commandButton value="retour" action="/myList/ListProjet.xhtml" class="btn btn-primary"/>
+                </div>
+            </h:form>
             <h:form id="projetDetailForm">
-                <b:dataTable value="#{projetController.emps}" var="item" id="datalist">
+                <h4><p:outputLabel value="Liste des employes participant de le projet: #{projetController.selected.nom}"/></h4>
+                <b:dataTable value="#{projetController.emps}" var="item" id="datalist" class="data">
                     <b:column>
                         <f:facet name="header">
                             <h:outputText value="Nom"/>
@@ -63,8 +66,53 @@
                         </f:facet>
                         <h:outputText value="#{item.fonction}"/>
                     </b:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Consulter"/>
+                        </f:facet>
+                        <b:button value="Voir Taches Effectuer" p:data-target="#amodal" class="fa fa-eye"  p:data-toggle="modal"/>
+                        <!--<p:commandButton value="Voir Taches Effectuer" class="fa fa-eye" actionListener="#{projetController.voirTache(item)}" update=":ListTach:datalist"/>-->
+                    </p:column>
                 </b:dataTable>
             </h:form>
+            <b:modal id="amodal" title="Modal Example" styleClass="modalPseudoClass">
+                <!--<p:dialog id="ListTachDlg" widgetVar="ListTachDialg" modal="true" resizable="false" appendTo="@(body)">-->
+                <h:form id="ListTach">
+                    <h1><h:outputText value="List"/></h1>
+                    <b:dataTable value="#{projetController.findGrandeTachByEmp()}" var="item" id="datalist">
+                        <b:column>
+                            <f:facet name="header">
+                                <h:outputText value="Nom"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nom}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">
+                                <h:outputText value="DateTache"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dateTache}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">
+                                <h:outputText value="DateFin"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dateFin}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">
+                                <h:outputText value="Avancement"/>
+                            </f:facet>
+                            <h:outputText value="#{item.avancement}"/>
+                        </b:column>
+                    </b:dataTable>
+                    <b:commandButton value="#{bundle.Cancel}" onclick="Supression.hide()"/>
+                </h:form>
+                <!--</p:dialog>-->
+            </b:modal>
         </ui:define>
     </ui:composition>
 </html>

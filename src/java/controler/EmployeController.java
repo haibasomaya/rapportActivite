@@ -67,11 +67,7 @@ public class EmployeController implements Serializable {
     }
 
     public Division adminDivision(Employe employe) {
-        if (divisionFacade.findDivisionByAdmin(employe) != null) {
-            return divisionFacade.findDivisionByAdmin(employe).get(0);
-        } else {
-            return new Division();
-        }
+        return divisionFacade.findDivisionByAdmin(employe).get(0);
     }
 
     public void edit(Employe employe) {
@@ -99,32 +95,48 @@ public class EmployeController implements Serializable {
         }
     }
 
-    public void chercher() {
-        if (service != null) {
-            employes = ejbFacade.findByService(service);
-        }
+    public void cherchAdmin() {
+        employes = null;
+        employes = getEmployes();
+        System.out.println("Etaaaat"+etat);
         if (etat >= 0) {
             employes = ejbFacade.EmpAdminBloquer(etat, employes);
-        }
-        if (etat < 0 && service == null) {
-            employes = null;
         }
         if (division != null && user.getSuperAdmin() == 1) {
             employes = new ArrayList<>();
             employes.add(division.getDirecteur());
         }
         System.out.println("Employes dyal recherche ------>" + employes);
+        if (etat == -1 && division == null) {
+            employes = getEmployes();
+        }
         initParam();
+    }
+
+    public void chercher() {
+        if (service != null) {
+            employes = null;
+            employes = getEmployes();
+            employes = ejbFacade.findByService(service);
+        }
+        if (etat >= 0) {
+            employes = null;
+            employes = getEmployes();
+            employes = ejbFacade.EmpAdminBloquer(etat, employes);
+        }
+        if (etat == -1 && service == null) {
+            employes = getEmployes();
+        }
+
     }
 
     public void initParam() {
         login = "";
         nom = "";
         prenom = "";
-        services = new ArrayList<>();
         etat = -1;
-        division = new Division();
-
+//        services = new ArrayList<>();
+//        division = new Division();
     }
 
     public void empByServiceDivision() {
@@ -171,18 +183,27 @@ public class EmployeController implements Serializable {
         ejbFacade.bloquerDebloquer(employe);
     }
 
+    public void confirmerAdmin() {
+        System.out.println("laaa division de laa formation--------->" + division);
+        if (division.getDirecteur() != null) {
+            System.out.println("cette division choisit a deja un directeur");
+            RequestContext.getCurrentInstance().execute("PF('adminDivisionDlg').show()");
+        }
+    }
+
     public void creationEmp() throws MessagingException {
         int res = ejbFacade.creerEmp(selected);
-        if (user.getSuperAdmin() == 1) {
-            selected.setAdmin(true);
-            ejbFacade.edit(selected);
+        if (user.getSuperAdmin() == 1 && res > 0) {
             division.setDirecteur(selected);
             divisionFacade.edit(division);
+            selected.setAdmin(true);
+            selected.setFonction("Admin Dvisioin");
+            ejbFacade.edit(selected);
         }
         if (res < 0) {
             System.out.println("***********Ce login est déja exister***********");
         }
-        System.out.println("haaaa res de creation------->" + res);
+        System.out.println(" haaaa res de creation------->" + res);
         prepareCreate();
     }
 
@@ -192,6 +213,7 @@ public class EmployeController implements Serializable {
             System.out.println("employe est --------------> NULL");
             return null;
         } else {
+            selected = new Employe();
             return "../pageAccueil/loginV.xhtml";
         }
     }
@@ -220,7 +242,7 @@ public class EmployeController implements Serializable {
             util.SessionUtil.redirect("/rapportActivite/faces/admine/ListEmp");
             return "/admine/ListEmp.xhtml";
         } else if (user.getSuperAdmin() == 1) {
-            util.SessionUtil.redirect("/rapportActivite/faces//superAdmine/ListAdmine");
+            util.SessionUtil.redirect("/rapportActivite/faces/superAdmine/ListAdmine");
             return "/superAdmine/ListAdmine.xhtml";
         } else {
             util.SessionUtil.redirect("/rapportActivite/faces/simpleUser/EmpTache");
@@ -293,6 +315,7 @@ public class EmployeController implements Serializable {
             } catch (Exception ex) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
                 JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+
             }
         }
     }

@@ -1,14 +1,19 @@
 package controler;
 
+import bean.Division;
 import bean.Employe;
+import static bean.Employe_.service;
 import bean.GrandeTache;
 import bean.Projet;
+import bean.Service;
 import controler.util.JsfUtil;
+import java.io.IOException;
 import util.JsfUtil.PersistAction;
 import service.ProjetFacade;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -23,16 +28,26 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import org.primefaces.context.RequestContext;
 import service.ActiviteFacade;
+import service.DivisionFacade;
+import service.EmployeFacade;
 import service.GrandeTacheFacade;
+import service.ServiceFacade;
 
 @Named("projetController")
 @SessionScoped
 public class ProjetController implements Serializable {
 
+    private Projet selected;
+    private Date dateMin;
+    private Date dateMax;
+    private int type;
+    private Service service;
+    private Employe emp;
+    private List<Service> services = null;
     private List<Projet> items = null;
     private List<Employe> emps = null;
+    private List<Employe> employes = null;
     private GrandeTache grandeTach = null;
-    private Projet selected;
     Employe user = util.SessionUtil.getConnectedUser();
     @EJB
     private service.ProjetFacade ejbFacade;
@@ -40,12 +55,73 @@ public class ProjetController implements Serializable {
     private ActiviteFacade activiteFacade;
     @EJB
     private GrandeTacheFacade grandeTacheFacade;
+    @EJB
+    private EmployeFacade employeFacade;
+    @EJB
+    private ServiceFacade serviceFacade;
+    @EJB
+    private DivisionFacade divisionFacade;
 
     public ProjetController() {
     }
 
-    public void AffecterGrandeTache() {
+    public void voirTache(Employe employe) {
+        emp = employe;
+        RequestContext.getCurrentInstance().execute("PF('ListTachDialg').show()");
+        emp= null;
+    }
 
+    public List<GrandeTache> findGrandeTachByEmp() {
+        return grandeTacheFacade.findGrandeTachByEmpByact(emp , selected);
+    }
+
+    public void listEmp() {
+        employes = employeFacade.findByService(service);
+        System.out.println("haa les employaes dyalooo ----->" + employes);
+    }
+
+    public void findByTypeDate() {
+        if ((type == -1) && (dateMax == null && dateMin == null)) {
+            items = getItems();
+        }
+        items = ejbFacade.findByTypeDate(user, type, dateMin, dateMax);
+        System.out.println("Controler findByTypeDate()------->" + items);
+
+    }
+
+    public void AffecterGrandeTache() {
+        if (emp != null) {
+            System.out.println("haaa l'emloye------>" + emp);
+            grandeTach.setEmploye(emp);
+        } else if ((user.isAdmin() || user.getSuperAdmin() == 1) && emp == null) {
+            grandeTach.setEmploye(user);
+        }
+        grandeTach.setActivite(selected);
+        grandeTacheFacade.create(grandeTach);
+        selected.setAvancement(selected.getAvancement() + grandeTach.getAvancement());
+        selected.getGrandeTaches().add(grandeTach);
+        ejbFacade.edit(selected);
+        init();
+    }
+
+    private void init() {
+        emp = null;
+        services = null;
+        employes = null;
+        grandeTach = new GrandeTache();
+    }
+
+    public String importance(Projet projet) {
+        switch (projet.getDegrer()) {
+            case 1:
+                return "Urgent";
+            case 2:
+                return "Moderer";
+            case 3:
+                return "Minim";
+            default:
+                return " ";
+        }
     }
 
     public void deletProjet(Projet projet) {
@@ -53,13 +129,15 @@ public class ProjetController implements Serializable {
         RequestContext.getCurrentInstance().execute("PF('Supression').show()");
     }
 
-    public String detail(Projet projet) {
+    public String detail(Projet projet) throws IOException {
         selected = projet;
+        util.SessionUtil.redirect("/rapportActivite/faces/projet/ProjetDetail");
         return "/projet/ProjetDetail.xhtml";
     }
 
-    public String ModifierProjet(Projet projet) {
+    public String ModifierProjet(Projet projet) throws IOException {
         selected = projet;
+        util.SessionUtil.redirect("/rapportActivite/faces/projet/ModifierProjet");
         return "/projet/ModifierProjet.xhtml";
     }
 
@@ -220,7 +298,8 @@ public class ProjetController implements Serializable {
 
     public List<Employe> getEmps() {
         if (emps == null) {
-            emps = activiteFacade.activiteEmploye(selected);
+            emps = ejbFacade.activiteEmploye(selected);
+            System.out.println("les participant dans un projet-------> " + emps);
         }
         return emps;
     }
@@ -246,6 +325,72 @@ public class ProjetController implements Serializable {
 
     public void setGrandeTach(GrandeTache grandeTach) {
         this.grandeTach = grandeTach;
+    }
+
+    public Date getDateMin() {
+        return dateMin;
+    }
+
+    public void setDateMin(Date dateMin) {
+        this.dateMin = dateMin;
+    }
+
+    public Date getDateMax() {
+        return dateMax;
+    }
+
+    public void setDateMax(Date dateMax) {
+        this.dateMax = dateMax;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public Service getService() {
+        if (service == null) {
+            service = new Service();
+        }
+        return service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
+
+    public Employe getEmp() {
+        if (emp == null) {
+            emp = new Employe();
+        }
+        return emp;
+    }
+
+    public void setEmp(Employe emp) {
+        this.emp = emp;
+    }
+
+    public List<Service> getServices() {
+        if (services == null) {
+            Division division = divisionFacade.findDivisionByAdmin(selected.getGerant()).get(0);
+            services = serviceFacade.findByDivision(division);
+        }
+        return services;
+    }  
+   
+  public void setServices(List<Service> services) {
+        this.services = services;
+    }
+
+    public List<Employe> getEmployes() {
+        return employes;
+    }
+
+    public void setEmployes(List<Employe> employes) {
+        this.employes = employes;
     }
 
 }

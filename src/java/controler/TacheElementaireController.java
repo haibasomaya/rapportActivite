@@ -1,14 +1,11 @@
 package controler;
 
 import bean.Employe;
-import bean.TacheElementaire;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
+import bean.GrandeTache;
+import bean.Tache;
 import util.JsfUtil;
 import util.JsfUtil.PersistAction;
-import service.TacheElementaireFacade;
-
 import java.io.Serializable;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,51 +23,66 @@ import javax.faces.convert.FacesConverter;
 import org.primefaces.model.chart.BarChartModel;
 import service.DivisionFacade;
 import service.EmployeFacade;
+import service.GrandeTacheFacade;
+import service.TacheFacade;
 
 @Named("tacheElementaireController")
 @SessionScoped
 public class TacheElementaireController implements Serializable {
 
-    private List<TacheElementaire> items = null;
-    private List<TacheElementaire> listes = null;
-    private List<TacheElementaire> taches = null;
-    private TacheElementaire selected;
+    private List<Tache> items = null;
+    private List<Tache> listes = null;
+    private List<Tache> taches = null;
+    private Tache selected;
     private String nom;
     private String prenom;
     private String login;
-    private int type;
     private BarChartModel model;
     private int annee;
     private Date dateCherche;
     private Employe employe;
+    private Date dateMin;
+    private Date dateMax;
+
     private Employe user = util.SessionUtil.getConnectedUser();
     @EJB
-    private service.TacheElementaireFacade ejbFacade;
+    private service.TacheFacade ejbFacade;
     @EJB
     private EmployeFacade employeFacaede;
-
     @EJB
     private DivisionFacade divisionFacade;
+    @EJB
+    private GrandeTacheFacade grandeTacheFacade;
 
     public TacheElementaireController() {
     }
 
     //creation tache
-    public void ignorer(TacheElementaire tacheElementaire) {
-        listes.remove(listes.indexOf(tacheElementaire));
+    public void ignorer(Tache tacheElementaire) {
+        selected = tacheElementaire;
+        listes.remove(selected);
+        selected = new Tache();
     }
 
-    public void addNames() {
+//            for (int i = 0; i < p; i++) {
+//                TacheElementaire t = taches.get(i);
+//                if (!t.getNom().equals(nom)) {
+//                    taches.add(selected);
+//                    selected.setNom(nom);
+//                }
+//            }
+    public int addNames() {
         if ((!nom.equals(""))) {
             int p = taches.size();
-            for (int i = 0; i < p; i++) {
-                TacheElementaire t = taches.get(i);
+            for (Tache t : taches) {
                 if (!t.getNom().equals(nom)) {
-                    taches.add(selected);
                     selected.setNom(nom);
+                    taches.add(selected);
+                    return 1;
                 }
             }
         }
+        return 0;
     }
 
     public void createList() {
@@ -107,20 +119,19 @@ public class TacheElementaireController implements Serializable {
         login = "";
         prenom = "";
         dateCherche = null;
-        selected = new TacheElementaire();
+        selected = new Tache();
         prepareCreate();
     }
 
     //statistique
-    public void tryMethod() {
-        ejbFacade.tacheByMonth(user, annee, 2);
-        System.out.println("------------>create Model ");
-        System.out.println("hahowa employe " + user);
-        System.out.println("hahowa annee " + annee);
-        System.out.println("hahowa Model controler---> " + model);
-    }
+//    public void tryMethod() {
+//        ejbFacade.tacheByMonth(user, annee, 2);
+//        System.out.println("------------>create Model ");
+//        System.out.println("hahowa employe " + user);
+//        System.out.println("hahowa annee " + annee);
+//        System.out.println("hahowa Model controler---> " + model);
+//    }
 //pr admine de divisioni
-
     public List<Employe> employes() {
         if (user.isAdmin()) {
             return divisionFacade.findEmpByAdmin(user);
@@ -133,14 +144,19 @@ public class TacheElementaireController implements Serializable {
 
     public void findInMyTaches() {
         System.out.println("h dateCherche ------> " + dateCherche);
-        items = ejbFacade.findByDateEmp(user.getLogin(), dateCherche, type);
+        items = ejbFacade.tacheByDate(user, dateCherche);
         System.out.println("haaa la liste trouver ------> " + items);
     }
 
-    public void findInEmpTaches() {
-        System.out.println("h dateCherche ------> " + dateCherche);
-        items = ejbFacade.findByDateEmp(login, dateCherche, type);
-        System.out.println("haaa la liste trouver ------> " + items);
+    public void search() {
+        items = ejbFacade.search(nom, dateMin, dateMax);
+        inititems();
+    }
+
+    public void inititems() {
+        nom = "";
+        dateMax = null;
+        dateMin = null;
 
     }
 
@@ -151,8 +167,8 @@ public class TacheElementaireController implements Serializable {
         }
     }
 
-    public TacheElementaire prepareCreate() {
-        selected = new TacheElementaire();
+    public Tache prepareCreate() {
+        selected = new Tache();
         initializeEmbeddableKey();
         return selected;
     }
@@ -197,19 +213,20 @@ public class TacheElementaireController implements Serializable {
         }
     }
 
-    public TacheElementaire getTacheElementaire(java.lang.Long id) {
+    public Tache getTacheElementaire(java.lang.Long id) {
         return getFacade().find(id);
     }
 
-    public List<TacheElementaire> getItemsAvailableSelectMany() {
+    public List<Tache> getItemsAvailableSelectMany() {
         return getFacade().findAll();
     }
 
-    public List<TacheElementaire> getItemsAvailableSelectOne() {
+    public List<Tache> getItemsAvailableSelectOne() {
         return getFacade().findAll();
+
     }
 
-    @FacesConverter(forClass = TacheElementaire.class)
+    @FacesConverter(forClass = Tache.class)
     public static class TacheElementaireControllerConverter implements Converter {
 
         @Override
@@ -239,11 +256,11 @@ public class TacheElementaireController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof TacheElementaire) {
-                TacheElementaire o = (TacheElementaire) object;
+            if (object instanceof Tache) {
+                Tache o = (Tache) object;
                 return getStringKey(o.getId());
             } else {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), TacheElementaire.class.getName()});
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Tache.class.getName()});
                 return null;
             }
         }
@@ -256,18 +273,18 @@ public class TacheElementaireController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
-    private TacheElementaireFacade getFacade() {
+    private TacheFacade getFacade() {
         return ejbFacade;
     }
 
-    public TacheElementaire getSelected() {
+    public Tache getSelected() {
         if (selected == null) {
-            selected = new TacheElementaire();
+            selected = new Tache();
         }
         return selected;
     }
 
-    public void setSelected(TacheElementaire selected) {
+    public void setSelected(Tache selected) {
         this.selected = selected;
     }
 
@@ -284,18 +301,18 @@ public class TacheElementaireController implements Serializable {
 //        init();
 //    }
 
-    public List<TacheElementaire> getTaches() {
+    public List<Tache> getTaches() {
         if (taches == null) {
             taches = ejbFacade.findAll();
         }
         return taches;
     }
 
-    public void setTaches(List<TacheElementaire> taches) {
+    public void setTaches(List<Tache> taches) {
         this.taches = taches;
     }
 
-    public List<TacheElementaire> getItems() {
+    public List<Tache> getItems() {
         if (items == null) {
             if (user.getSuperAdmin() != 1) {
                 items = ejbFacade.findByEmploye(user);
@@ -306,14 +323,14 @@ public class TacheElementaireController implements Serializable {
         return items;
     }
 
-    public List<TacheElementaire> getListes() {
+    public List<Tache> getListes() {
         if (listes == null) {
             listes = new ArrayList<>();
         }
         return listes;
     }
 
-    public void setListes(List<TacheElementaire> listes) {
+    public void setListes(List<Tache> listes) {
         this.listes = listes;
     }
 
@@ -382,12 +399,26 @@ public class TacheElementaireController implements Serializable {
         this.login = login;
     }
 
-    public int getType() {
-        return type;
+    public Date getDateMin() {
+        return dateMin;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setDateMin(Date dateMin) {
+        this.dateMin = dateMin;
     }
 
+    public Date getDateMax() {
+        return dateMax;
+    }
+
+    public void setDateMax(Date dateMax) {
+        this.dateMax = dateMax;
+    }
 }
+//    public void findInEmpTaches() {
+//        System.out.println("h dateCherche ------> " + dateCherche);
+//        items = ejbFacade.findByDateEmp(employe, dateCherche);
+//        System.out.println("haaa la liste trouver ------> " + items);
+//
+//    }
+//Tache 

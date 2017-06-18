@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -28,8 +29,9 @@ public class Tache implements Serializable {
     protected String nom;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date dateTache;
-    protected Long pourcentage;
     protected Long avancement;
+    @ManyToOne
+    private Employe employe;
 
     public Long getId() {
         return id;
@@ -37,6 +39,17 @@ public class Tache implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Employe getEmploye() {
+        if (employe == null) {
+            employe = new Employe();
+        }
+        return employe;
+    }
+
+    public void setEmploye(Employe employe) {
+        this.employe = employe;
     }
 
     public String getNom() {
@@ -58,15 +71,7 @@ public class Tache implements Serializable {
         this.dateTache = dateTache;
     }
 
-    public Long getPourcentage() {
-        return pourcentage;
-    }
-
-    public void setPourcentage(Long pourcentage) {
-        this.pourcentage = pourcentage;
-    }
-
-    public Long getAvancement() {
+       public Long getAvancement() {
         return avancement;
     }
 
@@ -76,12 +81,8 @@ public class Tache implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 37 * hash + Objects.hashCode(this.id);
-        hash = 37 * hash + Objects.hashCode(this.nom);
-        hash = 37 * hash + Objects.hashCode(this.dateTache);
-        hash = 37 * hash + Objects.hashCode(this.pourcentage);
-        hash = 37 * hash + Objects.hashCode(this.avancement);
+        int hash = 3;
+        hash = 97 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -97,27 +98,17 @@ public class Tache implements Serializable {
             return false;
         }
         final Tache other = (Tache) obj;
-        if (!Objects.equals(this.nom, other.nom)) {
-            return false;
-        }
         if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.dateTache, other.dateTache)) {
-            return false;
-        }
-        if (!Objects.equals(this.pourcentage, other.pourcentage)) {
-            return false;
-        }
-        if (!Objects.equals(this.avancement, other.avancement)) {
             return false;
         }
         return true;
     }
 
+ 
+
     @Override
     public String toString() {
-        return "Tache{" + "nom=" + nom + ", DateTach=" + dateTache + ", pourcentage=" + pourcentage + ", avancement=" + avancement + '}';
+        return "Tache{" + "nom=" + nom + ", DateTach=" + dateTache + ", avancement=" + avancement + '}';
     }
 
 }

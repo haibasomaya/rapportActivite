@@ -41,7 +41,7 @@ public class Employe implements Serializable {
     @ManyToOne
     private GrandeTache grandeTache;
     @OneToMany(mappedBy = "employe")
-    private List<TacheElementaire> tacheElementaires;
+    private List<Tache> tacheElementaires;
     @OneToMany(mappedBy = "employe")
     private List<Device> devices;
 
@@ -165,14 +165,14 @@ public class Employe implements Serializable {
         this.numBureau = numBureau;
     }
 
-    public List<TacheElementaire> getTacheElementaires() {
+    public List<Tache> getTacheElementaires() {
         if (tacheElementaires == null) {
             tacheElementaires = new ArrayList<>();
         }
         return tacheElementaires;
     }
 
-    public void setTacheElementaires(List<TacheElementaire> tacheElementaires) {
+    public void setTacheElementaires(List<Tache> tacheElementaires) {
         this.tacheElementaires = tacheElementaires;
     }
 

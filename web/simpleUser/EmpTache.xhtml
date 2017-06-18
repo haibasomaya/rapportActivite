@@ -13,17 +13,16 @@
             <h:form id="form">
                 <b:panel  style="background-color: #1b6d85;">
                     <div class="row">
-                        <div class="col-lg-4 col-md-3">
+                        <div class="col-md-offset-1 col-md-3">
                             <h4> <h:outputLabel value="Date de la Tache"/> </h4>
-                            <!--<p:calendar id="dateTache" pattern="MM/dd/yyyy HH:mm:ss" value="#{tacheElementaireController.selected.dateTache}" title="#{bundle.EditGrandeTacheTitle_dure}"  showOn="button"/>-->
-                            <b:datepicker id="dateTache" placeholder="MM/dd/yyyy HH:mm:ss"  value="#{tacheElementaireController.selected.dateTache}" show-button-panel="button" ></b:datepicker>
+                            <!--<b:datepicker id="dateTache" placeholder="MM/dd/yyyy HH:mm:ss"  value="#{tacheElementaireController.selected.dateTache}" show-button-panel="button" />-->
+                            <p:calendar id="dateTache" value="#{tacheElementaireController.selected.dateTache}" navigator="true" pattern="MM/dd/yyyy"></p:calendar> 
                         </div>
                         <div class="col-lg-4 col-md-3">
                             <h4> <h:outputLabel value="Choisir Tache"/> </h4>
                             <b:selectOneMenu value="#{tacheElementaireController.selected.nom}" id="ancient" class="form-control">
-                                <f:selectItem itemValue="" itemLabel="--select name tache--"/>
+                                <f:selectItem itemValue="" itemLabel="--autre--"/>
                                 <f:selectItems value="#{tacheElementaireController.taches}" var="item"  itemLabel="#{item.nom}" itemValue="#{item.nom}"/>
-                                <!--<f:selectItem itemValue="autre" itemLabel="autre" id="name"/>-->
                                 <!--<p:ajax process="name"  update=":autre"/>--> 
                                 <!--<f:ajax event="change" render="autre"></f:ajax>-->
                             </b:selectOneMenu> 
@@ -31,12 +30,12 @@
                         <div class="col-lg-4 col-md-3">
                             <h4> <h:outputLabel id="textLabel" value="Neaveau Tache" /> </h4>
                             <b:inputText  value="#{tacheElementaireController.nom}" placeholder="autre" title="Neuveau Tache" id="autre" class="form-control"/>
-                            <p:ajax  process="textLabel" listener="#{tacheElementaireController.addNames()}" update="ancient" />
+                            <f:ajax  listener="#{tacheElementaireController.addNames()}" render="autre" event="dblclick" execute="@form" />
                         </div>
                     </div>
                     <div>
                         <div class="col-lg-4 col-md-3">
-                            <b:commandButton  actionListener="#{tacheElementaireController.ajouterList()}" update=":FormTacheElemt:ListTacheElemt" value="Ajouter"/>
+                            <p:commandButton id="ajout" actionListener="#{tacheElementaireController.ajouterList()}" update=":FormTacheElemt:ListTacheElemt" value="Ajouter" class="btn btn-primary"/>
                         </div>
                     </div>
                 </b:panel>
@@ -55,19 +54,21 @@
                             <h:outputText value="Date Tache"/>
                         </f:facet>
                         <h:outputText value="#{item.dateTache}">
-                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
                         </h:outputText>
                     </p:column>
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="Ignorer"/>
                         </f:facet>
-                        <p:commandButton action="#{tacheElementaireController.ignorer(item)}" value="Ignorer" update=":FormTacheElemt:ListTacheElemt"/>
+                        <b:commandButton action="#{tacheElementaireController.ignorer(item)}" value="Ignorer la tache " update=":FormTacheElemt:ListTacheElemt"/>
                     </p:column>
 
                 </p:dataTable>
-                <p:commandButton  actionListener="#{tacheElementaireController.createList()}"  value="Valider"  update=":FormTacheElemt:ListTacheElemt" />
-                <br></br>
+                <br></br><br></br>
+                <div class="col-md-offset-10 col-md-4">
+                    <b:commandButton  actionListener="#{tacheElementaireController.createList()}"  value="Valider"  update=":FormTacheElemt:ListTacheElemt" look="primary" />
+                </div>
             </h:form>
         </ui:define>
     </ui:composition>

@@ -83,13 +83,21 @@
                                 </b:selectOneMenu>
                             </div>
                         </div>
-                        <div class="col-md-offset-1 col-md-1">
-                            <br></br><br></br>
-                            <center><b:commandButton actionListener="#{employeController.creationEmp()}" value="Enregistrer" class="btn btn-primary" style="float: inside;" /></center>
+                        <div class="col-md-offset-5 col-md-3">
+                            <center><p:commandButton actionListener="#{employeController.confirmerAdmin()}" value="Enregistrer" class="btn btn-primary" style="float: inside;" update=":adminDivisionForm" /></center>
                         </div>
                     </div>
                 </h:form> 
             </div>
+            <p:dialog id="adminDivision" widgetVar="adminDivisionDlg" modal="true" resizable="false" appendTo="@(body)" header="Confirmation">
+                <h:form id="adminDivisionForm">
+                    <p> La <b:label value="#{employeController.division.nom}"/> a deja le directeur <p:outputLabel value="#{employeController.division.directeur.nom}"/> !!</p>
+                    <p>Vous voulez vraiment affecter ce nouveau directeur ??</p>
+                    <b:commandButton value="Confirmer" action="#{employeController.creationEmp()}" onclick="Supression.hide()" look="primary"/>
+                    <b:commandButton value="#{bundle.Cancel}" onclick="Supression.hide()"/>
+                </h:form>
+            </p:dialog>
+
         </ui:define>
 
     </ui:composition>

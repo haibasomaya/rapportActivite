@@ -19,52 +19,71 @@
                     <div class="row">
                         <div class="col-md-offset-2 col-md-3">
                             <h4><b:label value="chercher  Tache par Date" style="float: top;"/></h4>
-                            <b:datepicker value="#{tacheElementaireController.dateCherche}" id="dateTache" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>
+                            <p:calendar id="dateTache" value="#{grandeTacheController.dateCherche}" navigator="true" pattern="MM/dd/yyyy" ></p:calendar> 
+
                         </div>
-                        <div class="col-md-offset-1 col-md-3">
-                            <h4><b:label value="Choisez type taches "></b:label></h4>
-                            <b:selectOneMenu value="#{tacheElementaireController.type}">
-                                <f:selectItem itemLabel="Quotidienne" itemValue="1"/>
-                                <f:selectItem itemLabel="Elementaire" itemValue="2"/>
+                        <div class="col-md-offset-2 col-md-3">
+                            <h4><b:label value="chercher  Tache par Activite" style="float: top;"/></h4>
+                            <b:selectOneMenu value="#{grandeTacheController.activite}">
+                                <f:selectItem itemValue="#{null}" itemLabel="-select-" />
+                                <f:selectItems value="#{grandeTacheController.activites}" var="actItem" itemValue="#{actItem.id}" itemLabel="#{actItem.nom}"/>
                             </b:selectOneMenu>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6 col-md-3">
-                            <p:commandButton  actionListener="#{tacheElementaireController.findInMyTaches()}" update=":TacheElementaireListForm:datalist" value="Chercher" />
-                        </div>
-                        <div class="col-lg-12 col-md-3">
-                            <p:commandButton  actionListener="#{tacheElementaireController.findInMyTaches()}" update=":TacheElementaireListForm:datalist" value="Imprimer" />
+                        <div class="col-md-offset-10 col-md-3">
+                            <p:commandButton  actionListener="#{grandeTacheController.GrandeByDate()}" update=":TacheElementaireListForm:datalist" value="Chercher" />
                         </div>
                     </div>
                 </h:form>
             </b:panel>
             <br></br>
             <h:form id="TacheElementaireListForm">
-                <p:dataTable id="datalist" value="#{tacheElementaireController.items}" var="item" class="data"
+                <p:dataTable id="datalist" value="#{grandeTacheController.items}" var="item" class="data"
                              >
                     <p:column>
                         <f:facet name="header">
-                            <h:outputText value="Type Tache"/>
-                        </f:facet>
-                        <h:outputText value="#{item.type}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Nom Tache"/>
+                            <h:outputText value="Nom"/>
                         </f:facet>
                         <h:outputText value="#{item.nom}"/>
                     </p:column>
                     <p:column>
                         <f:facet name="header">
-                            <h:outputText value="Date Tache"/>
+                            <h:outputText value="Date Debut"/>
                         </f:facet>
                         <h:outputText value="#{item.dateTache}">
                             <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
                         </h:outputText>
                     </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Date Fin"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dateFin}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Duree"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dure}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Activite"/>
+                        </f:facet>
+                        <h:outputText value="#{item.activite}"/>
+                    </p:column>                      
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Avancement"/>
+                        </f:facet>
+                        <h:outputText value="#{item.avancement}"/>
+                    </p:column>
                 </p:dataTable>
             </h:form>
+
             <style>
                 .data{
                     position: relative;

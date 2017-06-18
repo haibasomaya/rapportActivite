@@ -7,6 +7,7 @@ package service;
 
 import bean.Employe;
 import bean.Reunion;
+import bean.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,10 +29,23 @@ public class ReunionFacade extends AbstractFacade<Reunion> {
     protected EntityManager getEntityManager() {
         return em;
     }
+    public void createReunionParAdmin(List<Service> services , Reunion reunion){
+        if(services!=null && !services.isEmpty())
+        for (Service s : services) {
+           reunion.getParticipants().addAll(s.getEmployes());
+        }
+        create(reunion);
+    }
+
+    public List<Employe> findParticips(Reunion reunion) {
+        return em.createQuery("SELECT DISTINCT rn.participants FROM Reunion rn WHERE rn.id =" + reunion.getId()).getResultList();
+    }
 
     public List<Reunion> findByDate(Date datechercher) {
         if (datechercher != null) {
-            return em.createQuery("SELECT rn FROM Reunion rn WHERE rn.dateDebut ='" + util.DateUtil.getSqlDate(datechercher) + "'").getResultList();
+            Date d = util.DateUtil.getSqlDate(datechercher);
+            System.out.println("haaaa laa date sql ------> "+d);
+            return em.createQuery("SELECT rn FROM Reunion rn WHERE rn.dateDebut ='" + d + "'").getResultList();
         } else {
             return null;
         }

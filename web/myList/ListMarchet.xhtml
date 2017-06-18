@@ -1,12 +1,133 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
-</html>
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui">
 
+    <ui:composition template="/templates/grTemplate.xhtml">
+
+
+        <ui:define name="title">
+        </ui:define>
+
+        <ui:define name="body">
+
+            <h:form>
+                <b:panel style="background-color: #1b6d85;">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="Date Max" for="dateDebut" /><br></br>
+                                <p:calendar id="dateDebut" value="#{marcheController.dateMin}" navigator="true" pattern="MM/dd/yyyy"></p:calendar> 
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="Date Min" for="datefin" /><br></br>
+                                <p:calendar id="datefin" value="#{marcheController.dateMax}" navigator="true" pattern="MM/dd/yyyy"></p:calendar> 
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="Type" />
+                                <b:selectOneMenu value="#{marcheController.type}">  
+                                    <f:selectItem itemLabel="-selecte-" itemValue="-1"/>
+                                    <f:selectItem itemLabel="Urgent" itemValue="1"/>
+                                    <f:selectItem itemLabel="Moderer" itemValue="2"/>
+                                    <f:selectItem itemLabel="Minim" itemValue="3"/>
+                                </b:selectOneMenu>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-offset-5 col-md-3">
+                            <b:commandButton actionListener="#{marcheController.findByTypeDate()}" update=":ReunionListForm:datalist" value="Trouver" />
+                        </div>
+                </b:panel>
+            </h:form>
+            <h4> <b:label value="List Mes Projet"/></h4>
+            <h:form id="ReunionListForm">
+                <p:dataTable  value="#{marcheController.items}" var="item" id="datalist" class="data">                           
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Nom Projet"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nom}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Date Debut"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dateDebut}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Date Fin"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dateDebut}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Gerant"/>
+                        </f:facet>
+                        <h:outputText value="#{item.gerant}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Avencement"/>
+                        </f:facet>
+                        <h:outputText value="#{item.avancement}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Degrer d'importance"/>
+                        </f:facet>
+                        <h:outputText value="#{marcheController.importance(item)}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Local"/>
+                        </f:facet>
+                        <h:outputText value="#{item.local}"/>
+                    </p:column>
+                    <p:column width="10px">
+                        <f:facet name="header">
+                            <h:outputText value="Gestion"/>
+                        </f:facet>
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" title="Modifier" action="#{marcheController.ModifierProjet(item)}" />
+                        <p:commandButton id="deleteButton" icon="ui-icon-trash" title="Suprimer"  actionListener="#{marcheController.deletProjet(item)}" update=":ReunionListForm:datalist" />                   
+                        <p:commandButton id="detailButton" icon="ui-icon-info" title="Detail" action="#{marcheController.detail(item)}"/>                   
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <p:dialog id="SupressionDlg" widgetVar="Supression" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateTacheTitle}">
+                <h:form id="SupressionForm">
+                    <p>vous voulez vraiment supprimer la reunion de : <p:outputLabel value="#{marcheController.selected.nom}"/></p>
+                    <p:commandButton value="supprimer" action="#{marcheController.destroy()}" update=":ReunionListForm:datalist" onclick="Supression.hide()" />
+                    <p:commandButton value="#{bundle.Cancel}" onclick="Supression.hide()"/>
+                </h:form>
+            </p:dialog>
+        </ui:define>
+        <style>
+            .data{
+                position: relative;
+                background-color: #FFFFFF;
+                border-radius: 3%;
+            }
+            /* Standard syntax */
+            @keyframes example {
+                0%   {left:-1000px;}
+                50%  {left:100px;}
+                100% { left:0px;}
+            }
+
+
+        </style>
+    </ui:composition>
+
+</html>

@@ -51,7 +51,7 @@ public class BonCommandeController implements Serializable {
     }
 
     public void ignorer(CommandeItem commandeItem) {
-        commandeItems.remove(commandeItems.indexOf(commandeItems));
+        commandeItems.remove(commandeItems.indexOf(commandeItem));
     }
 
     public void ajoutItem() {

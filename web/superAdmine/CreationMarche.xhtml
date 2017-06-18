@@ -61,11 +61,44 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row"> 
+                        <div class="col-md-offset-2 col-md-3">
+                            <div class="form-group">
+                                <b:selectOneMenu value="#{marcheController.division}" >
+                                    <f:selectItem value="#{null}" itemLabel="-select-"/>
+                                    <f:selectItems value="#{marcheController.divisions}" var="item" itemLabel="#{item.nom}" itemValue="#{item.id}"/>
+                                    <f:ajax listener="#{marcheController.ajoutDivision()}" render=":divisionForm:datalist" event="change"></f:ajax>
+                                </b:selectOneMenu>
+                            </div>
+                        </div>
+                    </div>
 
+                </h:form>
+                <h:form id="divisionForm">
+                    <p:dataTable value="#{marcheController.dvsn}" var="item" id="datalist" class="data">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Nom"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nom}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Directeur"/>
+                            </f:facet>
+                            <h:outputText value="#{item.directeur}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Directeur"/>
+                            </f:facet>
+                            <p:commandButton value="Igniorer" actionListener="#{marcheController.igniorer(item)}"  class="bnt bnt-primary"/>                         </p:column>
+                    </p:dataTable><br></br>
                     <div class="col-md-offset-5 col-md-1">
                         <center><b:commandButton actionListener="#{marcheController.creation()}" value=" CREER " class="btn btn-primary fa fa-plus-square" style="float: inside;" /></center>
                     </div>
-                </h:form> 
+                </h:form>
+
             </div>
 
 

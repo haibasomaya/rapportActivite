@@ -20,8 +20,9 @@
                     <div class="row">
                         <div class="col-md-offset-2 col-md-3">
                             <div class="form-group">
-                                <p:outputLabel value="Date de Recherche" />
-                                <b:datepicker value="#{reunionController.selected.dateDebut}" id="dateDebut" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>
+                                <p:outputLabel value="Date d'une reunion" />
+<!--                                <b:datepicker value="#{reunionController.datechercher}" id="dateDebut" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>-->
+                                <p:calendar id="dateDebut" value="#{reunionController.datechercher}" navigator="true" pattern="MM/dd/yyyy" ></p:calendar> 
                             </div>
                         </div>
                     </div>
@@ -32,7 +33,7 @@
             </h:form>
 
             <h:form id="ReunionListForm">
-                <p:dataTable  value="#{reunionController.items}" var="item" id="datalist" class="data" selection="#{reunionController.selected}" selectionMode="single" rowKey="#{item.id}">                           
+                <p:dataTable  value="#{reunionController.items}" var="item" id="datalist" class="data">                           
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="#{bundle.ListReunionTitle_discreption}"/>
@@ -63,7 +64,7 @@
                         <f:facet name="header">
                             <h:outputText value="Gestion"/>
                         </f:facet>
-                        <p:commandButton id="editButton"   icon="ui-icon-pencil" title="Modifier" update=":ReunionEditForm" oncomplete="PF('ReunionEditDialog').show()" />
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" title="Modifier" update=":ReunionEditForm" action="#{reunionController.modifier(item)}" />
                         <p:commandButton id="deleteButton" icon="ui-icon-trash" title="Suprimer"  actionListener="#{reunionController.Supression(item)}" update=":SupressionForm" />                   
                         <p:commandButton id="detailButton" icon="ui-icon-info" title="Detail" update=":ReunionParticipesForm:datalist" actionListener="#{reunionController.detail(item)}"/>                   
                     </p:column>

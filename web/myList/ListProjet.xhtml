@@ -14,9 +14,42 @@
         </ui:define>
 
         <ui:define name="body">
+
+            <h:form>
+                <b:panel style="background-color: #1b6d85;">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="Date Max" for="dateDebut" /><br></br>
+                                <p:calendar id="dateDebut" value="#{projetController.dateMin}" navigator="true" pattern="MM/dd/yyyy"></p:calendar> 
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="Date Min" for="datefin" /><br></br>
+                                <p:calendar id="datefin" value="#{projetController.dateMax}" navigator="true" pattern="MM/dd/yyyy"></p:calendar> 
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="Type" />
+                                <b:selectOneMenu value="#{projetController.type}">  
+                                    <f:selectItem itemLabel="-selecte-" itemValue="-1"/>
+                                    <f:selectItem itemLabel="Urgent" itemValue="1"/>
+                                    <f:selectItem itemLabel="Moderer" itemValue="2"/>
+                                    <f:selectItem itemLabel="Minim" itemValue="3"/>
+                                </b:selectOneMenu>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-offset-5 col-md-3">
+                            <b:commandButton actionListener="#{projetController.findByTypeDate()}" update=":ReunionListForm:datalist" value="Trouver" />
+                        </div>
+                </b:panel>
+            </h:form>
             <h4> <b:label value="List Mes Projet"/></h4>
             <h:form id="ReunionListForm">
-                <p:dataTable  value="#{projetController.items}" var="item" id="datalist" class="data" selection="#{projetController.selected}">                           
+                <p:dataTable  value="#{projetController.items}" var="item" id="datalist" class="data">                           
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="Nom Projet"/>
@@ -54,7 +87,7 @@
                         <f:facet name="header">
                             <h:outputText value="Degrer d'importance"/>
                         </f:facet>
-                        <h:outputText value="#{item.degrer}"/>
+                        <h:outputText value="#{projetController.importance(item)}"/>
                     </p:column>
                     <p:column>
                         <f:facet name="header">
@@ -68,7 +101,7 @@
                         </f:facet>
                         <p:commandButton id="editButton"   icon="ui-icon-pencil" title="Modifier" action="#{projetController.ModifierProjet(item)}" />
                         <p:commandButton id="deleteButton" icon="ui-icon-trash" title="Suprimer"  actionListener="#{projetController.deletProjet(item)}" update=":ReunionListForm:datalist" />                   
-                        <p:commandButton id="detailButton" icon="ui-icon-users" title="Detail" action="#{projetController.detail(item)}"/>                   
+                        <p:commandButton id="detailButton" icon="ui-icon-info" title="Detail" action="#{projetController.detail(item)}"/>                   
                     </p:column>
                 </p:dataTable>
             </h:form>
@@ -104,19 +137,3 @@
 <!--<ui:include src="/projet/ProjetDetail.xhtml"/>-->
 
 
-<!--            <h:form id="recherche">
-                <b:panel style="background-color: #1b6d85;">
-                    <div class="row">
-                        <div class="col-md-offset-2 col-md-3">
-                            <div class="form-group">
-                                <p:outputLabel value="Date de Recherche" />
-                                <b:datepicker value="#{reunionController.selected.dateDebut}" id="dateDebut" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>
-                                <b:datepicker value="#{reunionController.datechercher}" id="datechercher" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>
-                            </div>
-                        </div>
-                    </div>
-                    <centre><div class="col-md-offset-5 col-md-1">
-                            <p:commandButton actionListener="#{reunionController.findByDate()}" update=":ReunionListForm:datalist" value="Trouver" class="btn btn-primary"/>
-                        </div></centre>
-                </b:panel>
-            </h:form>-->

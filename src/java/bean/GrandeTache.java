@@ -11,6 +11,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -20,16 +21,11 @@ import javax.persistence.Temporal;
 @Entity
 public class GrandeTache extends Tache implements Serializable {
 
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date dateFin;
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date dure;
-    @OneToMany(mappedBy = "grandeTache")
-    private List<TacheElementaire> tacheElementaires;
-    @OneToMany(mappedBy = "grandeTache")
-    private List<Employe> employes;
+    private long dure;
     @ManyToOne
     private Activite activite;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date dateFin;
 
     public Date getDateFin() {
         return dateFin;
@@ -39,28 +35,12 @@ public class GrandeTache extends Tache implements Serializable {
         this.dateFin = dateFin;
     }
 
-    public Date getDure() {
+    public long getDure() {
         return dure;
     }
 
-    public void setDure(Date dure) {
+    public void setDure(long dure) {
         this.dure = dure;
-    }
-
-    public List<TacheElementaire> getTacheElementaires() {
-        return tacheElementaires;
-    }
-
-    public void setTacheElementaires(List<TacheElementaire> tacheElementaires) {
-        this.tacheElementaires = tacheElementaires;
-    }
-
-    public List<Employe> getEmployes() {
-        return employes;
-    }
-
-    public void setEmployes(List<Employe> employes) {
-        this.employes = employes;
     }
 
     public Activite getActivite() {
