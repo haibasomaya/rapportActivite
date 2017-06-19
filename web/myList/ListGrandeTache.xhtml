@@ -63,17 +63,17 @@
                             <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
                         </h:outputText>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Duree"/>
-                        </f:facet>
-                        <h:outputText value="#{item.dure}"/>
-                    </p:column>
+                    <!--                    <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Duree"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.dure}"/>
+                                        </p:column>-->
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="Activite"/>
                         </f:facet>
-                        <h:outputText value="#{item.activite}"/>
+                        <h:outputText value="#{item.activite.nom}"/>
                     </p:column>                      
                     <p:column>
                         <f:facet name="header">

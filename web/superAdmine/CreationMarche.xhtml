@@ -51,19 +51,21 @@
                         <div class="col-md-offset-2 col-md-3">
                             <div class="form-group">
                                 <p:outputLabel value="Date Debut:"  />
-                                <b:datepicker value="#{marcheController.selected.dateDebut}" id="dateDebut" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>
+                                <p:calendar value="#{marcheController.selected.dateDebut}" id="dateDebut" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" ></p:calendar>
                             </div> 
                         </div>
                         <div class="col-md-offset-1 col-md-3">
                             <div class="form-group">
                                 <p:outputLabel value="Date Finale:" />
-                                <b:datepicker value="#{marcheController.selected.dateFin}" id="dateFin" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>
+                                <p:calendar value="#{marcheController.selected.dateFin}" id="dateFin" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" ></p:calendar> 
+                                <!--<b:datepicker value="#{marcheController.selected.dateFin}" id="dateFin" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>-->
                             </div>
                         </div>
                     </div>
                     <div class="row"> 
                         <div class="col-md-offset-2 col-md-3">
                             <div class="form-group">
+                                <p:outputLabel value="Division Participantes:" />
                                 <b:selectOneMenu value="#{marcheController.division}" >
                                     <f:selectItem value="#{null}" itemLabel="-select-"/>
                                     <f:selectItems value="#{marcheController.divisions}" var="item" itemLabel="#{item.nom}" itemValue="#{item.id}"/>

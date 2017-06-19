@@ -54,9 +54,9 @@
                             </b:selectOneMenu>
                         </div>
                         <div class="col-lg-6">
-                            <b:label value="Etat des Comptes d'Employes" />
+                            <b:label value="Etat des Comptes d'Admin" />
                             <b:selectOneMenu id="etat" value="#{employeController.etat}" >
-                                <f:selectItem itemLabel="-select-" itemValue="-1"/>
+                                <f:selectItem itemLabel="-None-" itemValue="-1"/>
                                 <f:selectItem itemLabel="Bloquer" itemValue="1"/>
                                 <f:selectItem itemLabel="Non Bloquer" itemValue="0"/>
                             </b:selectOneMenu>
@@ -109,12 +109,12 @@
                         </f:facet>
                         <h:outputText value="#{item.numBureau}"/>
                     </p:column>
-                    <!--                    <p:column>
-                                            <f:facet name="header">
-                                                <h:outputText value="Division"/>
-                                            </f:facet>
-                                            <h:outputText value="#{employeController.adminDivision(item)}"/>
-                                        </p:column>-->
+<!--                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Division"/>
+                        </f:facet>
+                        <h:outputText value="#{employeController.adminDivision(item)}"/>
+                    </p:column>-->
                     <p:column width="200px">
                         <f:facet name="header">
                             <h:outputText value="Gestion"/>

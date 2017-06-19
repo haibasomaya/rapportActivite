@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="body">
+            <h:form id="TacheForm">
+                <div style="float: right;">
+                    <p:commandButton value="retour" action="#{tacheElementaireController.retour()}" class="btn btn-primary"/>
+                </div>
+                <br></br>
+                <div class="row">
+                    <div class=" col-lg-4 col-md-5"> 
+                        <!--<div class="form-group">-->
+                        <p:outputLabel value="Annee"/><br></br>
+                        <h:inputText id='annee' value="#{tacheElementaireController.annee}" title="#{bundle.CreateTacheTitle_annee}"/><br></br>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class=" col-lg-4 col-md-5">  
+                        <p:outputLabel value="Employe"/><br></br>
+                        <b:selectOneMenu id="employe" value="#{tacheElementaireController.employe}" >
+                            <f:selectItems  value="#{employeController.itemsAvailableSelectOne}" var="employeItem" itemValue="#{employeItem.login}" itemLabel="#{employeItem.nom}"/>
+                        </b:selectOneMenu>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="  col-lg-4 col-md-5">  
+                        <p:outputLabel value="Tache"/><br></br>
+                        <b:selectOneMenu id="tache" value="#{tacheElementaireController.nomTache}" >
+                            <f:selectItem itemValue="" itemLabel="selectionné"/>
+                            <f:selectItems  value="#{tacheElementaireController.getDistinctTach()}" var="item" itemValue="#{item}" itemLabel="#{item}"/>
+                        </b:selectOneMenu>
+                    </div>
+                </div>
+                <!--                    <p:button outcome="productDetail" value="Bookmark" icon="ui-icon-star">
+                                 <f:param name="productId" value="10" />
+                                   </p:button>-->
+                <div class="row">
+                    <div class="col-md-offset-1  col-lg-4 col-md-3">   
+                        <div class="form-group">
+                            <b:commandButton  actionListener="#{tacheElementaireController.staticMethode()}"  value="ok" update=":statistiques:graphe" icon="ui-icon-star"/>
+                        </div>
+                    </div>
+                </div>
+            </h:form>  
+            <h:form id="statistiques" >
+                <b:panel title=" Graphe " class="panel-primary">
+                    <p:chart type="bar" id="graphe" model="#{tacheElementaireController.model}" style="height:300px" />
+                    <!--<p:chart type="bar" id="graphe" model="# {tacheElementaireController.horizontalBarModel}" style="height:300px"/>
+                    <p:chart type="line" model="# {affectationController.lineModel}" style="height:300px"  />-->
+                </b:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

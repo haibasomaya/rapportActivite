@@ -22,13 +22,24 @@
                             <div class="form-group">
                                 <p:outputLabel value="Date d'une reunion" />
 <!--                                <b:datepicker value="#{reunionController.datechercher}" id="dateDebut" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>-->
-                                <p:calendar id="dateDebut" value="#{reunionController.datechercher}" navigator="true" pattern="MM/dd/yyyy" ></p:calendar> 
+                                <p:calendar id="dateDebut" value="#{reunionController.datechercher}" navigator="true" pattern="yyyy/MM/dd" ></p:calendar> 
                             </div>
                         </div>
-                    </div>
-                    <centre><div class="col-md-offset-5 col-md-1">
-                            <p:commandButton actionListener="#{reunionController.findByDate()}" update=":ReunionListForm:datalist" value="Trouver" class="btn btn-primary"/>
-                        </div></centre>
+<!--                        <div class="col-md-offset-2 col-md-3">
+                            <div class="form-group">
+                                <h4><b:label value="Choisir Employe "></b:label></h4>
+                                <b:selectOneMenu value="#{reunionController.login}">
+                                    <f:selectItem value="#{null}" itemLabel="-select Employe-"/>
+                                    <f:selectItems value="#{reunionController.employes}" var="emp" itemLabel="#{emp.nom}" itemValue="#{emp.login}" />
+                                </b:selectOneMenu>
+                                <p:inputText id="login"  value="#{reunionController.login}" title="login d'employe" ></p:inputText><br></br>
+                            </div>
+
+                        </div>-->
+                        </div>
+                        <centre><div class="col-md-offset-5 col-md-1">
+                                <p:commandButton actionListener="#{reunionController.findByDate()}" update=":ReunionListForm:datalist" value="Trouver" class="btn btn-primary"/>
+                            </div></centre>
                 </b:panel>
             </h:form>
 

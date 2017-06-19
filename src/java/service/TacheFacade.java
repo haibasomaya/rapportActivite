@@ -5,7 +5,9 @@
  */
 package service;
 
+import bean.Activite;
 import bean.Employe;
+import bean.GrandeTache;
 import bean.Tache;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +15,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.primefaces.model.chart.ChartSeries;
 import util.SearchUtil;
 
 /**
@@ -24,6 +27,7 @@ public class TacheFacade extends AbstractFacade<Tache> {
 
     @EJB
     private EmployeFacade employeFacade;
+
     @PersistenceContext(unitName = "rapportActivitePU")
     private EntityManager em;
 
@@ -36,12 +40,49 @@ public class TacheFacade extends AbstractFacade<Tache> {
         super(Tache.class);
     }
 
+    public List<String> findTaches() {
+        return em.createQuery("SELECT DISTINCT (te.nom) FROM Tache te").getResultList();
+    }
+
+    public List<Tache> tacheByType(Employe employe, int annee) {
+        System.out.println("hahwa employe---" + employe);
+        System.out.println("hahowa annee " + annee);
+        String req = "select t from Tache t where 1=1";
+        if (employe != null) {
+            req += " AND  t.employe.login='" + employe.getLogin() + "'";
+        }
+        if (annee != 0) {
+            req += " AND  extract (year from t.dateTache )='" + annee + "'";
+        }
+        return em.createQuery(req).getResultList();
+    }
+
+    public ChartSeries tachePerMonth(Employe employe, int annee, String tache) {
+        List<Tache> taches = tacheByType(employe, annee);
+        ChartSeries series = new ChartSeries();
+
+        for (int mois = 1; mois <= 12; mois++) {
+
+            Long nbreTache = 0l;
+            for (Tache gt : taches) {
+                if (gt.getDateTache().getMonth() + 1 == mois && gt.getNom().equals(tache)) {
+                    nbreTache = nbreTache + 1;
+                }
+            }
+            series.set("mois " + mois, nbreTache);
+
+        }
+        series.setLabel("" + tache);
+        return series;
+    }
+
     public List<Tache> tacheByDate(Employe employe, Date dateTache) {
         if (employe == null) {
             return null;
         } else {
             String rq = "SELECT t FROM Tache t WHERE t.employe.login ='" + employe.getLogin() + "'";
             if (dateTache != null) {
+                System.out.println("haaaaaa------>" + util.DateUtil.getSqlDate(dateTache));
                 rq += " AND t.dateTache ='" + util.DateUtil.getSqlDate(dateTache) + "'";
             }
             System.out.println("haaaa la requette de recherche -----> " + rq);

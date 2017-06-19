@@ -12,7 +12,7 @@
         <ui:define name="body">
             <h:form>
                 <div style="float: right;">
-                    <b:commandButton value="retour" action="/myList/ListMarchet.xhtml" class="btn btn-primary"/>
+                    <b:commandButton value="retour" action="#{marcheController.retour()}" class="btn btn-primary"/>
                 </div>
             </h:form>
             <h:form id="ProjetEditForm">  
@@ -52,6 +52,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="row"> 
+                    <div class="col-md-offset-2 col-md-25">
+                        <div class="form-group">
+                            <p:outputLabel value="Division Responsable de ta Tache:" />
+                            <b:selectOneMenu value="#{marcheController.division}" class="form-control" >
+                                <f:selectItem value="#{null}" itemLabel="-select-"/>
+                                <f:selectItems value="#{marcheController.divisions}" var="item" itemLabel="#{item.nom}" itemValue="#{item.id}"/>
+                            </b:selectOneMenu>
+                        </div>
+                    </div>
+                </div>              
                 <div class="row">
                     <div class="col-md-offset-4 col-md-3" >
                         <div class="form-group">

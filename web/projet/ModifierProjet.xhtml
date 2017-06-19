@@ -47,9 +47,11 @@
                             <b:datepicker id="dateFin" placeholder="MM/dd/yyyy HH:mm:ss"  value="#{grandeTacheController.selected.dateTache}" show-button-panel="button" ></b:datepicker>
                         </div>
                     </div>
-                </div>   
-                <hr></hr>
-                <b:label value="Si vous etes l'acteur de cette tache ne selectionner pas un employe "/><br></br><br></br>
+                </div>
+            </h:form>
+            <hr></hr>
+            <b:label value="Si vous etes l'acteur de cette tache ne selectionner pas un employe "/><br></br><br></br>
+            <h:form rendered="#{projetController.user.admin==true}">
                 <div class="row">
                     <div class="col-lg-6 col-md-3">
                         <div class="form-group">
@@ -71,7 +73,22 @@
                         </div>
                     </div>
                 </div>
-
+            </h:form>
+            <h:form rendered="#{employeController.user.superAdmin==1}">
+                <div class="row">
+                    <div class="col-lg-6 col-md-3">
+                        <div class="form-group">
+                            <p:outputLabel value="Division" />
+                            <b:selectOneMenu id="division" value="#{projetController.division}" >
+                                <f:selectItem value="#{null}" itemLabel="-select Service-"/>
+                                <f:selectItems value="#{projetController.divisions}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
+                                <!--<f:ajax listener="#{projetController.listEmp}" event="change" execute="@form" render="emp" ></f:ajax>-->
+                            </b:selectOneMenu>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+            <h:form>
                 <div class="row">
                     <div class="col-md-offset-4 col-md-3" >
                         <div class="form-group">

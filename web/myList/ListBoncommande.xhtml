@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui">
+
+    <ui:composition template="/templates/grTemplate.xhtml">
+
+
+        <ui:define name="title">
+        </ui:define>
+
+        <ui:define name="body">
+
+            <!--<h:form>-->
+            <!--                <b:panel style="background-color: #1b6d85;">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-3">
+                                        <div class="form-group">
+                                            <p:outputLabel value="Date Max" for="dateDebut" /><br></br>
+                                            <p:calendar id="dateDebut" value="#{projetController.dateMin}" navigator="true" pattern="MM/dd/yyyy"></p:calendar> 
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-3">
+                                        <div class="form-group">
+                                            <p:outputLabel value="Date Min" for="datefin" /><br></br>
+                                            <p:calendar id="datefin" value="#{projetController.dateMax}" navigator="true" pattern="MM/dd/yyyy"></p:calendar> 
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-3">
+                                        <div class="form-group">
+                                            <p:outputLabel value="Type" />
+                                            <b:selectOneMenu value="#{projetController.type}">  
+                                                <f:selectItem itemLabel="-selecte-" itemValue="-1"/>
+                                                <f:selectItem itemLabel="Urgent" itemValue="1"/>
+                                                <f:selectItem itemLabel="Moderer" itemValue="2"/>
+                                                <f:selectItem itemLabel="Minim" itemValue="3"/>
+                                            </b:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-offset-5 col-md-3">
+                                    <b:commandButton actionListener="#{projetController.findByTypeDate()}" update=":ReunionListForm:datalist" value="Trouver" />
+                                </div>
+                            </b:panel>
+                        </h:form>-->
+            <h4> <b:label value="List Mes Projet"/></h4>
+            <h:form id="ReunionListForm">
+                <h1><h:outputText value="List"/></h1>
+                <p:dataTable value="#{bonCommandeController.items}" var="item">
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Nom"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nom}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Local"/>
+                        </f:facet>
+                        <h:outputText value="#{item.local}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Avancement"/>
+                        </f:facet>
+                        <h:outputText value="#{item.avancement}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Degrer"/>
+                        </f:facet>
+                        <h:outputText value="#{item.degrer}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Gerant"/>
+                        </f:facet>
+                        <h:outputText value="#{item.gerant}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Commande Items"/>
+                        </f:facet>
+                        <p:commandButton value="Commande Item" action="#{bonCommandeController.voirItem(item)}" icon="ui-icon-eyes" update=":bonCommandeControllerForm:datalist"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <p:dialog id="bonCommandeControllerDlg" widgetVar="bonCommandeControllerDialg" modal="true" resizable="false" appendTo="@(body)" header="Confirmer la suppression">
+                <h:form id="bonCommandeControllerForm">
+                    <f:view>
+
+                        <h:form>
+                            <h1><h:outputText value="List"/></h1>
+                            <p:dataTable value="#{bonCommandeController.listItem}" var="item" id="datalist">
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Id"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.id}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Nom"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.nom}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Fourniseur"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.fourniseur}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="BonCommande"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.bonCommande}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>
+                    </f:view>
+
+                    <p:commandButton value="#{bundle.Cancel}" onclick="Supression.hide()"/>
+                </h:form>
+            </p:dialog>
+        </ui:define>
+        <style>
+            .data{
+                position: relative;
+                background-color: #FFFFFF;
+                border-radius: 3%;
+            }
+            /* Standard syntax */
+            @keyframes example {
+                0%   {left:-1000px;}
+                50%  {left:100px;}
+                100% { left:0px;}
+            }
+
+
+        </style>
+    </ui:composition>
+
+</html>

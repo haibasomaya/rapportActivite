@@ -3,12 +3,12 @@ package controler;
 import bean.Activite;
 import bean.Employe;
 import bean.GrandeTache;
+import java.io.IOException;
 import util.JsfUtil;
 import util.JsfUtil.PersistAction;
 import service.GrandeTacheFacade;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -22,6 +22,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
 import service.ActiviteFacade;
 
 @Named("grandeTacheController")
@@ -34,6 +38,10 @@ public class GrandeTacheController implements Serializable {
     private GrandeTache selected;
     private Activite activite;
     private Date dateCherche;
+    private BarChartModel model = null;
+    private int annee;
+    private Employe employe;
+    private String nom;
     @EJB
     private service.GrandeTacheFacade ejbFacade;
     @EJB
@@ -43,6 +51,56 @@ public class GrandeTacheController implements Serializable {
 
     public GrandeTacheController() {
     }
+
+    public String retour() throws IOException {
+        if (user.isAdmin()) {
+            util.SessionUtil.redirect("/rapportActivite/faces/admine/ListEmp");
+            return "/admine/ListEmp.xhtml";
+        } else if (user.getSuperAdmin() == 1) {
+            util.SessionUtil.redirect("/rapportActivite/faces/superAdmine/ListAdmine");
+            return "/superAdmine/ListAdmine.xhtml";
+        } else {
+            util.SessionUtil.redirect("/rapportActivite/faces/simpleUser/EmpTache");
+            return "/simpleUser/EmpTache.xhtml";
+        }
+    }
+
+    public void tryMethod() {
+        System.out.println("------------>create Model ");
+        System.out.println("hahowa employe " + employe);
+        System.out.println("hahowa annee " + annee);
+        System.out.println("hahowa annee " + nom);
+        model = ejbFacade.tacheByMonth(employe, annee, nom);
+        model.setTitle("Statistique");
+        model.setLegendPosition("ne");
+        model.setAnimate(true);
+        Axis xAxis = model.getAxis(AxisType.X);
+        xAxis.setLabel("Les sites");
+        Axis yAxis = model.getAxis(AxisType.Y);
+        yAxis.setLabel("Quantite Materiel");
+        yAxis.setMin(0);
+        yAxis.setMax(10);
+
+    }
+
+    public BarChartModel initBarCharModel() {
+        ChartSeries InitTache = new ChartSeries();
+        BarChartModel modeleInit = new BarChartModel();
+        for (int mois = 1; mois <= 12; mois++) {
+            InitTache.set("mois " + mois, 0);
+        }
+        modeleInit.addSeries(InitTache);
+        modeleInit.setTitle("Statistique");
+        modeleInit.setLegendPosition("ne");
+        Axis xAxis = modeleInit.getAxis(AxisType.X);
+        xAxis.setLabel("Les mois");
+        Axis yAxis = modeleInit.getAxis(AxisType.Y);
+        yAxis.setLabel("Nombre de tache");
+        yAxis.setMin(0);
+        yAxis.setMax(20000);
+        return modeleInit;
+    }
+//statistique
 
     public void GrandeByDate() {
         System.out.println("h dateCherche ------> " + dateCherche);
@@ -179,7 +237,7 @@ public class GrandeTacheController implements Serializable {
 
     public List<GrandeTache> getItems() {
         if (items == null) {
-            items = getFacade().findAll();
+            items = ejbFacade.findGrandeTachByEmp(user);
         }
         return items;
     }
@@ -232,6 +290,43 @@ public class GrandeTacheController implements Serializable {
 
     public void setDateCherche(Date dateCherche) {
         this.dateCherche = dateCherche;
+    }
+
+    public BarChartModel getModel() {
+        if (model == null) {
+            System.out.println("model avant init " + initBarCharModel());
+            model = initBarCharModel();
+            System.out.println("model apres init " + initBarCharModel());
+        }
+        return model;
+    }
+
+    public void setModel(BarChartModel model) {
+        this.model = model;
+    }
+
+    public int getAnnee() {
+        return annee;
+    }
+
+    public void setAnnee(int annee) {
+        this.annee = annee;
+    }
+
+    public Employe getEmploye() {
+        return employe;
+    }
+
+    public void setEmploye(Employe employe) {
+        this.employe = employe;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
 }

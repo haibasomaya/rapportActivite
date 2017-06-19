@@ -39,11 +39,11 @@ public class ReunionController implements Serializable {
     private Division division;
     private Service service;
     private Employe emp;
+    private String login;
     private Date datechercher;
     private List<Reunion> items = null;
     private List<Service> services = null;
-    private List<Service> srvs = null;
-    private List<Service> srv = null;
+    private List<Service> serv = null;
     private List<Employe> employes = null;
     private List<Employe> emps = null;
     private List<Employe> participants = null;
@@ -85,13 +85,19 @@ public class ReunionController implements Serializable {
     }
 
     public void findByDate() {
-        System.out.println("haaa la daate----->" + datechercher);
-        items = ejbFacade.findByDate(datechercher);
-        System.out.println("liste trouuverrr--->" + items);
+        if (!login.equals("")) {
+            emp = employeFacade.find(login);
+            items = ejbFacade.findByGerant(emp);
+        } else {
+            System.out.println("haaa la daate----->" + datechercher);
+            items = ejbFacade.findByDate(datechercher);
+            System.out.println("liste trouuverrr--->" + items);
+        }
     }
 
     public void detail(Reunion reunion) {
-        participants = ejbFacade.findParticips(reunion);
+        participants = reunion.getParticipants();
+        System.out.println("haaaa participant----->" + participants);
         RequestContext.getCurrentInstance().execute("PF('ReunionDetailDialog').show()");
 
     }
@@ -109,13 +115,6 @@ public class ReunionController implements Serializable {
             services = serviceFacade.findByDivision(division);
             i = 0;
         }
-    }
-    public void listSrvs() {
-        if (division != null) {
-            System.out.println("la divisionnn est-----> " + division);
-            srvs = serviceFacade.findByDivision(division);
-        }
-
     }
 
     public void valider() {
@@ -140,18 +139,16 @@ public class ReunionController implements Serializable {
             activiteFacade.edit(selected.getActivite());
         }
         System.out.println("haaaa new Reunion---->" + selected);
-        services = null;
+        serv = null;
 
     }
 
     public void ignorerService(Service s) {
-        srv.remove(srv.indexOf(s));
+        serv.remove(serv.indexOf(s));
     }
 
     public void ajoutService() {
-        if (service != null) {
-            srv.add(service);
-        }
+        serv.add(service);
     }
 
     public void ignorer(Employe emp) {
@@ -178,7 +175,6 @@ public class ReunionController implements Serializable {
         } else {
             division = new Division();
             services = new ArrayList();
-            System.out.println("haaaaa a5eeer fct dyal rn par employe ----->" + items);
         }
     }
 
@@ -289,6 +285,16 @@ public class ReunionController implements Serializable {
 
     }
 
+    protected void setEmbeddableKeys() {
+    }
+
+    protected void initializeEmbeddableKey() {
+    }
+
+    private ReunionFacade getFacade() {
+        return ejbFacade;
+    }
+
     private void testItmes() {
         if (user.isAdmin() || user.getSuperAdmin() == 1) {
             if (ejbFacade.findByGerant(user) != null) {
@@ -301,17 +307,8 @@ public class ReunionController implements Serializable {
         }
     }
 
-    protected void setEmbeddableKeys() {
-    }
-
-    protected void initializeEmbeddableKey() {
-    }
-
-    private ReunionFacade getFacade() {
-        return ejbFacade;
-    }
-
     public List<Reunion> getItems() {
+        items = null;
         if (items == null) {
             testItmes();
         }
@@ -383,7 +380,11 @@ public class ReunionController implements Serializable {
 
     public List<Employe> getEmployes() {
         if (employes == null) {
-            employes = new ArrayList();
+            if (user.getSuperAdmin() == 1) {
+                employes = employeFacade.admines();
+            } else {
+                employes = new ArrayList();
+            }
         }
         return employes;
     }
@@ -427,7 +428,8 @@ public class ReunionController implements Serializable {
 
     public List<Employe> getParticipants() {
         if (participants == null) {
-            participants = new ArrayList<>();
+            participants = selected.getParticipants();
+            System.out.println("les particiapant------>" + participants);
         }
         return participants;
     }
@@ -436,26 +438,23 @@ public class ReunionController implements Serializable {
         this.participants = participants;
     }
 
-    public List<Service> getSrv() {
-        if (srv == null) {
-            srv = new ArrayList<>();
+    public List<Service> getServ() {
+        if (serv == null) {
+            serv = new ArrayList();
         }
-        return srv;
+        return serv;
     }
 
-    public void setSrv(List<Service> srv) {
-        this.srv = srv;
+    public void setServ(List<Service> serv) {
+        this.serv = serv;
     }
 
-    public List<Service> getSrvs() {
-        if (srvs == null) {
-            srvs = new ArrayList<>();
-        }
-        return srvs;
+    public String getLogin() {
+        return login;
     }
 
-    public void setSrvs(List<Service> srvs) {
-        this.srvs = srvs;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
 }

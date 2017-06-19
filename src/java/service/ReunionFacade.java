@@ -21,55 +21,62 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class ReunionFacade extends AbstractFacade<Reunion> {
-
+    
     @PersistenceContext(unitName = "rapportActivitePU")
     private EntityManager em;
-
+    
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-    public void createReunionParAdmin(List<Service> services , Reunion reunion){
-        if(services!=null && !services.isEmpty())
-        for (Service s : services) {
-           reunion.getParticipants().addAll(s.getEmployes());
+    
+    public void createReunionParAdmin(List<Service> services, Reunion reunion) {
+        if (services != null && !services.isEmpty()) {
+            for (Service s : services) {
+                if (s.getEmployes() != null && !s.getEmployes().isEmpty()) {
+                    int i = s.getEmployes().size();
+                    for (int p = 0; p > i; p++) {
+                        reunion.getParticipants().add(s.getEmployes().get(p));
+                    }
+                }
+            }
         }
         create(reunion);
     }
-
+    
     public List<Employe> findParticips(Reunion reunion) {
-        return em.createQuery("SELECT DISTINCT rn.participants FROM Reunion rn WHERE rn.id =" + reunion.getId()).getResultList();
+        return em.createQuery("SELECT rn.participants FROM Reunion rn WHERE rn.id =" + reunion.getId()).getResultList();
     }
-
+    
     public List<Reunion> findByDate(Date datechercher) {
         if (datechercher != null) {
             Date d = util.DateUtil.getSqlDate(datechercher);
-            System.out.println("haaaa laa date sql ------> "+d);
+            System.out.println("haaaa laa date sql ------> " + d);
             return em.createQuery("SELECT rn FROM Reunion rn WHERE rn.dateDebut ='" + d + "'").getResultList();
         } else {
             return null;
         }
     }
-
+    
     public ReunionFacade() {
         super(Reunion.class);
     }
-
+    
     public List<Reunion> findByGerant(Employe employe) {
-        if (employe != null && employe.isAdmin()) {
+        if (employe != null) {
             return em.createQuery("SELECT rn FROM Reunion rn WHERE rn.gerant.login ='" + employe.getLogin() + "'").getResultList();
         } else {
             return null;
         }
     }
-
+    
     public void valider(List<Employe> employes, Reunion reunion) {
         employes.forEach((emp) -> {
             reunion.getParticipants().add(emp);
         });
         edit(reunion);
     }
-
+    
     public void retirerEmp(Employe employe) {
         System.out.println("----- hanii f'retirerEmp--------");
         List<Reunion> reunions = findAll();
@@ -78,14 +85,14 @@ public class ReunionFacade extends AbstractFacade<Reunion> {
             for (Employe emp : par) {
                 if (employe.getLogin().equals(emp.getLogin())) {
                     reunion.getParticipants().remove(reunion.getParticipants().indexOf(emp));
-
+                    
                 }
             }
             edit(reunion);
         }
         System.out.println("------hanii (rejt bisalam mnhaa-----");
     }
-
+    
     public List<Reunion> findByParticipant(Employe employe) {
         List<Reunion> reunions = findAll();
         List<Reunion> liste = new ArrayList<>();

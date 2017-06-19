@@ -66,7 +66,7 @@
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                     <li><a href="../admine/CreateReunion.xhtml"> Nouveau Ruenion </a></li>
                                     <li><a href="../admine/CreateProjet.xhtml">Nouveau Projet</a></li>
-<!--                                    <li><a href="../admine/CreationMarche.xhtml">Nouveau Marche</a></li>-->
+                                    <!--                                    <li><a href="../admine/CreationMarche.xhtml">Nouveau Marche</a></li>-->
                                     <li><a href="../admine/CreateBon.xhtml">Nouveau Bon de Commande</a></li>
                                     <!-- <li role="separator" class="divider"></li>
                                     <li><a href="#">Separated link</a></li>-->
@@ -98,7 +98,7 @@
                     </h:form>
                     <h:form id="employeB" style=" alignment-adjust: auto" rendered="#{(employeController.simpleUser()==true)}">
                         <ul class="nav navbar-nav">
-                            <centre><li><a href="../simpleUser/EmpTache.xhtml" class="fa fa-pencil-square-o" > Nouveuu Tache Quotidienne  </a></li></centre>
+                            <li><a href="../simpleUser/EmpTache.xhtml" class="fa fa-pencil-square-o" > Nouveuu Tache Quotidienne  </a></li>
                         </ul>
                     </h:form>
                     <div style="float:right;">
@@ -119,10 +119,10 @@
                         <li class="sidebar-brand">
                         </li>
                         <h:form id="employe" style=" alignment-adjust: auto" rendered="#{employeController.simpleUser()==true}">
-                            <li><a href="../tacheElementaire/List.xhtml" class="fa fa-pencil-square-o"> Mes Taches </a></li><br></br>
-                            <!--<li><a href="../grandeTache/List.xhtml" class="fa fa-pencil-square-o"> Mes Grandes Taches </a></li><br></br>-->
-                            <li><a href="../tacheElementaire/StatiqueTache.xhtml" class="fa fa-area-chart"> Statistique </a></li><br></br>
+                            <li><a href="../myList/ListMyTaches.xhtml" class="fa fa-list"> Mes Taches Qotidiennes </a></li><br></br>
                             <li><a href="../myList/ListReunion.xhtml" class="fa fa-university"> Mes Reunions </a></li><br></br>
+                            <li><a href="../statistique/stat.xhtml" class="fa fa-area-chart"> Statistique Grande Tache </a></li><br></br>
+                            <li><a href="../statistique/staticElem.xhtml" class="fa fa-area-chart"> Statistique Quotidienne </a></li><br></br>
 
                         </h:form>
 
@@ -130,20 +130,24 @@
                             <li><a href="../admine/ListEmp.xhtml" class="fa fa-group">  Mes Employes </a></li><br></br>
                             <li><a href="../admine/ListTacheQot.xhtml" class="fa fa-list-alt"> Listes Des Taches Employes </a></li><br></br>
                             <li><a href="../myList/ListMyTaches.xhtml" class="fa fa-list"> Mes Taches Qotidiennes </a></li><br></br>
-                            <li><a href="../myList/ListGrandeTache.xhtml" class="fa fa-list"> Mes Grande Tache </a></li><br></br>
-                            <li><a href="../tacheElementaire/StatiqueTache.xhtml" class="fa fa-area-chart"> Statistique </a></li><br></br>
                             <li><a href="../myList/ListReunion.xhtml" class="fa fa-university"> Mes Reunions </a></li><br></br>
                             <li><a href="../myList/ListProjet.xhtml" class="fa fa-folder-open"> Mes Projet </a></li><br></br>
+                            <li><a href="../myList/ListGrandeTache.xhtml" class="fa fa-list"> Mes Grande Tache </a></li><br></br>
+                            <li><a href="../statistique/stat.xhtml" class="fa fa-area-chart"> Statistique Grande Tache </a></li><br></br>
+                            <li><a href="../statistique/staticElem.xhtml" class="fa fa-area-chart"> Statistique Quotidienne </a></li><br></br>
 
                         </h:form>
 
                         <h:form id="super" style=" alignment-adjust: auto" rendered="#{employeController.user.superAdmin==1}">
                             <li><a href="../superAdmine/ListAdmine.xhtml" class="fa fa-group"> Les Admines des Divisions </a></li><br></br>
-                            <li><a href="../admine/ListTacheQot.xhtml" class="fa fa-list-alt"> Listes Des Taches Employes </a></li><br></br>
+                            <li><a href="../admine/ListTacheQot.xhtml" class="fa fa-list"> Listes Des Taches Employes </a></li><br></br>
+                            <li><a href="../myList/ListGrandeTache.xhtml" class="fa fa-list"> Mes Grande Tache </a></li><br></br>
                             <li><a href="../myList/ListReunion.xhtml" class="fa fa-university">Mes Reunion</a></li><br></br>
                             <li><a href="../myList/ListProjet.xhtml" class="fa fa-folder-open"> Mes Projet </a></li><br></br>
                             <li><a href="../myList/ListMarchet.xhtml" class="fa fa-shopping-cart"> Mes Marchet </a></li><br></br>
-                            <li><a href="../tacheElementaire/StatiqueTache.xhtml" class="fa fa-area-chart"> Statistique </a></li><br></br>
+                            <!--<li><a href="../myList/ListBoncommande.xhtml" class="fa fa-list-alt"> List Bon de Commande </a></li><br></br>-->
+                            <li><a href="../statistique/stat.xhtml" class="fa fa-area-chart"> Statistique Grande Tache </a></li><br></br>
+                            <li><a href="../statistique/staticElem.xhtml" class="fa fa-area-chart"> Statistique Quotidienne </a></li><br></br>
                         </h:form>
 
                     </ul>

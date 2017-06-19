@@ -29,6 +29,16 @@ public class DivisionFacade extends AbstractFacade<Division> {
         return em;
     }
 
+    public Division adminDivision(Employe employe) {
+        if (employe.isAdmin()) {
+            Division d = (Division) em.createQuery("SELECT d FROM Division d WHERE d.directeur.login ='" + employe.getLogin() + "'").getResultList().get(0);
+            if (d != null) {
+                return d;
+            }
+        }
+        return new Division();
+    }
+
     public DivisionFacade() {
         super(Division.class);
     }
@@ -37,7 +47,7 @@ public class DivisionFacade extends AbstractFacade<Division> {
         if (employe.isAdmin()) {
             return em.createQuery("SELECT d FROM Division d WHERE d.directeur.login = '" + employe.getLogin() + "'").getResultList();
         } else {
-            return null;
+            return new ArrayList<>();
         }
     }
 

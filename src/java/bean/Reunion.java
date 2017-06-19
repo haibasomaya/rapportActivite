@@ -6,6 +6,7 @@
 package bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -74,6 +75,9 @@ public class Reunion implements Serializable {
     }
 
     public List<Employe> getParticipants() {
+        if(participants == null){
+            participants = new ArrayList();
+        }
         return participants;
     }
 

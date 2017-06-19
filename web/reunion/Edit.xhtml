@@ -12,13 +12,6 @@
         <p:dialog id="ReunionEditDlg" widgetVar="ReunionEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditReunionTitle}">
             <h:form id="ReunionEditForm">
                 <h:panelGroup id="display">
-                        <!--<p:outputLabel value="#{bundle.EditReunionLabel_activite}" for="activite" />-->
-<!--                        <p:selectOneMenu id="activite" value="#{reunionController.selected.activite}" >
-                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
-                            <f:selectItems value="#{activiteController.items}"
-                                           var="activiteItem"
-                                           itemValue="#{activiteItem}"/>
-                        </p:selectOneMenu>--> 
                     <div class="row">
                         <div class="col-md-offset-2 col-md-3">
                             <div class="form-group">
@@ -29,7 +22,6 @@
                         <div class="col-md-offset-1 col-md-3">
                             <div class="form-group">
                                 <p:outputLabel value="#{bundle.EditReunionLabel_dateDebut}" for="dateDebut" />
-<!--                                    <b:datepicker value="#{reunionController.selected.dateDebut}" id="dateDebut" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>-->
                                 <p:calendar id="dateDebut" pattern="MM/dd/yyyy HH:mm:ss" value="#{reunionController.selected.dateDebut}" title="#{bundle.EditReunionTitle_dateDebut}"  showOn="button"/>
                             </div>
                         </div>
@@ -56,7 +48,7 @@
                         </div>
                     </div>
                     <b:commandButton actionListener="#{reunionController.updating()}" value="#{bundle.Save}" look="primary" update="display,:ReunionListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ReunionEditDialog');"/>
-                    <b:commandButton value="#{bundle.Cancel}" onclick="ReunionEditDialog.hide()"/>
+                    <b:commandButton value="Terminer" onclick="ReunionEditDialog.hide()"/>
                 </h:panelGroup>
             </h:form>
         </p:dialog>

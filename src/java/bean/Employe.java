@@ -38,8 +38,6 @@ public class Employe implements Serializable {
     private int superAdmin;
     @ManyToOne
     private Service service;
-    @ManyToOne
-    private GrandeTache grandeTache;
     @OneToMany(mappedBy = "employe")
     private List<Tache> tacheElementaires;
     @OneToMany(mappedBy = "employe")
@@ -99,14 +97,6 @@ public class Employe implements Serializable {
 
     public void setBloquer(int bloquer) {
         this.bloquer = bloquer;
-    }
-
-    public GrandeTache getGrandeTache() {
-        return grandeTache;
-    }
-
-    public void setGrandeTache(GrandeTache grandeTache) {
-        this.grandeTache = grandeTache;
     }
 
     public String getLogin() {

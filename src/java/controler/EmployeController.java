@@ -96,10 +96,10 @@ public class EmployeController implements Serializable {
     }
 
     public void cherchAdmin() {
-        employes = null;
-        employes = getEmployes();
-        System.out.println("Etaaaat"+etat);
+        System.out.println("Etaaaat" + etat);
         if (etat >= 0) {
+            employes = null;
+            employes =  new ArrayList<>();
             employes = ejbFacade.EmpAdminBloquer(etat, employes);
         }
         if (division != null && user.getSuperAdmin() == 1) {
@@ -183,11 +183,14 @@ public class EmployeController implements Serializable {
         ejbFacade.bloquerDebloquer(employe);
     }
 
-    public void confirmerAdmin() {
+    public void confirmerAdmin() throws MessagingException {
         System.out.println("laaa division de laa formation--------->" + division);
         if (division.getDirecteur() != null) {
             System.out.println("cette division choisit a deja un directeur");
             RequestContext.getCurrentInstance().execute("PF('adminDivisionDlg').show()");
+        } else {
+            creationEmp();
+            prepareCreate();
         }
     }
 

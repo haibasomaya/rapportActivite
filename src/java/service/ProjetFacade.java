@@ -66,7 +66,7 @@ public class ProjetFacade extends AbstractFacade<Projet> {
 
     public List<Projet> findByUser(Employe employe) {
         if (employe != null) {
-            List<Projet> taches = em.createQuery("SELECT DISTINCT t.activite FROM GrandeTache t WHERE t.tacheElementaires.employe.login" + employe.getLogin()).getResultList();
+            List<Projet> taches = em.createQuery("SELECT DISTINCT t.activite FROM GrandeTache t WHERE t.employe.login" + employe.getLogin()).getResultList();
         }
         return null;
     }

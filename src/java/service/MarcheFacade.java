@@ -45,19 +45,25 @@ public class MarcheFacade extends AbstractFacade<Marche> {
 //    public List<Marche> mesMarche(Employe employe){
 //        return em.createQuery("SELECT m FROM Marche m WHERE m.")
 //    }
- public List<Employe> activiteEmploye(Marche activite) {
+    //            if (!taches.isEmpty()) {
+//                for (GrandeTache tache : taches) {
+//                    emps.add(tache.getEmploye());
+//                }
+//                return emps;
+//            }
+
+    public List<Employe> activiteEmploye(Marche activite) {
         if (activite != null) {
-            List<Employe> emps = new ArrayList();
-            List<GrandeTache> taches = em.createQuery("SELECT t FROM GrandeTache t WHERE t.activite.id =" + activite.getId()).getResultList();
-            if (!taches.isEmpty()) {
-                for (GrandeTache tache : taches) {
-                    emps.add(tache.getEmploye());
-                }
+            List<Employe> emps = em.createQuery("SELECT t.employe FROM GrandeTache t WHERE t.activite.id =" + activite.getId()).getResultList();
+            if (emps != null && !emps.isEmpty()) {
                 return emps;
             }
+        } else {
+            return new ArrayList();
         }
-        return null;
+        return new ArrayList();
     }
+
     public List<Marche> findByGerant(Employe employe) {
         if (employe != null && (employe.isAdmin() || employe.getSuperAdmin() == 1)) {
             return em.createQuery("SELECT act FROM Marche act WHERE act.gerant.login ='" + employe.getLogin() + "'").getResultList();

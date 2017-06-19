@@ -105,9 +105,9 @@
                     </p:column>
                 </p:dataTable>
             </h:form>
-            <p:dialog id="SupressionDlg" widgetVar="Supression" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateTacheTitle}">
+            <p:dialog id="SupressionDlg" widgetVar="Supression" modal="true" resizable="false" appendTo="@(body)" header="Confirmer la suppression">
                 <h:form id="SupressionForm">
-                    <p>vous voulez vraiment supprimer la reunion de : <p:outputLabel value="#{projetController.selected.nom}"/></p>
+                    <p>vous voulez vraiment supprimer Projet de : <b:label value="#{projetController.selected.nom}"/></p>
                     <p:commandButton value="supprimer" action="#{projetController.destroy()}" update=":ReunionListForm:datalist" onclick="Supression.hide()" />
                     <p:commandButton value="#{bundle.Cancel}" onclick="Supression.hide()"/>
                 </h:form>

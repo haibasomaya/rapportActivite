@@ -2,7 +2,6 @@ package controler;
 
 import bean.Division;
 import bean.Employe;
-import static bean.Employe_.service;
 import bean.GrandeTache;
 import bean.Projet;
 import bean.Service;
@@ -42,12 +41,14 @@ public class ProjetController implements Serializable {
     private Date dateMax;
     private int type;
     private Service service;
+    private Division division;
     private Employe emp;
+    private GrandeTache grandeTach = null;
     private List<Service> services = null;
     private List<Projet> items = null;
     private List<Employe> emps = null;
     private List<Employe> employes = null;
-    private GrandeTache grandeTach = null;
+    private List<Division> divisions = null;
     Employe user = util.SessionUtil.getConnectedUser();
     @EJB
     private service.ProjetFacade ejbFacade;
@@ -65,14 +66,19 @@ public class ProjetController implements Serializable {
     public ProjetController() {
     }
 
+    public String retour() throws IOException {
+        util.SessionUtil.redirect("/rapportActivite/faces//myList/ListProjet");
+        return "/myList/ListProjet.xhtml";
+    }
+
     public void voirTache(Employe employe) {
         emp = employe;
         RequestContext.getCurrentInstance().execute("PF('ListTachDialg').show()");
-        emp= null;
+        emp = null;
     }
 
     public List<GrandeTache> findGrandeTachByEmp() {
-        return grandeTacheFacade.findGrandeTachByEmpByact(emp , selected);
+        return grandeTacheFacade.findGrandeTachByEmpByact(emp, selected);
     }
 
     public void listEmp() {
@@ -90,19 +96,26 @@ public class ProjetController implements Serializable {
     }
 
     public void AffecterGrandeTache() {
+        System.out.println("grandeTach--------->" + grandeTach);
         if (emp != null) {
             System.out.println("haaa l'emloye------>" + emp);
             grandeTach.setEmploye(emp);
-        } else if ((user.isAdmin() || user.getSuperAdmin() == 1) && emp == null) {
+        } else if (division != null) {
+            emp = division.getDirecteur();
+            grandeTach.setEmploye(emp);
+        } else {
             grandeTach.setEmploye(user);
         }
         grandeTach.setActivite(selected);
         grandeTacheFacade.create(grandeTach);
-        selected.setAvancement(selected.getAvancement() + grandeTach.getAvancement());
+//        selected.setAvancement(selected.getAvancement() + grandeTach.getAvancement());
         selected.getGrandeTaches().add(grandeTach);
         ejbFacade.edit(selected);
+        grandeTach = new GrandeTache();
+
         init();
     }
+//        selected.setAvancement(selected.getAvancement() + grandeTach.getAvancement());
 
     private void init() {
         emp = null;
@@ -375,13 +388,13 @@ public class ProjetController implements Serializable {
 
     public List<Service> getServices() {
         if (services == null) {
-            Division division = divisionFacade.findDivisionByAdmin(selected.getGerant()).get(0);
+            division = divisionFacade.adminDivision(selected.getGerant());
             services = serviceFacade.findByDivision(division);
         }
         return services;
-    }  
-   
-  public void setServices(List<Service> services) {
+    }
+
+    public void setServices(List<Service> services) {
         this.services = services;
     }
 
@@ -391,6 +404,28 @@ public class ProjetController implements Serializable {
 
     public void setEmployes(List<Employe> employes) {
         this.employes = employes;
+    }
+
+    public Division getDivision() {
+        if (division == null) {
+            division = new Division();
+        }
+        return division;
+    }
+
+    public void setDivision(Division division) {
+        this.division = division;
+    }
+
+    public List<Division> getDivisions() {
+        if (divisions == null) {
+            divisions = divisionFacade.findAll();
+        }
+        return divisions;
+    }
+
+    public void setDivisions(List<Division> divisions) {
+        this.divisions = divisions;
     }
 
 }

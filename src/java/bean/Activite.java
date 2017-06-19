@@ -31,7 +31,7 @@ public class Activite implements Serializable {
     private Long id;
     private String nom;
     private String local;
-    private long avancement = 0L;
+    private long avancement = 0;
     private int degrer;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dateDebut;
@@ -73,7 +73,9 @@ public class Activite implements Serializable {
     }
 
     public void setAvancement(long avancement) {
-        this.avancement = avancement;
+        if (avancement <= 100) {
+            this.avancement = avancement;
+        }
     }
 
     public int getDegrer() {

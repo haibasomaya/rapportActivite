@@ -1,8 +1,8 @@
 package controler;
 
 import bean.Employe;
-import bean.GrandeTache;
 import bean.Tache;
+import java.io.IOException;
 import util.JsfUtil;
 import util.JsfUtil.PersistAction;
 import java.io.Serializable;
@@ -20,7 +20,11 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.BarChartSeries;
+import org.primefaces.model.chart.ChartSeries;
 import service.DivisionFacade;
 import service.EmployeFacade;
 import service.GrandeTacheFacade;
@@ -36,6 +40,7 @@ public class TacheElementaireController implements Serializable {
     private Tache selected;
     private String nom;
     private String prenom;
+    private String nomTache;
     private String login;
     private BarChartModel model;
     private int annee;
@@ -55,6 +60,85 @@ public class TacheElementaireController implements Serializable {
     private GrandeTacheFacade grandeTacheFacade;
 
     public TacheElementaireController() {
+    }
+
+    //    public void findByEmp() {
+//        employe = employeFacaede.find(login);
+//        items = ejbFacade.findByEmploye(employe);
+//        init();
+//    }
+    public List<String> getDistinctTach() {
+        return getFacade().findTaches();
+    }
+ public String retour() throws IOException {
+        if (user.isAdmin()) {
+            util.SessionUtil.redirect("/rapportActivite/faces/admine/ListEmp");
+            return "/admine/ListEmp.xhtml";
+        } else if (user.getSuperAdmin() == 1) {
+            util.SessionUtil.redirect("/rapportActivite/faces/superAdmine/ListAdmine");
+            return "/superAdmine/ListAdmine.xhtml";
+        } else {
+            util.SessionUtil.redirect("/rapportActivite/faces/simpleUser/EmpTache");
+            return "/simpleUser/EmpTache.xhtml";
+        }
+    }
+
+    public void staticMethode() {
+        model = new BarChartModel();
+        ChartSeries series = new BarChartSeries();
+        System.out.println("------------>create Model ");
+        System.out.println("hahowa employe " + employe);
+        System.out.println("hahowa annee " + annee);
+        if (!nomTache.equals("")) {
+            series = ejbFacade.tachePerMonth(employe, annee, nomTache);
+            model.addSeries(series);
+        } else {
+            List<String> tachs = getDistinctTach();
+            System.out.println("elementaires--->" + tachs);
+            for (String tach : tachs) {
+                series = new BarChartSeries();
+                series = ejbFacade.tachePerMonth(employe, annee, tach);
+                model.addSeries(series);
+            }
+        }
+
+        model.setTitle("Statistique");
+        model.setLegendPosition("ne");
+        model.setAnimate(true);
+        Axis xAxis = model.getAxis(AxisType.X);
+        xAxis.setLabel("Les Mois");
+        Axis yAxis = model.getAxis(AxisType.Y);
+        yAxis.setLabel("Nombre de Taches Quotidiennes");
+        yAxis.setMin(0);
+        yAxis.setMax(10);
+
+    }
+
+    public BarChartModel initBarCharModel() {
+        ChartSeries InitTache = new ChartSeries();
+        BarChartModel modeleInit = new BarChartModel();
+        for (int mois = 1; mois <= 12; mois++) {
+            InitTache.set("mois " + mois, 0);
+        }
+        modeleInit.addSeries(InitTache);
+        modeleInit.setTitle("Statistique");
+        modeleInit.setLegendPosition("ne");
+        Axis xAxis = modeleInit.getAxis(AxisType.X);
+        xAxis.setLabel("Les mois");
+        Axis yAxis = modeleInit.getAxis(AxisType.Y);
+        yAxis.setLabel("Nombre de tache");
+        yAxis.setMin(0);
+        yAxis.setMax(20000);
+        return modeleInit;
+    }
+
+    //ss
+    public void findInEmpTaches() {
+        employe = employeFacaede.find(login);
+        System.out.println("coontroooo" + dateCherche);
+        items = ejbFacade.tacheByDate(employe, dateCherche);
+        employe = new Employe();
+        init();
     }
 
     //creation tache
@@ -295,11 +379,6 @@ public class TacheElementaireController implements Serializable {
     public void setAnnee(int annee) {
         this.annee = annee;
     }
-//    public void findByEmp() {
-//        employe = employeFacaede.find(login);
-//        items = ejbFacade.findByEmploye(employe);
-//        init();
-//    }
 
     public List<Tache> getTaches() {
         if (taches == null) {
@@ -414,6 +493,16 @@ public class TacheElementaireController implements Serializable {
     public void setDateMax(Date dateMax) {
         this.dateMax = dateMax;
     }
+
+    public String getNomTache() {
+        return nomTache;
+    }
+
+    public void setNomTache(String nomTache) {
+        this.nomTache = nomTache;
+    }
+
+    
 }
 //    public void findInEmpTaches() {
 //        System.out.println("h dateCherche ------> " + dateCherche);

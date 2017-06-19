@@ -17,7 +17,7 @@
             <h:form>
                 <p:outputLabel value="SELECTIONNER UN EMPLOYE"/>
                 <b:panel style="background-color: #1b6d85;">
-                    <div class="row">
+                    <div class="row"><!--
                         <div class="col-lg-4">
                             <h4><b:label value="Choisez type taches "></b:label></h4>
                             <b:selectOneMenu value="#{tacheElementaireController.type}">
@@ -25,7 +25,7 @@
                                 <f:selectItem itemLabel="Quotidienne" itemValue="1"/>
                                 <f:selectItem itemLabel="Elementaire" itemValue="2"/>
                             </b:selectOneMenu>
-                        </div>
+                        </div>-->
                         <div class="col-lg-4">
                             <h4><b:label value="Choisir Employe "></b:label></h4>
                             <b:selectOneMenu value="#{tacheElementaireController.login}">
@@ -50,12 +50,6 @@
             <h:form id="TacheElementaireListForm">
                 <b:dataTable id="datalist" value="#{tacheElementaireController.items}" var="item" class="data"
                              selectionMode="single">
-                    <b:column>
-                        <f:facet name="header">
-                            <h:outputText value="Type Tache"/>
-                        </f:facet>
-                        <h:outputText value="#{(item.type==1)?'Qoutidienne':'Elementaire'}"/>
-                    </b:column>
                     <b:column>
                         <f:facet name="header">
                             <h:outputText value="Nom Tache"/>

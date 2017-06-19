@@ -24,7 +24,7 @@ public class Marche extends Activite implements Serializable {
 
     public List<String> getFournisseurs() {
         if (fournisseurs == null) {
-            fournisseurs = new ArrayList<>();
+            fournisseurs = new ArrayList();
         }
         return fournisseurs;
     }

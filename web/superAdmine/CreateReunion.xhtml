@@ -25,15 +25,14 @@
                         </div>
                         <div class="col-lg-4 col-md-3">
                             <div class="form-group">
-                                <b:label value="#{bundle.CreateReunionLabel_dateDebut}" />
-                                <p:calendar id="dateDebut" value="#{reunionController.selected.dateDebut}" navigator="true" pattern="MM/dd/yyyy"></p:calendar> 
-
+                                <b:label value="Description" />
+                                <b:inputText id="discreption" value="#{reunionController.selected.discreption}" title="#{bundle.CreateReunionTitle_discreption}" />
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-3">
                             <div class="form-group">
-                                <b:label value="Description" />
-                                <b:inputText id="discreption" value="#{reunionController.selected.discreption}" title="#{bundle.CreateReunionTitle_discreption}" />
+                                <b:label value="#{bundle.CreateReunionLabel_dateDebut}" /><br></br>
+                                <p:calendar id="dateDebut" value="#{reunionController.selected.dateDebut}" navigator="true" pattern="MM/dd/yyyy"></p:calendar> 
                             </div>
                         </div>
                     </div>
@@ -45,7 +44,7 @@
                                 <b:selectOneMenu id="division" value="#{reunionController.division}" >
                                     <f:selectItem value="#{null}" />
                                     <f:selectItems value="#{reunionController.divisions}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
-                                    <f:ajax listener="#{reunionController.listSrvs()}" event="change" execute="@form" render="service" ></f:ajax>
+                                    <f:ajax listener="#{reunionController.listServices()}" event="change" render="service" ></f:ajax>
                                 </b:selectOneMenu>
                             </div>
                         </div>
@@ -54,7 +53,7 @@
                                 <b:label value="Service"/>
                                 <b:selectOneMenu id="service" value="#{reunionController.service}" >
                                     <f:selectItem value="#{null}" />
-                                    <f:selectItems value="#{reunionController.srvs}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
+                                    <f:selectItems value="#{reunionController.services}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
                                 </b:selectOneMenu>
                             </div>
                         </div>
@@ -68,14 +67,14 @@
             </h:form>
             <h:form id="itemsList">
                 <h3> <center><p:outputLabel value="Services Participants"/></center></h3>
-                <p:dataTable value="#{reunionController.srv}" var="item" id="datalist" class="data" selectionMode="single" >
+                <p:dataTable value="#{reunionController.serv}" var="item" id="datalist" class="data">
                     <p:column>
                         <f:facet name="header">
                             <p:outputLabel value="Service"/>
                         </f:facet>
                         <h:outputText value="#{item.nom}"/>
                     </p:column>
-                
+
                     <p:column>
                         <f:facet name="header">
                             <p:outputLabel value="Ignorer"/>
@@ -85,7 +84,7 @@
                 </p:dataTable>
                 <br></br>
                 <div class="col-md-offset-5 col-md-1">
-                    <p:commandButton actionListener="#{reunionController.ajoutReunion()}" update="datalist"  class="btn btn-primary" value="Create Reunion" />   
+                    <p:commandButton actionListener="#{reunionController.ajoutReunion()}" update=":itemsList:datalist"  class="btn btn-primary" value="Create Reunion" />   
                 </div>
             </h:form>
             <style>

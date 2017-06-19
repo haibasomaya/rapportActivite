@@ -62,8 +62,9 @@ public class ServiceController implements Serializable {
             selected.setEmployes(emps);
             ejbFacade.create(selected);
             emps = new ArrayList();
+            prepareCreate();
         } else {
-            System.out.println("*********** Inpossible de crer Pas de division *********");
+            System.out.println("*********** Inpossible de crer Pas de division selectionner *********");
         }
     }
 

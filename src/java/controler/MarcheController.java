@@ -26,6 +26,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import org.primefaces.context.RequestContext;
 import service.DivisionFacade;
+import service.EmployeFacade;
 import service.GrandeTacheFacade;
 
 @Named("marcheController")
@@ -44,6 +45,7 @@ public class MarcheController implements Serializable {
     private List<Division> dvsn = null;
     List<String> names = new ArrayList<>();
     private Division division;
+    private Employe employe;
 
     @EJB
     private service.MarcheFacade ejbFacade;
@@ -51,10 +53,20 @@ public class MarcheController implements Serializable {
     private GrandeTacheFacade grandeTacheFacade;
     @EJB
     private DivisionFacade divisionFacade;
-
+    @EJB
+    private EmployeFacade employeFacade;
     private Employe user = util.SessionUtil.getConnectedUser();
 
     public MarcheController() {
+    }
+//
+//    public Division adminDivision(Employe employe) {
+//        return divisionFacade.adminDivision(employe);
+//    }
+
+    public String retour() throws IOException {
+        util.SessionUtil.redirect("/rapportActivite/faces/myList/ListMarchet");
+        return "/myList/ListMarchet.xhtml";
     }
 
     public void igniorer(Division division) {
@@ -63,6 +75,20 @@ public class MarcheController implements Serializable {
 
     public void ajoutDivision() {
         dvsn.add(division);
+    }
+
+    public void AffecterGrandeTache() {
+        if (division == null) {
+            grandeTach.setEmploye(user);
+        } else {
+            grandeTach.setEmploye(division.getDirecteur());
+        }
+        grandeTach.setActivite(selected);
+        grandeTacheFacade.create(grandeTach);
+        selected.setAvancement(selected.getAvancement() + grandeTach.getAvancement());
+        selected.getGrandeTaches().add(grandeTach);
+        ejbFacade.edit(selected);
+        grandeTach = new GrandeTache();
     }
 
     public Division findDivision(Employe employe) {
@@ -95,15 +121,6 @@ public class MarcheController implements Serializable {
 
     }
 
-    public void AffecterGrandeTache() {
-        grandeTach.setEmploye(user);
-        grandeTach.setActivite(selected);
-        grandeTacheFacade.create(grandeTach);
-        selected.setAvancement(selected.getAvancement() + grandeTach.getAvancement());
-        selected.getGrandeTaches().add(grandeTach);
-        ejbFacade.edit(selected);
-    }
-
     public String importance(Marche projet) {
         switch (projet.getDegrer()) {
             case 1:
@@ -121,7 +138,7 @@ public class MarcheController implements Serializable {
         if (user.isAdmin() || user.getSuperAdmin() == 1) {
             selected.setGerant(user);
         }
-        if (!nom.equals("")) {
+        if (!nom.equals(" ")) {
             selected.getFournisseurs().add(nom);
         }
         if (!divisions.isEmpty()) {
@@ -129,6 +146,7 @@ public class MarcheController implements Serializable {
         }
         ejbFacade.create(selected);
         prepareCreate();
+        dvsn = null;
     }
 
     protected void setEmbeddableKeys() {
@@ -256,7 +274,7 @@ public class MarcheController implements Serializable {
     }
 
     public String getNom() {
-        return nom;
+        return nom = "";
     }
 
     public void setNom(String nom) {

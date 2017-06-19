@@ -7,6 +7,8 @@ package service;
 
 import bean.BonCommande;
 import bean.CommandeItem;
+import java.util.ArrayList;
+import static java.util.Collections.list;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -26,6 +28,15 @@ public class CommandeItemFacade extends AbstractFacade<CommandeItem> {
     protected EntityManager getEntityManager() {
         return em;
     }
+
+//    public List<CommandeItem> findByCmd(BonCommande bonCommande) {
+//        List<CommandeItem> items = em.createQuery("SELECT itm FROM CommandeItem itm   itm.bonCommande.id=" + bonCommande.getId()).getResultList();
+//        if (items != null) {
+//            return items;
+//        } else {
+//            return new ArrayList<>();
+//        }
+//    }
 
     public CommandeItemFacade() {
         super(CommandeItem.class);

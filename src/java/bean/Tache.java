@@ -12,7 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -30,7 +30,7 @@ public class Tache implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date dateTache;
     protected Long avancement;
-    @ManyToOne
+    @OneToOne
     private Employe employe;
 
     public Long getId() {

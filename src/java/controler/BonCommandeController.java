@@ -21,24 +21,34 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import org.primefaces.context.RequestContext;
 import service.CommandeItemFacade;
 
 @Named("bonCommandeController")
 @SessionScoped
 public class BonCommandeController implements Serializable {
 
-    private List<BonCommande> items = null;
     private BonCommande selected;
-    private List<CommandeItem> commandeItems;
     private CommandeItem commandeItem;
+    private List<BonCommande> items = null;
+    private List<CommandeItem> commandeItems = null;
+    private List<CommandeItem> listItem = new ArrayList();
+    
     private Employe user = util.SessionUtil.getConnectedUser();
 
     @EJB
     private service.BonCommandeFacade ejbFacade;
     @EJB
     private CommandeItemFacade commandeItemFacade;
+    
+    
 
     public BonCommandeController() {
+    }
+
+    public void voirItem(BonCommande bnCmd) {
+        selected = bnCmd;
+        RequestContext.getCurrentInstance().execute("PF('bonCommandeControllerDialg').show()");
     }
 
     public void valider() {
@@ -183,13 +193,16 @@ public class BonCommandeController implements Serializable {
     }
 
     public void setSelected(BonCommande selected) {
-
         this.selected = selected;
     }
 
     public List<BonCommande> getItems() {
         if (items == null) {
-            items = getFacade().findAll();
+            if (user.getSuperAdmin() == 1) {
+                items = getFacade().findAll();
+            } else {
+                items = ejbFacade.findByGerant(user);
+            }
         }
         return items;
     }
@@ -216,7 +229,21 @@ public class BonCommandeController implements Serializable {
         this.commandeItem = commandeItem;
     }
 
+    public List<CommandeItem> getListItem() {
+        if (listItem == null) {
+            listItem = selected.getCommandeItems();
+        }
+        return listItem;
+    }
+
+    public void setListItem(List<CommandeItem> listItem) {
+        this.listItem = listItem;
+    }
+
     public Employe getUser() {
+        if (user == null) {
+            user = new Employe();
+        }
         return user;
     }
 

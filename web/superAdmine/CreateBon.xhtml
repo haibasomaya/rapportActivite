@@ -37,13 +37,16 @@
                             <div class="col-md-offset-2 col-md-3 ">
                                 <div class="form-group">
                                     <p:outputLabel value="#{bundle.CreateBonCommandeLabel_dateDebut}" for="dateDebut" />
-                                    <b:datepicker value="#{bonCommandeController.selected.dateDebut}" id="dateDebut" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>
+                                    <!--<b:datepicker value="#{bonCommandeController.selected.dateDebut}" id="dateDebut" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>-->
+                                    <p:calendar value="#{bonCommandeController.selected.dateDebut}" id="dateDebut" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" ></p:calendar>
                                 </div>
                             </div>
                             <div class="col-md-offset-1 col-md-3">
                                 <div class="form-group">
                                     <p:outputLabel value="#{bundle.CreateBonCommandeLabel_dateFin}" for="dateFin" />
-                                    <b:datepicker value="#{bonCommandeController.selected.dateFin}" id="dateFin" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>
+                                    <!--<b:datepicker value="#{bonCommandeController.selected.dateFin}" id="dateFin" show-button-panel="button" placeholder="MM/dd/yyyy HH:mm:ss"></b:datepicker>-->
+                                    <p:calendar value="#{bonCommandeController.selected.dateFin}" id="dateFin" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" ></p:calendar>
+
                                 </div>
                             </div>
                         </div>
@@ -89,12 +92,12 @@
                         <f:facet name="header">
                             <h:outputText value="Ignorer"/>
                         </f:facet>
-                        <p:commandButton actionListener="#{bonCommandeController.ignorer(item)}" value="Ignorer"/>                    </p:column>
+                        <p:commandButton actionListener="#{bonCommandeController.ignorer(item)}" value="Ignorer" update=":itemsList:datalist"/>                    </p:column>
 
                 </p:dataTable>
                 <br></br>
                 <div class="col-md-offset-5 col-md-1">
-                    <p:commandButton actionListener="#{bonCommandeController.valider()}" update="datalist"  class="btn btn-primary" value="Create Bon Commande" />   
+                    <p:commandButton actionListener="#{bonCommandeController.valider()}" update=":itemsList:datalist"  class="btn btn-primary" value="Create Bon Commande" />   
                 </div>
             </h:form>
             <style>
