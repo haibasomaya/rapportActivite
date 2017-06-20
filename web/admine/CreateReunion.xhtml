@@ -19,7 +19,7 @@
                             <div class="form-group">
                                 <p:outputLabel value="choix Activitie" />
                                 <b:selectOneMenu value="#{reunionController.selected.activite}">
-                                    <f:selectItem itemLabel="-selecte Activite-" itemValue="#{null}" ></f:selectItem>
+                                    <f:selectItem  itemValue="#{null}" ></f:selectItem>
                                     <f:selectItems value="#{activiteController.items}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
                                 </b:selectOneMenu>
                             </div>
@@ -27,7 +27,7 @@
                         <div class="col-md-offset-1 col-md-3">
                             <div class="form-group">
                                 <p:outputLabel value="Date de reunion" />
-                                <p:calendar id="dateDebut" value="#{reunionController.selected.dateDebut}" navigator="true" pattern="MM/dd/yyyy"></p:calendar> 
+                                <p:calendar id="dateDebut" value="#{reunionController.selected.dateDebut}" navigator="true" pattern="yyyy/dd/MM"></p:calendar> 
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-3">
@@ -45,7 +45,7 @@
                                 <b:selectOneMenu id="service" value="#{reunionController.service}" >
                                     <f:selectItem value="#{null}" itemLabel="-select Service-"/>
                                     <f:selectItems value="#{reunionController.services}" var="item" itemValue="#{item.id}" itemLabel="#{item.nom}"/>
-                                    <f:ajax listener="#{reunionController.listEmp}" event="change" execute="@form" render="emp" ></f:ajax>
+                                    <f:ajax listener="#{reunionController.listEmp}" event="change"  render="emp" ></f:ajax>
                                 </b:selectOneMenu>
                             </div>
                         </div>
@@ -66,8 +66,8 @@
                     </div>
                 </b:panel>
             </h:form>
+            <h3> <center><p:outputLabel value="Employes Participants"/></center></h3>
             <h:form id="itemsList">
-                <h3> <center><p:outputLabel value="Employes Participants"/></center></h3>
                 <p:dataTable value="#{reunionController.emps}" var="item" id="datalist" class="data" selectionMode="single" rowKey="#{item.login}">
                     <p:column>
                         <f:facet name="header">
@@ -99,6 +99,14 @@
                     <p:commandButton actionListener="#{reunionController.valider()}" update="datalist"  class="btn btn-primary" value="Create Reunion" />   
                 </div>
             </h:form>
+            <p:dialog id="messageDlg" widgetVar="message" modal="true" resizable="false" appendTo="@(body)" header="Date Invalide">
+                <h:form id="messageForm">
+                    <h4> <h:outputLabel id="textLabel" value="Attention" /> </h4>
+                    <p:outputLabel  value="#{reunionController.msg}" class="form-control"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="Supression.hide()"/>
+                </h:form>
+            </p:dialog>
+
             <style>
                 .data{
                     position: relative;

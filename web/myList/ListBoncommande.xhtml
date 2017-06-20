@@ -14,42 +14,8 @@
         </ui:define>
 
         <ui:define name="body">
-
-            <!--<h:form>-->
-            <!--                <b:panel style="background-color: #1b6d85;">
-                                <div class="row">
-                                    <div class="col-lg-4 col-md-3">
-                                        <div class="form-group">
-                                            <p:outputLabel value="Date Max" for="dateDebut" /><br></br>
-                                            <p:calendar id="dateDebut" value="#{projetController.dateMin}" navigator="true" pattern="MM/dd/yyyy"></p:calendar> 
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-3">
-                                        <div class="form-group">
-                                            <p:outputLabel value="Date Min" for="datefin" /><br></br>
-                                            <p:calendar id="datefin" value="#{projetController.dateMax}" navigator="true" pattern="MM/dd/yyyy"></p:calendar> 
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-3">
-                                        <div class="form-group">
-                                            <p:outputLabel value="Type" />
-                                            <b:selectOneMenu value="#{projetController.type}">  
-                                                <f:selectItem itemLabel="-selecte-" itemValue="-1"/>
-                                                <f:selectItem itemLabel="Urgent" itemValue="1"/>
-                                                <f:selectItem itemLabel="Moderer" itemValue="2"/>
-                                                <f:selectItem itemLabel="Minim" itemValue="3"/>
-                                            </b:selectOneMenu>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-offset-5 col-md-3">
-                                    <b:commandButton actionListener="#{projetController.findByTypeDate()}" update=":ReunionListForm:datalist" value="Trouver" />
-                                </div>
-                            </b:panel>
-                        </h:form>-->
-            <h4> <b:label value="List Mes Projet"/></h4>
+            <h4> <b:label value="List Mes Commande"/></h4>
             <h:form id="ReunionListForm">
-                <h1><h:outputText value="List"/></h1>
                 <p:dataTable value="#{bonCommandeController.items}" var="item">
                     <p:column>
                         <f:facet name="header">
@@ -85,44 +51,38 @@
                         <f:facet name="header">
                             <h:outputText value="Commande Items"/>
                         </f:facet>
-                        <p:commandButton value="Commande Item" action="#{bonCommandeController.voirItem(item)}" icon="ui-icon-eyes" update=":bonCommandeControllerForm:datalist"/>
+                        <p:commandButton value="Item" action="#{bonCommandeController.voirItem(item)}" icon="ui-icon-eye" update=":bonCommandeForm:datalist"/>
                     </p:column>
                 </p:dataTable>
             </h:form>
-            <p:dialog id="bonCommandeControllerDlg" widgetVar="bonCommandeControllerDialg" modal="true" resizable="false" appendTo="@(body)" header="Confirmer la suppression">
-                <h:form id="bonCommandeControllerForm">
-                    <f:view>
-
-                        <h:form>
-                            <h1><h:outputText value="List"/></h1>
-                            <p:dataTable value="#{bonCommandeController.listItem}" var="item" id="datalist">
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Id"/>
-                                    </f:facet>
-                                    <h:outputText value="#{item.id}"/>
-                                </p:column>
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Nom"/>
-                                    </f:facet>
-                                    <h:outputText value="#{item.nom}"/>
-                                </p:column>
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Fourniseur"/>
-                                    </f:facet>
-                                    <h:outputText value="#{item.fourniseur}"/>
-                                </p:column>
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="BonCommande"/>
-                                    </f:facet>
-                                    <h:outputText value="#{item.bonCommande}"/>
-                                </p:column>
-                            </p:dataTable>
-                        </h:form>
-                    </f:view>
+            <p:dialog id="bonCommandeDlg" widgetVar="bonCommandeDialg" modal="true" resizable="false" appendTo="@(body)" header="Confirmer la suppression">
+                <h:form id="bonCommandeForm">
+                    <b:dataTable value="#{bonCommandeController.listItem}" var="item" id="datalist">
+                        <b:column>
+                            <f:facet name="header">
+                                <h:outputText value="Id"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">
+                                <h:outputText value="Nom"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nom}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">
+                                <h:outputText value="Fourniseur"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fourniseur}"/>
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">
+                                <h:outputText value="BonCommande"/>
+                            </f:facet>
+                            <h:outputText value="#{item.bonCommande}"/>
+                        </b:column>
+                    </b:dataTable>
 
                     <p:commandButton value="#{bundle.Cancel}" onclick="Supression.hide()"/>
                 </h:form>

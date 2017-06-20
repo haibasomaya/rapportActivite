@@ -48,12 +48,12 @@ public class BonCommandeController implements Serializable {
 
     public void voirItem(BonCommande bnCmd) {
         selected = bnCmd;
-        RequestContext.getCurrentInstance().execute("PF('bonCommandeControllerDialg').show()");
+        RequestContext.getCurrentInstance().execute("PF('bonCommandeDialg').show()");
     }
 
     public void valider() {
         selected.setGerant(user);
-//        selected.setCommandeItems(commandeItems);
+        selected.setCommandeItems(commandeItems);
         ejbFacade.create(selected);
         commandeItemFacade.createItems(commandeItems, selected);
         commandeItems = new ArrayList();
@@ -199,7 +199,7 @@ public class BonCommandeController implements Serializable {
     public List<BonCommande> getItems() {
         if (items == null) {
             if (user.getSuperAdmin() == 1) {
-                items = getFacade().findAll();
+                items = ejbFacade.findByGerant(user);
             } else {
                 items = ejbFacade.findByGerant(user);
             }
@@ -231,7 +231,7 @@ public class BonCommandeController implements Serializable {
 
     public List<CommandeItem> getListItem() {
         if (listItem == null) {
-            listItem = selected.getCommandeItems();
+            listItem = ejbFacade.listItem(selected);
         }
         return listItem;
     }

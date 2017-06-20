@@ -6,6 +6,7 @@
 package service;
 
 import bean.BonCommande;
+import bean.CommandeItem;
 import bean.Employe;
 import bean.GrandeTache;
 import bean.Marche;
@@ -44,11 +45,15 @@ public class BonCommandeFacade extends AbstractFacade<BonCommande> {
     }
 
     public List<BonCommande> findByGerant(Employe employe) {
-        if (employe != null && (employe.isAdmin() || employe.getSuperAdmin() == 1)) {
-            return em.createQuery("SELECT act FROM Projet act WHERE act.gerant.login ='" + employe.getLogin() + "'").getResultList();
+        if (employe.isAdmin() || employe.getSuperAdmin() == 1) {
+            return em.createQuery("SELECT act FROM BonCommande act WHERE act.gerant.login ='" + employe.getLogin() + "'").getResultList();
         } else {
             return null;
         }
+    }
+
+    public List<CommandeItem> listItem(BonCommande cmd) {
+        return em.createQuery("SELECT it FROM CommandeItem it WHERE it.bonCommande.id =" + cmd.getId()).getResultList();
     }
 
     public List<BonCommande> findByUser(Employe employe) {

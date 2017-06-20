@@ -36,15 +36,13 @@
                     <div class="col-md-offset-2 col-md-25">
                         <div class="form-group">
                             <p:outputLabel value="Date Debut:" for="dateTache" /><br></br>
-                            <!--<p:calendar id="dateTache" value="#{projetController.grandeTach.dateTache}"  navigator="true" pattern="MM/dd/yyyy" ></p:calendar>-->
-                            <b:datepicker id="dateTache" placeholder="MM/dd/yyyy HH:mm:ss"  value="#{grandeTacheController.selected.dateTache}" show-button-panel="button" ></b:datepicker>
+                            <b:datepicker id="dateTache" placeholder="MM/dd/yyyy HH:mm:ss"  value="#{projetController.grandeTach.dateTache}" show-button-panel="button" ></b:datepicker>
                         </div>
                     </div>
                     <div class="col-md-offset-2 col-md-25">
                         <div class="form-group">
                             <p:outputLabel value="DateFin:" for="dateFin" /><br></br>
-                            <!--<p:calendar id="dateFin" value="#{projetController.grandeTach.dateFin}"  navigator="true" pattern="MM/dd/yyyy" ></p:calendar><br></br><br></br>-->
-                            <b:datepicker id="dateFin" placeholder="MM/dd/yyyy HH:mm:ss"  value="#{grandeTacheController.selected.dateTache}" show-button-panel="button" ></b:datepicker>
+                            <b:datepicker id="dateFin" placeholder="MM/dd/yyyy HH:mm:ss"  value="#{projetController.grandeTach.dateTache}" show-button-panel="button" ></b:datepicker>
                         </div>
                     </div>
                 </div>
@@ -74,7 +72,7 @@
                     </div>
                 </div>
             </h:form>
-            <h:form rendered="#{employeController.user.superAdmin==1}">
+            <h:form rendered="#{projetController.user.superAdmin==1}">
                 <div class="row">
                     <div class="col-lg-6 col-md-3">
                         <div class="form-group">

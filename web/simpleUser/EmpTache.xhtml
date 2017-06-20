@@ -15,22 +15,23 @@
                     <div class="row">
                         <div class="col-md-offset-1 col-md-3">
                             <h4> <h:outputLabel value="Date de la Tache"/> </h4>
-                            <!--<b:datepicker id="dateTache" placeholder="MM/dd/yyyy HH:mm:ss"  value="#{tacheElementaireController.selected.dateTache}" show-button-panel="button" />-->
-                            <p:calendar id="dateTache" value="#{tacheElementaireController.selected.dateTache}" navigator="true" pattern="MM/dd/yyyy"></p:calendar> 
+                            <p:calendar id="dateTache" value="#{tacheElementaireController.selected.dateTache}" navigator="true" pattern="yyyy/MM/dd"></p:calendar> 
                         </div>
                         <div class="col-lg-4 col-md-3">
                             <h4> <h:outputLabel value="Choisir Tache"/> </h4>
                             <b:selectOneMenu value="#{tacheElementaireController.selected.nom}" id="ancient" class="form-control">
                                 <f:selectItem itemValue="" itemLabel="--autre--"/>
-                                <f:selectItems value="#{tacheElementaireController.taches}" var="item"  itemLabel="#{item.nom}" itemValue="#{item.nom}"/>
-                                <!--<p:ajax process="name"  update=":autre"/>--> 
-                                <!--<f:ajax event="change" render="autre"></f:ajax>-->
+                                <f:selectItems value="#{tacheElementaireController.names}" var="item"  itemLabel="#{item}" itemValue="#{item}"/>
+                                <!--<f:ajax listener="#{tacheElementaireController.ajouterList}" event="change" execute="@form" render=":FormTacheElemt:datalist" ></f:ajax>-->
+
                             </b:selectOneMenu> 
                         </div>
                         <div class="col-lg-4 col-md-3">
-                            <h4> <h:outputLabel id="textLabel" value="Neaveau Tache" /> </h4>
-                            <b:inputText  value="#{tacheElementaireController.nom}" placeholder="autre" title="Neuveau Tache" id="autre" class="form-control"/>
-                            <f:ajax  listener="#{tacheElementaireController.addNames()}" render="autre" event="dblclick" execute="@form" />
+                            <p:outputLabel value="    "/><br></br><br></br>
+                            <p:commandButton actionListener="#{tacheElementaireController.nouveau()}" icon="ui-icon-plus" />
+                            <!--                                <h4> <h:outputLabel id="textLabel" value="Neaveau Tache" /> </h4>
+                                                            <b:inputText  value="#{tacheElementaireController.nom}" placeholder="autre" title="Neuveau Tache" id="autre" class="form-control"/>
+                                                            <f:ajax  listener="#{tacheElementaireController.addNames()}" render="autre" event="dblclick" execute="@form" />-->
                         </div>
                     </div>
                     <div>
@@ -41,7 +42,6 @@
                 </b:panel>
             </h:form>
             <h:form id="FormTacheElemt">
-                <!--<h1><h:outputText value="List"/></h1>-->
                 <p:dataTable value="#{tacheElementaireController.listes}" var="item" id="ListTacheElemt" class="data">
                     <p:column>
                         <f:facet name="header">
@@ -70,6 +70,21 @@
                     <b:commandButton  actionListener="#{tacheElementaireController.createList()}"  value="Valider"  update=":FormTacheElemt:ListTacheElemt" look="primary" />
                 </div>
             </h:form>
+            <p:dialog id="nouveauDlg" widgetVar="nouveau" modal="true" resizable="false" appendTo="@(body)" header="Confirmer la suppression">
+                <h:form id="SupressionForm">
+                    <h4> <h:outputLabel id="textLabel" value="Neaveau Tache" /> </h4>
+                    <b:inputText  value="#{tacheElementaireController.nom}" placeholder="autre" title="Neuveau Tache" id="autre" class="form-control"/>
+                    <p:commandButton value="Ajouter" action="#{tacheElementaireController.addNames()}" update=":form:ancient" icon="ui-icon-plus" onclick="Supression.hide()"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="Supression.hide()"/>
+                </h:form>
+            </p:dialog>
+            <p:dialog id="messageDlg" widgetVar="message" modal="true" resizable="false" appendTo="@(body)" header="Confirmer la suppression">
+                <h:form id="messageForm">
+                    <h4> <h:outputLabel id="textLabel" value="Attention" /> </h4>
+                    <p:outputLabel  value="#{tacheElementaireController.msg}" class="form-control"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="Supression.hide()"/>
+                </h:form>
+            </p:dialog>
         </ui:define>
     </ui:composition>
     <style>

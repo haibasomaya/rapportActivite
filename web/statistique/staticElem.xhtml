@@ -15,14 +15,14 @@
                 </div>
                 <br></br>
                 <div class="row">
-                    <div class=" col-lg-4 col-md-5"> 
+                    <div class="col-md-offset-1 col-md-5"> 
                         <!--<div class="form-group">-->
                         <p:outputLabel value="Annee"/><br></br>
                         <h:inputText id='annee' value="#{tacheElementaireController.annee}" title="#{bundle.CreateTacheTitle_annee}"/><br></br>
                     </div>
                 </div>
                 <div class="row">
-                    <div class=" col-lg-4 col-md-5">  
+                    <div class="col-md-offset-1 col-md-5">  
                         <p:outputLabel value="Employe"/><br></br>
                         <b:selectOneMenu id="employe" value="#{tacheElementaireController.employe}" >
                             <f:selectItems  value="#{employeController.itemsAvailableSelectOne}" var="employeItem" itemValue="#{employeItem.login}" itemLabel="#{employeItem.nom}"/>
@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="  col-lg-4 col-md-5">  
+                    <div class="col-md-offset-1 col-md-5">  
                         <p:outputLabel value="Tache"/><br></br>
                         <b:selectOneMenu id="tache" value="#{tacheElementaireController.nomTache}" >
                             <f:selectItem itemValue="" itemLabel="selectionné"/>
@@ -51,7 +51,7 @@
             </h:form>  
             <h:form id="statistiques" >
                 <b:panel title=" Graphe " class="panel-primary">
-                    <p:chart type="bar" id="graphe" model="#{tacheElementaireController.model}" style="height:300px" />
+                    <p:chart type="bar" id="graphe" model="#{tacheElementaireController.model}"/>
                     <!--<p:chart type="bar" id="graphe" model="# {tacheElementaireController.horizontalBarModel}" style="height:300px"/>
                     <p:chart type="line" model="# {affectationController.lineModel}" style="height:300px"  />-->
                 </b:panel>

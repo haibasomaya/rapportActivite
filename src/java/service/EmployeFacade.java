@@ -162,11 +162,12 @@ public class EmployeFacade extends AbstractFacade<Employe> {
             employe.setEssay(employe.getEssay() + 1);
             edit(employe);
             System.out.println("Essay num" + employe.getEssay());
+            return-3;
         }
         if (employe.getEssay() == 3) {
             employe.setBloquer(1);
             edit(employe);
-            return -3;
+            return -4;
         }
         if (employe.getPassword().equals(password) && employe.getBloquer() == 0) {
             employe.setEssay(0);

@@ -20,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
@@ -36,12 +37,13 @@ public class TacheElementaireController implements Serializable {
 
     private List<Tache> items = null;
     private List<Tache> listes = null;
-    private List<Tache> taches = null;
+    List<String> names = null;
     private Tache selected;
     private String nom;
     private String prenom;
     private String nomTache;
     private String login;
+    private String msg;
     private BarChartModel model;
     private int annee;
     private Date dateCherche;
@@ -70,7 +72,8 @@ public class TacheElementaireController implements Serializable {
     public List<String> getDistinctTach() {
         return getFacade().findTaches();
     }
- public String retour() throws IOException {
+
+    public String retour() throws IOException {
         if (user.isAdmin()) {
             util.SessionUtil.redirect("/rapportActivite/faces/admine/ListEmp");
             return "/admine/ListEmp.xhtml";
@@ -142,62 +145,6 @@ public class TacheElementaireController implements Serializable {
     }
 
     //creation tache
-    public void ignorer(Tache tacheElementaire) {
-        selected = tacheElementaire;
-        listes.remove(selected);
-        selected = new Tache();
-    }
-
-//            for (int i = 0; i < p; i++) {
-//                TacheElementaire t = taches.get(i);
-//                if (!t.getNom().equals(nom)) {
-//                    taches.add(selected);
-//                    selected.setNom(nom);
-//                }
-//            }
-    public int addNames() {
-        if ((!nom.equals(""))) {
-            int p = taches.size();
-            for (Tache t : taches) {
-                if (!t.getNom().equals(nom)) {
-                    selected.setNom(nom);
-                    taches.add(selected);
-                    return 1;
-                }
-            }
-        }
-        return 0;
-    }
-
-    public void createList() {
-        ejbFacade.createList(listes, user);
-        listes = new ArrayList<>();
-    }
-
-    public void ajouterList() {
-        if (selected.getNom().equals("")) {
-            selected.setNom(nom);
-            addNames();
-        }
-        testDate();
-        listes.add(selected);
-        System.out.println("haa selected ----->" + selected);
-        System.out.println("tache de ________>" + user);
-        System.out.println("listes---->" + listes);
-        init();
-    }
-
-    public void testDate() {
-        if (selected.getDateTache().before(new Date())) {
-            selected.setDateTache(new Date());
-            System.out.println("**************** IMPOSSIIIBLEEEE DAAATEEEE PREEXIISTERRRR*********************");
-        } else if (ejbFacade.dateInvalid(selected.getDateTache()) == false) {
-            selected.setDateTache(new Date());
-            System.out.println("****************** dateee dejaa affeecteeeer***********************");
-        }
-
-    }
-
     private void init() {
         nom = "";
         login = "";
@@ -232,16 +179,69 @@ public class TacheElementaireController implements Serializable {
         System.out.println("haaa la liste trouver ------> " + items);
     }
 
-    public void search() {
-        items = ejbFacade.search(nom, dateMin, dateMax);
-        inititems();
+//    public void search() {
+//        items = ejbFacade.search(nom, dateMin, dateMax);
+//        inititems();
+//    }
+//
+//    public void inititems() {
+//        nom = "";
+//        dateMax = null;
+//        dateMin = null;
+//
+//    }
+    public void ignorer(Tache tacheElementaire) {
+        selected = tacheElementaire;
+        listes.remove(selected);
+        selected = new Tache();
     }
 
-    public void inititems() {
-        nom = "";
-        dateMax = null;
-        dateMin = null;
+    public void createList() {
+        ejbFacade.createList(listes, user);
+        listes = new ArrayList<>();
+    }
 
+    public void nouveau() {
+        RequestContext.getCurrentInstance().execute("PF('nouveau').show()");
+    }
+
+    public int addNames() {
+        if (!names.isEmpty()) {
+            selected.setNom(nom);
+            names.add(nom);
+        } else {
+            for (String n : names) {
+                if (!n.equals(nom)) {
+                    names.add(nom);
+                }
+            }
+        }
+        return 0;
+    }
+
+    public void ajouterList() {
+        if (selected.getNom().equals("")) {
+            selected.setNom(nom);
+        }
+        int res = testDate();
+        if (res > 0) {
+            RequestContext.getCurrentInstance().execute("PF('message').show()");
+        }
+        listes.add(selected);
+        init();
+    }
+
+    public int testDate() {
+        if (selected.getDateTache().after(new Date())) {
+            selected.setDateTache(new Date());
+            msg = "IMPOSSIBLE DATE PREXISTER !!";
+            return 1;
+        } else if (ejbFacade.dateInvalid(selected.getDateTache()) == false) {
+            selected.setDateTache(new Date());
+            msg = "DATE DEJA EFFECTUER VOUS DEVEZ TAPER UNE NOUVELLE DATE !!";
+            return 2;
+        }
+        return 0;
     }
 
     public void create() {
@@ -379,18 +379,6 @@ public class TacheElementaireController implements Serializable {
     public void setAnnee(int annee) {
         this.annee = annee;
     }
-
-    public List<Tache> getTaches() {
-        if (taches == null) {
-            taches = ejbFacade.findAll();
-        }
-        return taches;
-    }
-
-    public void setTaches(List<Tache> taches) {
-        this.taches = taches;
-    }
-
     public List<Tache> getItems() {
         if (items == null) {
             if (user.getSuperAdmin() != 1) {
@@ -502,12 +490,24 @@ public class TacheElementaireController implements Serializable {
         this.nomTache = nomTache;
     }
 
-    
+    public List<String> getNames() {
+        if (names == null) {
+            names = ejbFacade.findTaches();
+        }
+        return names;
+    }
+
+    public void setNames(List<String> names) {
+        this.names = names;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
 }
-//    public void findInEmpTaches() {
-//        System.out.println("h dateCherche ------> " + dateCherche);
-//        items = ejbFacade.findByDateEmp(employe, dateCherche);
-//        System.out.println("haaa la liste trouver ------> " + items);
-//
-//    }
-//Tache 
+

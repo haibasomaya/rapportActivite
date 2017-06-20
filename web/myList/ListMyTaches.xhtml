@@ -32,23 +32,23 @@
             </b:panel>
             <br></br>
             <h:form id="TacheElementaireListForm">
-                <p:dataTable id="datalist" value="#{tacheElementaireController.items}" var="item" class="data"
+                <b:dataTable id="datalist" value="#{tacheElementaireController.items}" var="item" class="data"
                              >
-                    <p:column>
+                    <b:column>
                         <f:facet name="header">
                             <h:outputText value="Nom Tache"/>
                         </f:facet>
                         <h:outputText value="#{item.nom}"/>
-                    </p:column>
-                    <p:column>
+                    </b:column>
+                    <b:column>
                         <f:facet name="header">
                             <h:outputText value="Date Tache"/>
                         </f:facet>
                         <h:outputText value="#{item.dateTache}">
                             <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
                         </h:outputText>
-                    </p:column>
-                </p:dataTable>
+                    </b:column>
+                </b:dataTable>
             </h:form>
             <style>
                 .data{

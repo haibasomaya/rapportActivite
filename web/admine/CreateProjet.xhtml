@@ -59,9 +59,15 @@
                         <center><b:commandButton actionListener="#{projetController.creation()}" value=" CREER " class="btn btn-primary fa fa-plus-square" style="float: inside;" /></center>
                     </div>
                 </h:form> 
-                </div>
+            </div>
 
-
+            <p:dialog id="messageDlg" widgetVar="message" modal="true" resizable="false" appendTo="@(body)" header="Confirmer la suppression">
+                <h:form id="messageForm">
+                    <h4> <h:outputLabel id="textLabel" value="Attention" /> </h4>
+                    <p:outputLabel  value="#{projetController.msg}" class="form-control"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="Supression.hide()"/>
+                </h:form>
+            </p:dialog>
 
         </ui:define>
     </ui:composition>

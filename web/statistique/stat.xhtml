@@ -11,36 +11,38 @@
         <ui:define name="body">
             <h:form id="TacheForm">
                 <div style="float: right;">
-                    <p:commandButton value="retour" action="#{projetController.retour()}" class="btn btn-primary"/>
+                    <p:commandButton value="retour" action="#{grandeTacheController.retour()}" class="btn btn-primary"/>
                 </div>
                 <br></br>
-                <div class="row">
-                    <div class=" col-md-offset-2 col-lg-4 col-md-10">   
-                        <div class="form-group">
-                            <p:outputLabel value="Annee"/><br></br>
-                            <p:inputText id='annee' value="#{grandeTacheController.annee}" title="#{bundle.CreateTacheTitle_annee}"/>
+                <p:panel>
+                    <div class="row">
+                        <div class=" col-md-offset-2 col-lg-4 col-md-10">   
+                            <div class="form-group">
+                                <p:outputLabel value="Annee"/><br></br>
+                                <p:inputText id='annee' value="#{grandeTacheController.annee}" title="#{bundle.CreateTacheTitle_annee}"/>
+                            </div> 
                         </div> 
-                    </div> 
-                    <div class="col-lg-4 col-md-6">   
-                        <div class="form-group">
-                            <p:outputLabel value="Employe"/><br></br>
-                            <b:selectOneMenu id="employe" value="#{grandeTacheController.employe}" >
-                                <f:selectItems  value="#{employeController.itemsAvailableSelectOne}" var="employeItem" itemValue="#{employeItem.login}" itemLabel="#{employeItem.nom}"/>
-                            </b:selectOneMenu>
+                        <div class="col-lg-4 col-md-6">   
+                            <div class="form-group">
+                                <p:outputLabel value="Employe"/><br></br>
+                                <b:selectOneMenu id="employe" value="#{grandeTacheController.employe}" >
+                                    <f:selectItems  value="#{employeController.itemsAvailableSelectOne}" var="employeItem" itemValue="#{employeItem.login}" itemLabel="#{employeItem.nom}"/>
+                                </b:selectOneMenu>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <center><div class="col-md-offset-1  col-lg-4 col-md-3">   
-                            <div class="form-group">
-                                <p:commandButton  actionListener="#{grandeTacheController.tryMethod()}"  value="Consulter les graphes" update=":statistiques:graphe" style="size: portrait;"/>
-                            </div>
-                        </div></center>
-                </div>
-                <br></br><br></br>
+                    <div class="row">
+                        <center><div class="col-md-offset-1  col-lg-4 col-md-3">   
+                                <div class="form-group">
+                                    <p:commandButton  actionListener="#{grandeTacheController.tryMethod()}"  value="Consulter les graphes" update=":statistiques:graphe" style="size: portrait;"/>
+                                </div>
+                            </div></center>
+                    </div>
+                    <br></br><br></br>
+                </p:panel>
             </h:form>  
             <h:form id="statistiques" >
-                <b:panel title=" Graphe " class="panel-primary">
+                <b:panel title ="Graphe" class="panel-primary">
                     <p:chart type="bar" id="graphe" model="#{grandeTacheController.model}"/>
                     <!--style="height:300px
     <p:chart type="line" model="# {affectationController.lineModel}" style="height:300px"  />-->

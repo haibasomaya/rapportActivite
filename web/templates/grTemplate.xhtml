@@ -13,7 +13,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta name="description" content=""/>
         <meta name="author" content=""/>
-        <title>El Wilaya Marrakech-Safi</title>
+        <title>la Wilaya Marrakech-Safi</title>
         <!-- Bootstrap Core CSS -->
         <h:outputStylesheet name="newBar/css/bootstrap.min.css"/>
         <h:outputStylesheet name="sideBar/css/bootstrap.min.css"/>
@@ -40,12 +40,17 @@
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+                    <!--                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                            <span class="sr-only">Toggle navigation</span>
+                                            <span class="icon-bar"></span>
+                                            <span class="icon-bar"></span>
+                                            <span class="icon-bar"></span>
+                                        </button>-->
+                    <!--                    <div>
+                                            <a style="float: left;" href="../pageAccueil/LoginV.xhtml" class="logo">
+                                                <p:graphicImage value="/resources/LogoWilaya.JPG"  style="width: 10px;" />
+                                            </a>
+                                        </div>-->
                     <div>
                         <a href="#menu-toggle" class="btn btn-default fa fa-bars" id="menu-toggle" style="float: left; margin-top: 10px;"></a>
                     </div>
@@ -66,7 +71,6 @@
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                     <li><a href="../admine/CreateReunion.xhtml"> Nouveau Ruenion </a></li>
                                     <li><a href="../admine/CreateProjet.xhtml">Nouveau Projet</a></li>
-                                    <!--                                    <li><a href="../admine/CreationMarche.xhtml">Nouveau Marche</a></li>-->
                                     <li><a href="../admine/CreateBon.xhtml">Nouveau Bon de Commande</a></li>
                                     <!-- <li role="separator" class="divider"></li>
                                     <li><a href="#">Separated link</a></li>-->
@@ -78,7 +82,6 @@
                     <h:form id="superB" style="align-items: baseline" rendered="#{employeController.user.superAdmin==1}">
                         <ul class="nav navbar-nav">
                             <li><a href="../superAdmine/CreateAdmine.xhtml" class="fa fa-user-plus"> Nouveau Admine </a></li>
-                            <!--<li><a href="../superAdmine/nvRuenion.xhtml" class="fa fa-plus-square"> Nouveau Ruenion </a></li>-->
                             <li><a href="../superAdmine/createService.xhtml" class="fa fa-pencil-square-o" > Nouveau Service </a></li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle fa fa-plus-square"  id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -132,6 +135,7 @@
                             <li><a href="../myList/ListMyTaches.xhtml" class="fa fa-list"> Mes Taches Qotidiennes </a></li><br></br>
                             <li><a href="../myList/ListReunion.xhtml" class="fa fa-university"> Mes Reunions </a></li><br></br>
                             <li><a href="../myList/ListProjet.xhtml" class="fa fa-folder-open"> Mes Projet </a></li><br></br>
+                            <li><a href="../myList/ListBoncommande.xhtml" class="fa fa-list-alt"> List Bon de Commande </a></li><br></br>
                             <li><a href="../myList/ListGrandeTache.xhtml" class="fa fa-list"> Mes Grande Tache </a></li><br></br>
                             <li><a href="../statistique/stat.xhtml" class="fa fa-area-chart"> Statistique Grande Tache </a></li><br></br>
                             <li><a href="../statistique/staticElem.xhtml" class="fa fa-area-chart"> Statistique Quotidienne </a></li><br></br>
@@ -145,7 +149,7 @@
                             <li><a href="../myList/ListReunion.xhtml" class="fa fa-university">Mes Reunion</a></li><br></br>
                             <li><a href="../myList/ListProjet.xhtml" class="fa fa-folder-open"> Mes Projet </a></li><br></br>
                             <li><a href="../myList/ListMarchet.xhtml" class="fa fa-shopping-cart"> Mes Marchet </a></li><br></br>
-                            <!--<li><a href="../myList/ListBoncommande.xhtml" class="fa fa-list-alt"> List Bon de Commande </a></li><br></br>-->
+                            <li><a href="../myList/ListBoncommande.xhtml" class="fa fa-list-alt"> List Bon de Commande </a></li><br></br>
                             <li><a href="../statistique/stat.xhtml" class="fa fa-area-chart"> Statistique Grande Tache </a></li><br></br>
                             <li><a href="../statistique/staticElem.xhtml" class="fa fa-area-chart"> Statistique Quotidienne </a></li><br></br>
                         </h:form>

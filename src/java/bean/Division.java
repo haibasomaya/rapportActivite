@@ -52,8 +52,8 @@ public class Division implements Serializable {
     }
 
     public int getNbrService() {
-        if (services == null) {
-            services = new ArrayList<>();
+        if (!services.isEmpty()) {
+            nbrService = services.size();
         }
         return nbrService;
     }
@@ -108,7 +108,7 @@ public class Division implements Serializable {
 
     @Override
     public String toString() {
-        return nom ;
+        return nom;
     }
 
 }

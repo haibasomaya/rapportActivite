@@ -38,6 +38,7 @@ public class EmployeController implements Serializable {
     private String password;
     private String nom;
     private String prenom;
+    private String msg;
     private int etat;
     private Service service;
     private Division division;
@@ -99,7 +100,7 @@ public class EmployeController implements Serializable {
         System.out.println("Etaaaat" + etat);
         if (etat >= 0) {
             employes = null;
-            employes =  new ArrayList<>();
+            employes = new ArrayList<>();
             employes = ejbFacade.EmpAdminBloquer(etat, employes);
         }
         if (division != null && user.getSuperAdmin() == 1) {
@@ -225,13 +226,19 @@ public class EmployeController implements Serializable {
         System.out.println("connecter controler");
         int res = ejbFacade.connexion(login, password);
         if (res == -1) {
-            System.out.println("vous devez inseret votre login et passwourd");
+            msg = "vous devez inseret votre login et passwourd";
         } else if (res == -2) {
-            System.out.println("inseret login et password correcte");
+            msg = "inseret votre login  correctement";
         } else if (res == -3) {
-            System.out.println("vous etes bloquer maintenant");
+            msg = " Votre Mots de Pass Est Incorrect";
+        } else if (res == -4) {
+            System.out.println("Votre Mots de Pass Est Incorrect");
+            msg = "Votre compte est bloquer vous devez contacter l'adminstration pour le recuperer !!";
         } else if (res == 0) {
             System.out.println(" ereure Inconuu");
+            msg = "Erreure Inconuu";
+        } else if (res < 0) {
+            RequestContext.getCurrentInstance().execute("PF('.modalPseudoClass').show()");
         } else if (res > 0) {
             user = util.SessionUtil.getConnectedUser();
             return goProfil();
@@ -534,6 +541,14 @@ public class EmployeController implements Serializable {
             items = ejbFacade().findAll();
         }
         return items;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
 }

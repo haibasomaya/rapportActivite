@@ -39,11 +39,12 @@ public class ProjetController implements Serializable {
     private Projet selected;
     private Date dateMin;
     private Date dateMax;
-    private int type;
     private Service service;
     private Division division;
     private Employe emp;
-    private GrandeTache grandeTach = null;
+    private String msg;
+    private int type;
+    private GrandeTache grandeTach;
     private List<Service> services = null;
     private List<Projet> items = null;
     private List<Employe> emps = null;
@@ -108,17 +109,15 @@ public class ProjetController implements Serializable {
         }
         grandeTach.setActivite(selected);
         grandeTacheFacade.create(grandeTach);
-//        selected.setAvancement(selected.getAvancement() + grandeTach.getAvancement());
+        selected.setAvancement(selected.getAvancement() + grandeTach.getAvancement());
         selected.getGrandeTaches().add(grandeTach);
         ejbFacade.edit(selected);
-        grandeTach = new GrandeTache();
-
         init();
     }
 //        selected.setAvancement(selected.getAvancement() + grandeTach.getAvancement());
 
     private void init() {
-        emp = null;
+        emp = new Employe();
         services = null;
         employes = null;
         grandeTach = new GrandeTache();
@@ -154,7 +153,25 @@ public class ProjetController implements Serializable {
         return "/projet/ModifierProjet.xhtml";
     }
 
+    public int testDate() {
+        if (selected.getDateFin().after(new Date())) {
+            selected.setDateDebut(new Date());
+            msg = "LE DERNIER DELAI DU PROJET ET DEJA PASSER!!";
+            return 1;
+        }
+        if (selected.getDateFin().getTime() - selected.getDateDebut().getTime() < 0) {
+            msg = "LES DATES SONT INVALID VOUS DEVEZ LES RETAPER CORRECTEMENT !!!";
+            return 2;
+        }
+        return 0;
+    }
+
     public void creation() {
+        int res = testDate();
+        if (res > 0) {
+            RequestContext.getCurrentInstance().execute("PF('message').show()");
+            selected = new Projet();
+        }
         if (user.isAdmin() || user.getSuperAdmin() == 1) {
             selected.setGerant(user);
         }
@@ -426,6 +443,14 @@ public class ProjetController implements Serializable {
 
     public void setDivisions(List<Division> divisions) {
         this.divisions = divisions;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
 }
