@@ -55,7 +55,7 @@
                     </p:column>
                 </p:dataTable>
             </h:form>
-            <p:dialog id="bonCommandeDlg" widgetVar="bonCommandeDialg" modal="true" resizable="false" appendTo="@(body)" header="Confirmer la suppression">
+            <p:dialog id="bonCommandeDlg" widgetVar="bonCommandeDialg" modal="true" resizable="false" appendTo="@(body)" header="Liste des Items">
                 <h:form id="bonCommandeForm">
                     <b:dataTable value="#{bonCommandeController.listItem}" var="item" id="datalist">
                         <b:column>

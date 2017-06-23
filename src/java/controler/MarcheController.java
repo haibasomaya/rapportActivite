@@ -32,7 +32,7 @@ import service.GrandeTacheFacade;
 @Named("marcheController")
 @SessionScoped
 public class MarcheController implements Serializable {
-
+    
     private Marche selected;
     private GrandeTache grandeTach;
     private String nom;
@@ -46,7 +46,7 @@ public class MarcheController implements Serializable {
     List<String> names = new ArrayList<>();
     private Division division;
     private Employe employe;
-
+    
     @EJB
     private service.MarcheFacade ejbFacade;
     @EJB
@@ -56,7 +56,7 @@ public class MarcheController implements Serializable {
     @EJB
     private EmployeFacade employeFacade;
     private Employe user = util.SessionUtil.getConnectedUser();
-
+    
     public MarcheController() {
     }
 //
@@ -68,20 +68,26 @@ public class MarcheController implements Serializable {
         util.SessionUtil.redirect("/rapportActivite/faces/myList/ListMarchet");
         return "/myList/ListMarchet.xhtml";
     }
-
+    
     public void igniorer(Division division) {
         dvsn.remove(dvsn.indexOf(division));
     }
-
+    
     public void ajoutDivision() {
         dvsn.add(division);
     }
-
+    
     public void AffecterGrandeTache() {
         if (division == null) {
             grandeTach.setEmploye(user);
         } else {
             grandeTach.setEmploye(division.getDirecteur());
+        }
+        if (grandeTach.getDateTache() == null) {
+            grandeTach.setDateTache(new Date());
+        }
+        if (grandeTach.getDateFin() == null) {
+            grandeTach.setDateFin(new Date());
         }
         grandeTach.setActivite(selected);
         grandeTacheFacade.create(grandeTach);
@@ -90,37 +96,37 @@ public class MarcheController implements Serializable {
         ejbFacade.edit(selected);
         grandeTach = new GrandeTache();
     }
-
+    
     public Division findDivision(Employe employe) {
         return divisionFacade.findDivisionByAdmin(employe).get(0);
     }
-
+    
     public void deletProjet(Marche projet) {
         selected = projet;
         RequestContext.getCurrentInstance().execute("PF('Supression').show()");
     }
-
+    
     public String detail(Marche projet) throws IOException {
         selected = projet;
         util.SessionUtil.redirect("/rapportActivite/faces/marche/MarchetDetail");
         return "/marche/MarchetDetail.xhtml";
     }
-
+    
     public String ModifierProjet(Marche projet) throws IOException {
         selected = projet;
         util.SessionUtil.redirect("/rapportActivite/faces/marche/ModifierMarche");
         return "/marche/ModifierMarche.xhtml";
     }
-
+    
     public void findByTypeDate() {
         if ((type == -1) && (dateMax == null && dateMin == null)) {
             items = getItems();
         }
         items = ejbFacade.findByTypeDate(user, type, dateMin, dateMax);
         System.out.println("Controler findByTypeDate()------->" + items);
-
+        
     }
-
+    
     public String importance(Marche projet) {
         switch (projet.getDegrer()) {
             case 1:
@@ -133,7 +139,7 @@ public class MarcheController implements Serializable {
                 return " ";
         }
     }
-
+    
     public void creation() {
         if (user.isAdmin() || user.getSuperAdmin() == 1) {
             selected.setGerant(user);
@@ -148,35 +154,35 @@ public class MarcheController implements Serializable {
         prepareCreate();
         dvsn = null;
     }
-
+    
     protected void setEmbeddableKeys() {
     }
-
+    
     protected void initializeEmbeddableKey() {
     }
-
+    
     private MarcheFacade getFacade() {
         return ejbFacade;
     }
-
+    
     public Marche prepareCreate() {
         selected = new Marche();
         nom = "";
         initializeEmbeddableKey();
         return selected;
     }
-
+    
     public void create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("MarcheCreated"));
         if (!util.JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
-
+    
     public void update() {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("MarcheUpdated"));
     }
-
+    
     public void destroy() {
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("MarcheDeleted"));
         if (!util.JsfUtil.isValidationFailed()) {
@@ -184,7 +190,7 @@ public class MarcheController implements Serializable {
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
-
+    
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
@@ -212,18 +218,18 @@ public class MarcheController implements Serializable {
             }
         }
     }
-
+    
     public List<Marche> getItemsAvailableSelectMany() {
         return getFacade().findAll();
     }
-
+    
     public List<Marche> getItemsAvailableSelectOne() {
         return getFacade().findAll();
     }
-
+    
     @FacesConverter(forClass = Marche.class)
     public static class MarcheControllerConverter implements Converter {
-
+        
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
@@ -233,19 +239,19 @@ public class MarcheController implements Serializable {
                     getValue(facesContext.getELContext(), null, "marcheController");
             return controller.getMarche(getKey(value));
         }
-
+        
         java.lang.Long getKey(String value) {
             java.lang.Long key;
             key = Long.valueOf(value);
             return key;
         }
-
+        
         String getStringKey(java.lang.Long value) {
             StringBuilder sb = new StringBuilder();
             sb.append(value);
             return sb.toString();
         }
-
+        
         @Override
         public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
             if (object == null) {
@@ -259,54 +265,54 @@ public class MarcheController implements Serializable {
                 return null;
             }
         }
-
+        
     }
-
+    
     public List<Employe> getEmps() {
         if (emps == null) {
             emps = ejbFacade.activiteEmploye(selected);
         }
         return emps;
     }
-
+    
     public void setEmps(List<Employe> emps) {
         this.emps = emps;
     }
-
+    
     public String getNom() {
         return nom = "";
     }
-
+    
     public void setNom(String nom) {
         this.nom = nom;
     }
-
+    
     public Employe getUser() {
         return user;
     }
-
+    
     public void setUser(Employe user) {
         this.user = user;
     }
-
+    
     public Marche getSelected() {
         if (selected == null) {
             selected = new Marche();
         }
         return selected;
     }
-
+    
     public void setSelected(Marche selected) {
         this.selected = selected;
     }
-
+    
     public List<Marche> getItems() {
         if (items == null) {
             testItmes();
         }
         return items;
     }
-
+    
     private void testItmes() {
         if (user.isAdmin() || user.getSuperAdmin() == 1) {
             if (ejbFacade.findByGerant(user) != null) {
@@ -318,79 +324,79 @@ public class MarcheController implements Serializable {
             items = new ArrayList<>();
         }
     }
-
+    
     public Marche getMarche(java.lang.Long id) {
         return getFacade().find(id);
     }
-
+    
     public Division getDivision() {
         if (division == null) {
             division = new Division();
         }
         return division;
     }
-
+    
     public void setDivision(Division division) {
         this.division = division;
     }
-
+    
     public List<Division> getDivisions() {
         if (divisions == null) {
             divisions = divisionFacade.findAll();
         }
         return divisions;
     }
-
+    
     public void setDivisions(List<Division> divisions) {
         this.divisions = divisions;
     }
-
+    
     public List<Division> getDvsn() {
         if (dvsn == null) {
             dvsn = new ArrayList<>();
         }
         return dvsn;
     }
-
+    
     public void setDvsn(List<Division> dvsn) {
         this.dvsn = dvsn;
     }
-
+    
     public GrandeTache getGrandeTach() {
         if (grandeTach == null) {
             grandeTach = new GrandeTache();
         }
         return grandeTach;
     }
-
+    
     public void setGrandeTach(GrandeTache grandeTach) {
         this.grandeTach = grandeTach;
     }
-
+    
     public Date getDateMin() {
         return dateMin;
     }
-
+    
     public void setDateMin(Date dateMin) {
         this.dateMin = dateMin;
     }
-
+    
     public Date getDateMax() {
         return dateMax;
     }
-
+    
     public void setDateMax(Date dateMax) {
         this.dateMax = dateMax;
     }
-
+    
     public int getType() {
         return type;
     }
-
+    
     public void setType(int type) {
         this.type = type;
     }
-
+    
     public List<String> getNames() {
         names.add("Envoi vers le service de marcher");
         names.add("Publication de l'appelle d'offre sur marche public");
@@ -407,7 +413,7 @@ public class MarcheController implements Serializable {
         }
         return names;
     }
-
+    
     public void setNames(List<String> names) {
         this.names = names;
     }

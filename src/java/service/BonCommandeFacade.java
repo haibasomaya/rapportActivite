@@ -9,12 +9,9 @@ import bean.BonCommande;
 import bean.CommandeItem;
 import bean.Employe;
 import bean.GrandeTache;
-import bean.Marche;
-import bean.Projet;
 import bean.Reunion;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -43,6 +40,16 @@ public class BonCommandeFacade extends AbstractFacade<BonCommande> {
     public BonCommandeFacade() {
         super(BonCommande.class);
     }
+//public void generatePdf(BonCommande bonCommande) throws JRException, IOException{
+//        Date date =new Date();
+//        Map<String,Object> params=new HashMap<>();
+//        List<BonCommande>bonCommandes = new ArrayList<>();
+//        bonCommandes.add(bonCommande);
+//        params.put("sysdate", date);
+//        params.put("pathLogo", FacesContext.getCurrentInstance().getExternalContext().getRealPath("resources\\image\\logo.png"));
+//        String name="ImprimebonCmd"+bonCommande.getId();
+//        PdfUtil.generatePdfAvecLangue(bonCommandes, params, name,"/jasper/jasperReport.jasper");
+//    }
 
     public List<BonCommande> findByGerant(Employe employe) {
         if (employe.isAdmin() || employe.getSuperAdmin() == 1) {

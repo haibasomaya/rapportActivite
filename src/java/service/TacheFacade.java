@@ -87,6 +87,7 @@ public class TacheFacade extends AbstractFacade<Tache> {
             }
             System.out.println("haaaa la requette de recherche -----> " + rq);
             List<Tache> taches = em.createQuery(rq).getResultList();
+            System.out.println("haa list fl'facaade------->" + taches);
             return taches;
         }
     }
@@ -111,18 +112,19 @@ public class TacheFacade extends AbstractFacade<Tache> {
     }
 
     private void createTache(Tache tacheElementaire, Employe employe) {
+        System.out.println("inside createTache");
         tacheElementaire.setEmploye(employe);
-        employe.getTacheElementaires().add(tacheElementaire);
         tacheElementaire.setAvancement(0L);
         create(tacheElementaire);
     }
 
     public List<Tache> findByEmploye(Employe employe) {
         if (employe != null) {
-            return em.createQuery("SELECT t FROM Tache t WHERE t.employe.login ='" + employe.getLogin() + "'").getResultList();
+            List<Tache> taches = em.createQuery("SELECT t FROM Tache t WHERE t.employe.login ='" + employe.getLogin() + "'").getResultList();
         } else {
             return null;
         }
+        return null;
     }
 
     public List<Tache> search(String nom, Date dateMin, Date dateMax) {

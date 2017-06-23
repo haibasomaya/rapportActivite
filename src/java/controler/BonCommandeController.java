@@ -45,6 +45,9 @@ public class BonCommandeController implements Serializable {
 
     public BonCommandeController() {
     }
+    public void generatePdf(BonCommande bonCommande ){
+        System.out.println("Itemm----->"+items);
+    }
 
     public void voirItem(BonCommande bnCmd) {
         selected = bnCmd;

@@ -51,7 +51,6 @@ public class TacheElementaireController implements Serializable {
     private Date dateMin;
     private Date dateMax;
 
-    private Employe user = util.SessionUtil.getConnectedUser();
     @EJB
     private service.TacheFacade ejbFacade;
     @EJB
@@ -60,6 +59,7 @@ public class TacheElementaireController implements Serializable {
     private DivisionFacade divisionFacade;
     @EJB
     private GrandeTacheFacade grandeTacheFacade;
+    private Employe emp = util.SessionUtil.getConnectedUser();
 
     public TacheElementaireController() {
     }
@@ -74,10 +74,10 @@ public class TacheElementaireController implements Serializable {
     }
 
     public String retour() throws IOException {
-        if (user.isAdmin()) {
+        if (emp.isAdmin()) {
             util.SessionUtil.redirect("/rapportActivite/faces/admine/ListEmp");
             return "/admine/ListEmp.xhtml";
-        } else if (user.getSuperAdmin() == 1) {
+        } else if (emp.getSuperAdmin() == 1) {
             util.SessionUtil.redirect("/rapportActivite/faces/superAdmine/ListAdmine");
             return "/superAdmine/ListAdmine.xhtml";
         } else {
@@ -164,9 +164,9 @@ public class TacheElementaireController implements Serializable {
 //    }
 //pr admine de divisioni
     public List<Employe> employes() {
-        if (user.isAdmin()) {
-            return divisionFacade.findEmpByAdmin(user);
-        } else if (user.getSuperAdmin() == 1) {
+        if (emp.isAdmin()) {
+            return divisionFacade.findEmpByAdmin(emp);
+        } else if (emp.getSuperAdmin() == 1) {
             return employeFacaede.admines();
         } else {
             return null;
@@ -175,7 +175,7 @@ public class TacheElementaireController implements Serializable {
 
     public void findInMyTaches() {
         System.out.println("h dateCherche ------> " + dateCherche);
-        items = ejbFacade.tacheByDate(user, dateCherche);
+        items = ejbFacade.tacheByDate(emp, dateCherche);
         System.out.println("haaa la liste trouver ------> " + items);
     }
 
@@ -197,7 +197,7 @@ public class TacheElementaireController implements Serializable {
     }
 
     public void createList() {
-        ejbFacade.createList(listes, user);
+        ejbFacade.createList(listes, emp);
         listes = new ArrayList<>();
     }
 
@@ -379,13 +379,11 @@ public class TacheElementaireController implements Serializable {
     public void setAnnee(int annee) {
         this.annee = annee;
     }
+
     public List<Tache> getItems() {
         if (items == null) {
-            if (user.getSuperAdmin() != 1) {
-                items = ejbFacade.findByEmploye(user);
-            } else {
-                items = new ArrayList<>();
-            }
+            System.out.println("user----->" + emp);
+            items = ejbFacade.findByEmploye(emp);
         }
         return items;
     }
@@ -400,17 +398,17 @@ public class TacheElementaireController implements Serializable {
     public void setListes(List<Tache> listes) {
         this.listes = listes;
     }
-
-    public Employe getUser() {
-        if (user == null) {
-            user = new Employe();
-        }
-        return user;
-    }
-
-    public void setUser(Employe user) {
-        this.user = user;
-    }
+//
+//    public Employe getUser() {
+//        if (user == null) {
+//            user = new Employe();
+//        }
+//        return user;
+//    }
+//
+//    public void setUser(Employe user) {
+//        this.user = user;
+//    }
 
     public Date getDateCherche() {
         return dateCherche;
@@ -510,4 +508,3 @@ public class TacheElementaireController implements Serializable {
     }
 
 }
-
